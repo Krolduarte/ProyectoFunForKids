@@ -1,0 +1,559 @@
+body {
+  margin: 0;
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+/* *************************************************
+                    Barra de Información
+************************************************** */
+.infobar {
+  background-color: #56beb7;
+  height: 80px;
+  height: 90px;
+  display: flex;
+  font-size: 15px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 0px 20px;
+}
+
+.logo {
+  width: 249px;
+  height: 50px;
+}
+
+.infobox {
+  width: 150px;
+  display: flex;
+  direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
+.icontext {
+  display: flex;
+  gap: 40px;
+  padding-right: 35px;
+}
+
+@media (max-width: 800px) {
+  .logo {
+    display: flex;
+    justify-content: center;
+  }
+  .imglogo {
+    align-items: center;
+  }
+  .infobar {
+    flex-wrap: wrap;
+    justify-content: center;
+   
+  }
+  /* la barra que contiene el icono y el texto */
+  .icontext {
+    width: 100%;
+    display: flex;
+    font-size: 10px;
+   
+    gap:20px;
+    padding-right: 0px;
+    margin-top: -30px;
+
+  }
+
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* *************************************************
+Header con Foto de Osos y aviso de matrículas abiertas
+************************************************** */
+
+.header {
+  display: flex;
+  box-sizing: border-box;
+  min-height: 503px;
+  width: 100vw;
+  background: linear-gradient(
+    96.12deg,
+    #f3eded 66.86%,
+    rgba(243, 237, 237, 0) 89.47%
+  );
+  /* background-image: url(../img/landing-img/fotoOsos.jpg);
+  background-size: cover;
+  background-position: right; */
+}
+
+.fotoOsos {
+  background-image: url(../img/landing-img/fotoOsos.jpg);
+  background-size: cover;
+  background-origin: content-box;
+  width: 70%;
+  height: 503px;
+  opacity: 0.5;
+}
+
+.menuNav {
+  height: 90px;
+  position: absolute;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  gap: 90px;
+  font-size: 15px;
+  font-weight: 700;
+  padding-top: 27px;
+}
+
+.areaTituloMatriculas {
+  width: 70%;
+  height: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.tituloM {
+  /* display: flex; 
+justify-content: center; */
+  font-family: "Cabin Sketch", cursive;
+  width: 700px;
+  font-size: 70px;
+  margin: 0 auto;
+}
+
+.tituloP {
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.tituloHeader p:first-of-type {
+  font-weight: 700;
+  font-size: 45px;
+  margin: 0 auto;
+  font-family: "Cabin Sketch", cursive;
+}
+.tituloHeader p {
+  font-size: 45px;
+  margin: 0 auto;
+}
+
+.btnSaberMas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 231px;
+  height: 33px;
+  background: #57bdb9;
+  box-shadow: 0px 0.818182px 3.27273px rgba(0, 0, 0, 0.02),
+    0px 0.818182px 0.818182px rgba(0, 0, 0, 0.06);
+  border-radius: 3.27273px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 43px;
+}
+
+@media (max-width: 1088px) {
+  .header::after {
+    content: "";
+  }
+
+  .header {
+    height: 45px;
+    position: relative;
+  }
+  .header::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #f3eded;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  .menuNav {
+    display: none;
+  }
+  .areaTituloMatriculas {
+    text-align: center;
+  }
+
+  .tituloHeader {
+    backdrop-filter: blur(1px);
+    border-radius: 20px;
+  }
+  .header {
+    width: 100%;
+    background: url(../img/landing-img/fotoOsos.jpg) fixed bottom;
+    background-size: cover;
+
+    backdrop-filter: blur(5px);
+  }
+  .fotoOsos {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .menuNav {
+    display: none;
+  }
+  .imglogo {
+    height: 30px;
+  }
+  .header {
+    height: 300px;
+  }
+  .areaTituloMatriculas {
+    width: 100%;
+  }
+
+  .tituloHeader p {
+    font-size: 16px;
+  }
+}
+
+/* *************************************************
+                    Nuestros Valores            
+************************************************** */
+
+.tituloValores {
+  font-family: "Cabin Sketch", cursive;
+  font-weight: 700;
+  font-size: 45px;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.valoresTarjetas {
+  min-height: 252px;
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+  align-content: center;
+}
+
+.tarjeta {
+  width: 25%;
+  min-width: 225px;
+}
+
+.comidas {
+  background: #f3b90f;
+}
+
+.seguridad {
+  background: #e789ae;
+}
+
+.aprendizaje {
+  background: #adb949;
+}
+
+.monitores {
+  background: #56beb7;
+}
+
+.tarjeta img {
+  width: 71px;
+  height: 72px;
+  padding: 20px 0px 10px 20px;
+}
+
+.tituloTarjeta {
+  font-weight: 700;
+  font-size: 25px;
+  padding-left: 28px;
+}
+
+.tarjetaInfo {
+  padding: 10px 30px 10px 30px;
+}
+@media (max-width: 1088px) {
+  .tarjetaInfo {
+    font-size: 10px;
+  }
+
+  .valoresTarjetas {
+    margin-top: 12px;
+  }
+}
+
+/* @media (max-width: 798px) {
+  .valoresTarjetas {
+    margin-top: 150px;
+  } */
+
+
+/* *************************************************
+                    Area de Matrícula          
+************************************************** */
+
+.matriculaSection {
+  min-height: 600px;
+  height: fit-content;
+  width: 100vw;
+  display: flex;
+
+}
+
+
+.fotoarea {
+ margin: 5px 0px 0px 20px;
+ background-image: url(../img/landing-img/preschool-children-playing.jpg);
+ background-size: cover;
+ background-repeat: no-repeat;
+ background-position: center;
+ border-radius: 29px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.matriculaInfo {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tituloMatriculaInfo {
+  font-family: "Cabin Sketch", cursive;
+  font-size: 45px;
+}
+
+.matriculaInfo ul > li,
+.matriculaInfo ul {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 35px;
+  /* or 238% */
+}
+
+.matriculaInfo ul {
+  width: 400px;
+}
+
+@media (max-width: 1100px) {
+  .fotoarea {
+    margin: 0px 0px 0px 20px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .matriculaInfo {
+    padding: 0px 10px;
+    width: 50%;
+  }
+
+  .matriculaSection{
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 800px) {
+
+
+  .fotoarea {
+    display: none;
+  }
+
+  .matriculaInfo {
+ 
+    padding: 10px 10px;
+    width: 100%;
+  }
+
+  .matriculaInfo ul li {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+
+  .matriculaInfo ul {
+    font-size: 15px;
+  }
+}
+/* *************************************************
+                Conoce nuestros monitores        
+************************************************** */
+
+.seccionMonitores {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  height: fit-content;
+  margin-bottom: 50px;
+  width: 100vw;
+  gap: 20px;
+  margin-bottom: 300px;
+}
+
+.tituloMonitores {
+  padding: 100px 0px;
+  font-family: "Cabin Sketch", cursive;
+  font-weight: 700;
+  font-size: 45px;
+  text-align: center;
+}
+
+.monitor {
+  min-width: 60px;
+  min-height: 60px;
+  width: 300px;
+  height: 300px;
+  /* width: 20%;
+  height:80%; */
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #56beb7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.monitor img {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+}
+
+.uno {
+  background-image: url(../img/landing-img/profesora1.jpg);
+  background-position: center;
+  background-size: cover;
+  border-color: #56beb7;
+}
+.dos {
+  background-image: url(../img/landing-img/profesora2.jpg);
+  background-position: center;
+  background-size: cover;
+  border-color: #adb949;
+}
+
+.tres {
+  background-image: url(../img/landing-img/profesora3.jpg);
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #e789ae;
+}
+
+.cuatro {
+  background-image: url(../img/landing-img/profesor4.jpg);
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #f3b90f;
+}
+
+.nombreMonitor {
+  display: flex;
+  width: 50%;
+  text-align: center;
+  height: 20%;
+  background: #d9d9d9;
+  position: absolute;
+  bottom: -30px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+@media (max-width: 800px) {
+  .seccionMonitores {
+    gap: 25px;
+  }
+  .monitor {
+    border-radius: 10px;
+    gap:0px;
+    width: 180px;
+    height: 90px;
+    min-width: 90px;
+    min-height: 200px;
+  }
+
+  .nombreMonitor {
+    width: 100%;
+  }
+}
+
+/* @media (max-width: 600px) {
+  .monitor {
+    height: 20%;
+  }
+} */
+
+/* *************************************************
+                Footer       
+************************************************** */
+footer {
+  margin-top: 100px;
+  bottom: 0px;
+  position: fixed;
+  width: 100vw;
+  height: 100px;
+  background: #56beb7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer > p {
+  width: 1104px;
+
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  footer > p {
+    width: 400px;
+    text-align: center;
+  }
+
+  footer {
+    padding: 0px 10px 0px 10px;
+    justify-content: space-between;
+  }
+
+  .imglogo {
+    height: 30px;
+  }
+}
