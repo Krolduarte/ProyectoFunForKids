@@ -1,0 +1,137 @@
+body {
+  margin: 0;
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+/* ******************************************************************
+                                NAVBAR
+****************************************************************** */
+
+.navBar {
+  width: 100vw;
+  height: 80px;
+  background: #56beb7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logo {
+  width: 271px;
+  height: 56px;
+}
+
+/* ******************************************************************
+                                AREA DE FORMULARIO
+****************************************************************** */
+/* abarca toda la pantalla a lo ancho y alto para centrar el formulario */
+.container {
+  width: 100vw;
+  height: 87vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* abarca area especifica donde esta el titulo y el formulario */
+.formSection {
+  width: 500px;
+  min-width: 400px;
+  padding: 5px 15px;
+}
+
+#formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 436px;
+}
+
+/* ******************************************************************
+                                TITULO
+****************************************************************** */
+
+.tituloObtenga p:first-of-type {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 10px;
+  color: #254441;
+}
+.tituloObtenga > p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #254441;
+}
+
+/* ******************************************************************
+                                FORMULARIO
+****************************************************************** */
+/* configuraciones generales */
+input {
+  border-radius: 2.5px;
+  height: 32.73px;
+}
+
+label {
+  font-size: 14px;
+}
+
+
+/* abarca una caja con label e input para organizarlo en direccion columna o fila */
+.box {
+  width: 200px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+/* para el grupo de una caja por fila: para el caso de el nombre de usuario e email */
+.groupSingle {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* para el grupo de dos cajas en forma de fila: en el caso de la primera, segunda y quinta fila */
+.groupDouble {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+
+/* ******************************************************************
+                               BOTONES
+****************************************************************** */
+
+.botones {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+}
+
+#btnRegister,
+#btnCancel {
+  height: 33px;
+  width: 50%;
+  border-radius: 5px;
+}
+
+#btnCancel {
+  background: #e789ae;
+}
+
+#btnRegister {
+  background: #56beb7;
+}
+
+.info {
+  height: 60px;
+}
+
+
