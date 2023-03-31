@@ -37,12 +37,12 @@ body {
 
 /* abarca area especifica donde esta el titulo y el formulario */
 .formSection {
-   
+  
   width: 500px;
-  height:100vh;
+  height:fit-content;
   min-width: 400px;
   padding: 5px 15px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 
 #formulario {
@@ -51,7 +51,8 @@ body {
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  height: 436px;
+  /* height: 436px; */
+  height:fit-content;
  
 }
 
