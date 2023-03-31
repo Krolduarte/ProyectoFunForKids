@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/formulario-registro.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Matricula</title>
+  </head>
+  <body>
+    <!-- navbar -->
+    <div class="navBar">
+      <img id="logo" src="../img/formulario-registro/logo white.png" alt="" />
+    </div>
+    <!-- fin nav bar -->
+
+    <section class="container">
+      <div class="formSection">
+        <!-- AREA DE PESTAÑAS-->
+<div class="groupPestanas">
+    <div class="pestana">Bebé</div>
+        <div class="pestana">Cuestionario</div>
+        <div class="pestana">Tutores</div>
+        <div class="pestana">Autorizados</div>
+        <div class="pestana">Políticas</div>
+</div>
+    
+
+        <!-- AREA DEL TITULO -->
+        <div class="tituloPrincipal">
+          <p>Matrícula de niño/niña:</p>
+          <p>Ingrese la información del niño/niña:</p>
+        </div>
+        <!-- FIN AREA DEL TITULO -->
+
+        <!-- foto de niño/niña -->
+        <div class="fotoBebe">
+          <img src="../img/formulario-registro/61-camera-outline.gif" alt="" />
+        </div>
+
+        <!-- FORMULARIO -->
+        <form action="" method="POST" id="formularioBebe">
+          <!-- NOMBRE Y APELLIDO -->
+          <div class="groupDouble">
+            <div class="box">
+              <label for="nombre" class="form_label">Nombre</label>
+              <input
+                type="text"
+                name="nombre"
+                id="nombre"
+                class="form_input"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div class="box">
+              <label for="apellido1">Primer Apellido</label>
+              <input type="text" name="apellido1" id="apellido1" required />
+            </div>
+          </div>
+
+          <!-- SEGUNDO APELLIDO Y GENERO -->
+          <div class="groupDouble">
+            <div class="box">
+              <label for="segundoApellido" class="form_label"
+                >Segundo Apellido</label
+              >
+              <input
+                type="text"
+                name="segundoApellido"
+                id="segundoApellido"
+                class="form_input"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div class="box">
+              <label for="genero">Género</label>
+              <input type="text" name="genero" id="genero" required />
+            </div>
+          </div>
+
+          <!-- FECHA DE NACIMIENTO -->
+          <div class="groupDouble">
+            <div class="box">
+              <label for="fecha">Fecha de nacimiento</label>
+              <input
+                type="date"
+                name="fecha"
+                id="fecha"
+                required
+                min="1918-01-01"
+              />
+            </div>
+            <div class="box">
+              <label for="lugar">Lugar de Nacimiento</label>
+              <input type="text" name="lugar" id="lugar" required />
+            </div>
+          </div>
+
+          <div class="directionRow">
+            <div class="iconoMas">
+              <img
+                src="../img/formulario-registro/49-plus-circle-outline.gif"
+                alt=""
+              />
+            </div>
+            <div>Agregar otro niño/niña</div>
+          </div>
+
+          <!-- BOTON REGISTRARSE Y CANCELAR  -->
+          <div class="botones">
+            <button id="btnCancel">Cancelar</button>
+            <input type="submit" value="Registrarse" id="btnRegister" />
+          </div>
+        </form>
+        <!-- FIN FORMULARIO -->
+      </div>
+      <!-- FIN FORMSECTION -->
+    </section>
+
+    <!-- FIN CONTAINER -->
+  </body>
+</html>

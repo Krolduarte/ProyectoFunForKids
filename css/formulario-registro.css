@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: "Alegreya Sans", sans-serif;
+  
 }
 
 /* ******************************************************************
@@ -28,6 +29,7 @@ body {
 .container {
   width: 100vw;
   height: 87vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,9 +37,12 @@ body {
 
 /* abarca area especifica donde esta el titulo y el formulario */
 .formSection {
+   
   width: 500px;
+  height:100vh;
   min-width: 400px;
   padding: 5px 15px;
+  min-height: 100vh;
 }
 
 #formulario {
@@ -47,23 +52,24 @@ body {
   justify-content: space-around;
   width: 100%;
   height: 436px;
+ 
 }
 
 /* ******************************************************************
                                 TITULO
 ****************************************************************** */
 
-.tituloObtenga p:first-of-type {
+.tituloPrincipal p:first-of-type {
   font-weight: 700;
   font-size: 36px;
-  line-height: 10px;
+  line-height: 20px;
   color: #254441;
 }
-.tituloObtenga > p {
+.tituloPrincipal > p {
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 1px;
   color: #254441;
 }
 
@@ -73,13 +79,12 @@ body {
 /* configuraciones generales */
 input {
   border-radius: 2.5px;
-  height: 32.73px;
+  height: 27px;
 }
 
 label {
   font-size: 14px;
 }
-
 
 /* abarca una caja con label e input para organizarlo en direccion columna o fila */
 .box {
@@ -104,7 +109,6 @@ label {
   justify-content: space-between;
 }
 
-
 /* ******************************************************************
                                BOTONES
 ****************************************************************** */
@@ -117,6 +121,7 @@ label {
 
 #btnRegister,
 #btnCancel {
+  font-size: 12px;
   height: 33px;
   width: 50%;
   border-radius: 5px;
@@ -134,4 +139,95 @@ label {
   height: 60px;
 }
 
+/* ESTILOS DE SEGUNDO CUESTIONARIO */
 
+/* ******************************************************************
+                              FOTO BEBÉ
+****************************************************************** */
+.fotoBebe {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  border-radius: 23px;
+  background-image: url(../img/formulario-registro/user.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  background-color: #4B413A;
+  margin-bottom: 8px;
+}
+
+.fotoBebe img {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+/* ******************************************************************
+                           SECTION:  AGREGAR OTRO NIÑO 
+****************************************************************** */
+
+.iconoMas img{
+    width: 54px;
+    height: 49px;
+    cursor: pointer;
+}
+
+.directionRow{
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center ;
+}
+
+/* ******************************************************************
+                           PESTAÑAS
+****************************************************************** */
+
+.groupPestanas{
+   
+    margin-top: 100px;
+    width: 100%;
+    display: flex;
+justify-content: space-between;
+    align-items: center ;
+
+
+}
+
+.pestana{
+   cursor: pointer;
+   color: #BFC4B3;
+   
+
+
+}
+
+
+#formularioBebe {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height:fit-content;
+    gap:15px;
+    margin-bottom: 50px;
+   
+  }
+
+  .tituloPrincipalTutores p:first-of-type {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 35px;
+    color: #254441;
+  }
+
+  .segundoTitulo{
+    font-weight: 700;
+    width: 100%;
+  }
