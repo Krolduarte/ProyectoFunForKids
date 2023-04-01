@@ -1,0 +1,367 @@
+body {
+  margin: 0;
+  font-family: "Alegreya Sans", sans-serif;
+}
+/* *************************************************
+            CABECERA CON TÍTULO Y PESTAÑAS
+************************************************** */
+
+.container {
+  width: 100vw;
+  min-width: 400px;
+}
+header {
+  background: #57bdb9;
+  width: 100vw;
+}
+.headbar {
+  width: 100vw;
+  height: 70px;
+  background: #57bdb9;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.opciones {
+  width: 100vw;
+  height: 50px;
+  background: #57bdb9;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 21px;
+  margin-top: -80px;
+}
+
+.logo img {
+  width: 200px;
+  height: 40.87px;
+}
+
+.fotoBebe {
+  width: 100px;
+  height: 100px;
+  border-radius: 23px;
+  background-image: url(../img/formulario-registro/user.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: -25px;
+  margin-left: 30px;
+  /* background-color: #4b413a; */
+}
+.btnPestanas {
+  background: #eee0e0;
+  cursor: pointer;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width: 145px;
+  /* min-width: 100px; */
+  height: 48px;
+}
+
+.imagenydatos {
+  margin-top: -7px;
+  width: 100vw;
+  height: 100px;
+  background: #57bdb9;
+  display: flex;
+  width: 350px;
+
+  padding-left: 20px;
+  padding-bottom: 26px;
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  height: 200px;
+  line-height: 0px;
+  justify-content: flex-start;
+}
+
+.nombreBebe {
+  font-weight: 700;
+  font-size: 30px;
+  padding: 0px;
+  color: #254441;
+}
+
+.edadBebe {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  margin-top: -3px;
+  color: #254441;
+}
+
+@media (max-width: 1290px) {
+  .opciones {
+    width: 100vw;
+    height: 50px;
+    background: #57bdb9;
+    display: flex;
+    align-items: flex-end;
+    gap: 21px;
+    margin-top: -40px;
+  
+}
+.rango, .rango2, .rango3{
+    font-size: 11px;
+}
+}
+
+@media (max-width: 900px) {
+  .imagenydatos {
+    margin-top: -7px;
+    padding-left: 1px;
+    padding-bottom: 26px;
+  }
+
+  .fotoBebe {
+    width: 80px;
+    height: 80px;
+    margin-top: -13px;
+    margin-left: 18px;
+    /* background-color: #4b413a; */
+  }
+
+  .btnPestanas {
+    width: 145px;
+
+    height: 38px;
+  }
+}
+
+/* *************************************************
+           SECCION PAÑALES
+************************************************** */
+section {
+  height: 336px;
+}
+
+.gris {
+  height: 250px;
+  background: #eee0e0;
+  display: flex;
+}
+
+.colIcono {
+  box-sizing: border-box;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colInfoGrid {
+  box-sizing: border-box;
+  margin-right: 10px;
+  width: 59%;
+  display: grid;
+  grid-template-columns: repeat(3, 30% 30% 30%);
+  grid-template-rows: repeat(5, 1fr);
+  /* justify-items: center; */
+  align-items: center;
+  gap: 10px;
+}
+
+.diaper {
+  background: white;
+}
+
+.icono {
+  width: 150px;
+  height: 150px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono img {
+  width: 70px;
+  height: 70px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.agregar {
+  grid-column: 2/4;
+  grid-row: 2/3;
+}
+
+.titulo1 {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  padding: 5px 10px;
+  font-weight: 700;
+}
+
+.consistencia {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  padding: 5px 10px;
+}
+
+.btnConsistencia {
+  grid-column: 3/4;
+  grid-row: 2/3;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnConsistencia button {
+  height: 30px;
+  width: 98px;
+  background: #ffffff;
+  border-radius: 2.98676px;
+}
+
+.iconoMas img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  grid-column: 3/4;
+  grid-row: 3/4;
+}
+
+.iconoMas {
+  display: flex;
+  align-items: center;
+  grid-column: 2/3;
+  grid-row: 3/4;
+}
+
+.titulo3 {
+  grid-column: 1/2;
+  grid-row: 4/5;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.rango {
+  grid-column: 2/4;
+  grid-row: 4/5;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rango button,
+.rango2 button,
+.rango3 button {
+  height: 29px;
+  width: 91px;
+  background: #ffffff;
+
+  border-radius: 2.79458px;
+}
+
+@media (max-width: 800px) {
+  section {
+    height: 200px;
+  }
+  .colInfoGrid {
+    box-sizing: border-box;
+    margin-right: 10px;
+    width: 75%;
+    display: grid;
+    grid-template-columns: repeat(3, 25% 24% 46%);
+    grid-template-rows: repeat(5, 1fr);
+    /* justify-items: center; */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .colIcono {
+    margin-top: 10px;
+    height: 230px;
+    width: 22%;
+
+    background: #f3b90f;
+    border: px solid #56beb7;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
+  .icono {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+
+  .icono img {
+    width: 50px;
+    height: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .consistencia {
+    font-size: 15px;
+    grid-column: 2/4;
+    display: flex;
+    justify-content: center;
+    grid-row: 1/2;
+    padding: 0px;
+  }
+
+  .agregar {
+    font-size: 12px;
+  }
+
+  .btnConsistencia {
+    grid-column: 2/4;
+    grid-row: 2/3;
+  }
+
+  button {
+    font-size: 10.5px;
+  }
+
+  .titulo1,
+  .titulo2,
+  .titulo3 {
+    font-size: 14px;
+  }
+}
+
+/* *************************************************
+           SECCION ALIMENTACION
+************************************************** */
+.white {
+  height: 250px;
+
+  display: flex;
+}
+
+.apple {
+  background: #f5f5f5;
+}
+
+.titulo2 {
+  grid-column: 1/2;
+  grid-row: 3/4;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.rango2 {
+  grid-column: 2/4;
+  grid-row: 3/4;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rango3 {
+  grid-column: 2/4;
+  grid-row: 2/3;
+  display: flex;
+  justify-content: space-between;
+}
+
+.siesta {
+  background: #ffffff;
+}
