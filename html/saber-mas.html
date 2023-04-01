@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/formulario-registro.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Datos Tutores</title>
+  </head>
+  <body>
+    <!-- navbar -->
+    <div class="navBar">
+      <img id="logo" src="../img/formulario-registro/logo white.png" alt="" />
+    </div>
+    <!-- fin nav bar -->
+
+    <section class="container">
+      <div class="formSection">
+        <!-- AREA DE PESTAÑAS-->
+        <div class="groupPestanas">
+          <div class="pestana">Bebé</div>
+          <div class="pestana">Cuestionario</div>
+          <div class="pestana">Tutores</div>
+          <div class="pestana">Autorizados</div>
+          <div class="pestana">Políticas</div>
+        </div>
+
+        <!-- AREA DEL TITULO -->
+        <div class="tituloPrincipalTutores">
+          <p>Para saber más de Paula</p>
+          <p class="segundoTitulo">Complete el siguiente cuestionario:</p>
+        </div>
+        <!-- FIN AREA DEL TITULO -->
+
+        <!-- FORMULARIO -->
+        <form action="" method="POST" id="formulario">
+
+          <!-- PREGUNTA: MEDICAMENTO INGESTA -->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" id="primeraPregunta">
+                ¿Está tomando algún medicamento?
+              </p>
+            </div>
+            <div class="areaBotones">
+              <button class="botonesSaberMas" id="btnNo">No</button>
+              <button class="botonesSaberMas" id="btnSi">Si</button>
+            </div>
+          </div>
+
+          <!-- PREGUNTA: MEDICAMENTO ALERGIA-->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" id="segundaPregunta">
+                ¿Es alérgico/a a algún medicamento?
+              </p>
+            </div>
+            <div class="areaBotones">
+              <button class="botonesSaberMas" id="btnNo">No</button>
+              <button class="botonesSaberMas" id="btnSi">Si</button>
+            </div>
+          </div>
+
+          <!-- PREGUNTA: ALERGIA ALIMENTARIA-->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" id="terceraPregunta">
+                ¿Tiene alguna alergia alimentaria?
+              </p>
+            </div>
+            <div class="areaBotones">
+              <button class="botonesSaberMas" id="btnNo">No</button>
+              <button class="botonesSaberMas" id="btnSi">Si</button>
+            </div>
+          </div>
+
+<!-- PREGUNTA: INDICAR ALIMENTO, SI LA RESPUESTA ES SI-->
+<div class="groupDouble">
+    <div class="boxIndique">
+      <p class="pregunta" id="cuartaPregunta">
+        Indique a qué alimento:
+      </p>
+    </div>
+    <div class="areaTexto">
+    <input type="text" name="alimento" id="alimento">
+    </div>
+  </div>
+
+<!-- PREGUNTA: TIPO DE ALERGIA, SI LA RESPUESTA ES SI-->
+<div class="groupDouble">
+    <div class="boxIndique">
+      <p class="pregunta" id="cuartaPregunta">
+        Indique el tipo de alergia:
+      </p>
+    </div>
+    <div class="areaTexto">
+        <button class="botonesSaberMas" id="btnIngestion">Ingestión</button>
+        <button class="botonesSaberMas" id="btnOlfato">Olfato</button>
+        <button class="botonesSaberMas" id="btnTacto">Tacto</button>
+      </div>
+  </div>
+
+  <div class="directionRow">
+    <div class="iconoMas">
+      <img
+        src="../img/formulario-registro/49-plus-circle-outline.gif"
+        alt=""
+      />
+    </div>
+    <div>Agregar otro alimento</div>
+  </div>
+
+  <!-- PREGUNTA: DISCAPACIDAD-->
+  <div class="groupDouble discapacidad">
+    <div class="boxPregunta">
+      <p class="pregunta" id="cuartaPregunta">
+        ¿Tiene algun tipo de discapacidad?
+      </p>
+    </div>
+    <div class="areaBotones">
+      <button class="botonesSaberMas" id="btnNo">No</button>
+      <button class="botonesSaberMas" id="btnSi">Si</button>
+    </div>
+  </div>
+
+  <div class="directionRow">
+   
+    <div class="captionInfo">Al hacer click en ‘Siguiente’, consiente a nuestro uso de la información con fines de un mejor cuidado del niño/niña de acuerdo a nuestra Política de Privcidad.</div>
+  </div>
+
+          <!-- BOTON REGISTRARSE Y CANCELAR  -->
+          <div class="botones">
+            <button class="btnCancel">Volver</button>
+            <button class="btnRegister">Siguiente</button>
+          
+          </div>
+        </form>
+        <!-- FIN FORMULARIO -->
+      </div>
+      <!-- FIN FORMSECTION -->
+    </section>
+
+    <!-- FIN CONTAINER -->
+  </body>
+</html>

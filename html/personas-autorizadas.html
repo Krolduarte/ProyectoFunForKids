@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
       rel="stylesheet"
     />
-    <title>Matricula</title>
+    <title>Autorizaciones</title>
   </head>
   <body>
     <!-- navbar -->
@@ -33,75 +33,53 @@
     
 
         <!-- AREA DEL TITULO -->
-        <div class="tituloPrincipal">
-          <p>Matrícula de niño/niña:</p>
-          <p>Ingrese la información del niño/niña:</p>
+        <div class="tituloPrincipalTutores">
+          <p>Datos de las personas autorizadas para recoger el niño/niña:</p>
+          <p class="segundoTitulo" >Persona Autorizada a parte de los tutores:</p>
         </div>
         <!-- FIN AREA DEL TITULO -->
 
-        <!-- foto de niño/niña -->
-        <div class="fotoBebe">
-          <img src="../img/formulario-registro/61-camera-outline.gif" alt="" />
-        </div>
 
         <!-- FORMULARIO -->
         <form action="" method="POST" id="formularioBebe">
           <!-- NOMBRE Y APELLIDO -->
           <div class="groupDouble">
             <div class="box">
-              <label for="nombre" class="form_label">Nombre</label>
+              <label for="personaAutorizada1" class="form_label">Nombre</label>
               <input
                 type="text"
-                name="nombre"
-                id="nombre"
+                name="personaAutorizada1"
+                id="personaAutorizada1"
                 class="form_input"
                 placeholder=" "
                 required
               />
             </div>
             <div class="box">
-              <label for="apellido1">Primer Apellido</label>
-              <input type="text" name="apellido1" id="apellido1" required />
+              <label for="apellidosPersonaAutorizada">Apellidos</label>
+              <input type="text" name="apellidosPersonaAutorizada" id="apellidosPersonaAutorizada" required />
             </div>
           </div>
 
-          <!-- SEGUNDO APELLIDO Y GENERO -->
+          <!-- RELACIÓN CON EL NIÑO Y DNI -->
           <div class="groupDouble">
             <div class="box">
-              <label for="segundoApellido" class="form_label"
-                >Segundo Apellido</label
+              <label for="relacion" class="form_label"
+                >Relación con el niño/la niña</label
               >
               <input
                 type="text"
-                name="segundoApellido"
-                id="segundoApellido"
+                name="relacion"
+                id="relacion"
                 class="form_input"
                 placeholder=" "
                 required
               />
             </div>
             <div class="box">
-              <label for="genero">Género</label>
-              <input type="text" name="genero" id="genero" required />
-            </div>
-          </div>
-
-          <!-- FECHA DE NACIMIENTO -->
-          <div class="groupDouble">
-            <div class="box">
-              <label for="fecha">Fecha de nacimiento</label>
-              <input
-                type="date"
-                name="fecha"
-                id="fecha"
-                required
-                min="1918-01-01"
-              />
-            </div>
-            <div class="box">
-              <label for="lugar">Lugar de Nacimiento</label>
-              <input type="text" name="lugar" id="lugar" required />
-            </div>
+                <label for="dni">DNI/ NIE</label>
+                <input type="text" name="dni" id="dni" required />
+              </div>
           </div>
 
           <div class="directionRow">
@@ -111,9 +89,10 @@
                 alt=""
               />
             </div>
-            <div>Agregar otro niño/niña</div>
+            <div>Autorizar a otra persona</div>
           </div>
-
+            
+         
           <!-- BOTON REGISTRARSE Y CANCELAR  -->
           <div class="botones">
             <button class="btnCancel">Cancelar</button>

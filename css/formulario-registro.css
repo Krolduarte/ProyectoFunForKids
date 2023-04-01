@@ -1,7 +1,6 @@
 body {
   margin: 0;
   font-family: "Alegreya Sans", sans-serif;
-  
 }
 
 /* ******************************************************************
@@ -27,21 +26,33 @@ body {
 ****************************************************************** */
 /* abarca toda la pantalla a lo ancho y alto para centrar el formulario */
 .container {
+
   width: 100vw;
   height: 87vh;
-
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
+  min-height: 760px;
 }
 
 /* abarca area especifica donde esta el titulo y el formulario */
 .formSection {
   
   width: 500px;
-  height:fit-content;
+  height: fit-content;
   min-width: 400px;
   padding: 5px 15px;
+  /* background-color: red; */
+  /* min-height: 100vh; */
+}
+
+.formSectionRegistro {
+  margin-top: 125px;
+  width: 500px;
+  height: fit-content;
+  min-width: 400px;
+  padding: 5px 15px;
+  /* background-color: red; */
   /* min-height: 100vh; */
 }
 
@@ -52,8 +63,7 @@ body {
   justify-content: space-around;
   width: 100%;
   /* height: 436px; */
-  height:fit-content;
- 
+  height: fit-content;
 }
 
 /* ******************************************************************
@@ -120,19 +130,19 @@ label {
   gap: 24px;
 }
 
-#btnRegister,
-#btnCancel {
+.btnRegister,
+.btnCancel {
   font-size: 12px;
   height: 33px;
   width: 50%;
   border-radius: 5px;
 }
 
-#btnCancel {
+.btnCancel {
   background: #e789ae;
 }
 
-#btnRegister {
+.btnRegister {
   background: #56beb7;
 }
 
@@ -155,7 +165,7 @@ label {
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;
-  background-color: #4B413A;
+  background-color: #4b413a;
   margin-bottom: 8px;
 }
 
@@ -172,63 +182,130 @@ label {
                            SECTION:  AGREGAR OTRO NIÑO 
 ****************************************************************** */
 
-.iconoMas img{
-    width: 54px;
-    height: 49px;
-    cursor: pointer;
+.iconoMas img {
+  width: 54px;
+  height: 49px;
+  cursor: pointer;
 }
 
-.directionRow{
-    width: 100%;
-    display: flex;
-    justify-content: left;
-    align-items: center ;
+.directionRow {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 /* ******************************************************************
                            PESTAÑAS
 ****************************************************************** */
 
-.groupPestanas{
-   
-    margin-top: 100px;
-    width: 100%;
-    display: flex;
-justify-content: space-between;
-    align-items: center ;
-
-
+.groupPestanas {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.pestana{
-   cursor: pointer;
-   color: #BFC4B3;
-   
-
-
+.pestana {
+  cursor: pointer;
+  color: #bfc4b3;
 }
-
 
 #formularioBebe {
-   
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height:fit-content;
-    gap:15px;
-    margin-bottom: 50px;
-   
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  gap: 15px;
+  margin-bottom: 50px;
+}
 
-  .tituloPrincipalTutores p:first-of-type {
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 35px;
-    color: #254441;
-  }
+.tituloPrincipalTutores p:first-of-type {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 35px;
+  color: #254441;
+}
 
-  .segundoTitulo{
-    font-weight: 700;
-    width: 100%;
-  }
+.segundoTitulo {
+  font-weight: 700;
+  width: 100%;
+}
+
+
+
+/* ******************************************************************
+                           PARA SABER MÁS DE BEBÉ
+****************************************************************** */
+
+.boxPregunta {
+  width: 60%;
+  display: flex;
+}
+
+
+.areaTexto{
+ width: 65%;
+  display: flex;
+    justify-content: space-between;
+  align-items: center;
+}
+
+.areaTexto input{
+  width: 100%;
+
+}
+
+.boxIndique {
+  width: 35%;
+  display: flex;
+  
+}
+
+.discapacidad{
+  margin-bottom: 50px;
+}
+
+/* ******************************************************************
+                           PARA SABER MÁS DE BEBÉ
+****************************************************************** */
+.areaBotones {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.botonesSaberMas {
+  height: 33px;
+  width: 91px;
+  cursor: pointer;
+}
+
+#btnNo {
+  background: #57bdb9;
+  box-shadow: 0px 0.818182px 3.27273px rgba(0, 0, 0, 0.02),
+    0px 0.818182px 0.818182px rgba(0, 0, 0, 0.06);
+  border-radius: 3.27273px;
+}
+
+#btnSi {
+  background: #f5f5f5;
+  box-shadow: 0px 0.818182px 3.27273px rgba(0, 0, 0, 0.02),
+    0px 0.818182px 0.818182px rgba(0, 0, 0, 0.06);
+  border-radius: 3.27273px;
+}
+
+#btnIngestion, #btnOlfato, #btnTacto{
+    background: #f5f5f5;
+  box-shadow: 0px 0.818182px 3.27273px rgba(0, 0, 0, 0.02),
+    0px 0.818182px 0.818182px rgba(0, 0, 0, 0.06);
+  border-radius: 3.27273px;
+  width: 32%;
+}
+
+.captionInfo{
+  font-size: 12px;
+  color: #484946;
+}
