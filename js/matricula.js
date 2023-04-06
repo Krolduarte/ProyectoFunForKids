@@ -111,6 +111,11 @@ function permitirSiguiente(e) {
     console.log(fechaNacimiento.value);
     console.log(lugarNacimiento.value);
     primeraParteValida = true;
+
+    let nombreEnFormulario = document.querySelector("#nombreBebeFormulario");
+
+    nombreEnFormulario.innerHTML = `Para saber más de ${nombreBebe.value}`;
+
     document.querySelector(".uno").style.display = "none";
     document.querySelector(".containerDos").style.display = "flex";
     document
@@ -683,8 +688,6 @@ function enviarMatricula() {
     terceraParteValida &&
     cuartaParteValida
   ) {
-
-
     //Convertir estos datos en objeto json para enviar a la Api
     console.log(nombreBebe.value);
     console.log(apellido1Bebe.value);
