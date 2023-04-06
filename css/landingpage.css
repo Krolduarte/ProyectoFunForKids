@@ -33,6 +33,7 @@ body {
 .icon {
   width: 32px;
   height: 32px;
+  cursor: pointer;
 }
 
 .icontext {
@@ -40,6 +41,10 @@ body {
   gap: 40px;
   padding-right: 35px;
 }
+
+div.avatarInfo{
+ cursor: pointer;
+ }
 
 @media (max-width: 800px) {
   .logo {
@@ -71,6 +76,8 @@ body {
     width: 20px;
     height: 20px;
   }
+
+ 
 }
 
 /* *************************************************

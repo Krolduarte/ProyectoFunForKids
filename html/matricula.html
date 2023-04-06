@@ -16,44 +16,48 @@
   <body>
     <!-- navbar -->
     <div class="navBar">
-      <img id="logo" src="../img/formulario-registro/logo white.png" alt="" />
+      <img id="logo" src="../img/formulario-registro/logo-white.png" alt="" />
     </div>
     <!-- fin nav bar -->
-
-    <section class="container">
-      <div class="formSection">
-        <!-- AREA DE PESTAÑAS-->
-<div class="groupPestanas">
-    <div class="pestana">Bebé</div>
+    <div class="pestanasBar">
+      <div class="groupPestanas">
+        <div class="pestana">Bebé</div>
         <div class="pestana">Cuestionario</div>
         <div class="pestana">Tutores</div>
         <div class="pestana">Autorizados</div>
-        <div class="pestana">Políticas</div>
-</div>
-    
+       
+      </div>
+    </div>
+    <form action="" method="POST" id="formularioBebe" name="formularioBebe">
+      <section class="container uno">
+        <div class="formSection">
+          <!-- AREA DE PESTAÑAS-->
 
-        <!-- AREA DEL TITULO -->
-        <div class="tituloPrincipal">
-          <p>Matrícula de niño/niña:</p>
-          <p>Ingrese la información del niño/niña:</p>
-        </div>
-        <!-- FIN AREA DEL TITULO -->
+          <!-- AREA DEL TITULO -->
+          <div class="tituloPrincipal">
+            <p>Matrícula de niño/niña:</p>
+            <p>Ingrese la información del niño/niña:</p>
+          </div>
+          <!-- FIN AREA DEL TITULO -->
 
-        <!-- foto de niño/niña -->
-        <div class="fotoBebe">
-          <img src="../img/formulario-registro/61-camera-outline.gif" alt="" />
-        </div>
+          <!-- foto de niño/niña -->
+          <div class="fotoBebe">
+            <img
+              src="../img/formulario-registro/61-camera-outline.gif"
+              alt=""
+            />
+          </div>
 
-        <!-- FORMULARIO -->
-        <form action="" method="POST" id="formularioBebe">
+          <!-- FORMULARIO -->
+
           <!-- NOMBRE Y APELLIDO -->
           <div class="groupDouble">
             <div class="box">
-              <label for="nombre" class="form_label">Nombre</label>
+              <label for="nombreBebe" class="form_label">Nombre</label>
               <input
                 type="text"
-                name="nombre"
-                id="nombre"
+                name="nombreBebe"
+                id="nombreBebe"
                 class="form_input"
                 placeholder=" "
                 required
@@ -61,46 +65,56 @@
             </div>
             <div class="box">
               <label for="apellido1">Primer Apellido</label>
-              <input type="text" name="apellido1" id="apellido1" required />
+              <input
+                type="text"
+                name="apellido1Bebe"
+                id="apellido1Bebe"
+                required
+              />
             </div>
           </div>
 
           <!-- SEGUNDO APELLIDO Y GENERO -->
           <div class="groupDouble">
             <div class="box">
-              <label for="segundoApellido" class="form_label"
+              <label for="apellido2Bebe" class="form_label"
                 >Segundo Apellido</label
               >
               <input
                 type="text"
-                name="segundoApellido"
-                id="segundoApellido"
-                class="form_input"
+                name="apellido2Bebe"
+                id="apellido2Bebe"
                 placeholder=" "
                 required
               />
             </div>
-            <div class="box">
-              <label for="genero">Género</label>
-              <input type="text" name="genero" id="genero" required />
+            <div class="directionRow">
+              <input type="radio" id="hombre" name="genero" value="hombre" />
+              <label for="hombre">Hombre</label>
+              <input type="radio" id="mujer" name="genero" value="mujer" />
+              <label for="mujer">Mujer</label>
             </div>
           </div>
 
           <!-- FECHA DE NACIMIENTO -->
           <div class="groupDouble">
             <div class="box">
-              <label for="fecha">Fecha de nacimiento</label>
+              <label for="fechaNacimiento">Fecha de Nacimiento</label>
               <input
                 type="date"
-                name="fecha"
-                id="fecha"
+                name="fechaNacimiento"
+                id="fechaNacimiento"
                 required
-                min="1918-01-01"
               />
             </div>
             <div class="box">
               <label for="lugar">Lugar de Nacimiento</label>
-              <input type="text" name="lugar" id="lugar" required />
+              <input
+                type="text"
+                name="lugarNacimiento"
+                id="lugarNacimiento"
+                required
+              />
             </div>
           </div>
 
@@ -114,17 +128,532 @@
             <div>Agregar otro niño/niña</div>
           </div>
 
+          <div class="infoBebe"></div>
+
           <!-- BOTON REGISTRARSE Y CANCELAR  -->
           <div class="botones">
-            <button class="btnCancel">Cancelar</button>
-            <input type="submit" value="Registrarse" class="btnRegister" />
+            <div class="btnCancel" id="cancelarMatricula">Cancelar</div>
+            <div id="siguiente" class="btnRegister">Siguiente</div>
           </div>
-        </form>
-        <!-- FIN FORMULARIO -->
+        </div>
+        <!-- FIN FORMSECTION -->
+      </section>
+
+      <!-- ******************************************************************
+                              CONTAINER SABER MAS
+      ****************************************************************** -->
+      <section class="containerDos dos">
+        <div class="formSection">
+          <!-- AREA DEL TITULO -->
+          <div class="tituloPrincipalTutores">
+            <p>Para saber más de Paula</p>
+            <p class="segundoTitulo">Complete el siguiente cuestionario:</p>
+          </div>
+          <!-- FIN AREA DEL TITULO -->
+
+          <!-- FORMULARIO -->
+
+          <!-- PREGUNTA: MEDICAMENTO INGESTA -->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" id="primeraPregunta">
+                ¿Está tomando algún medicamento?
+              </p>
+            </div>
+            <div class="areaBotones medicamentosIngesta">
+              <input
+                type="radio"
+                id="medicamentoNo"
+                name="medicamento"
+                value="false"
+              />
+              <label for="medicamentoNo">No</label>
+              <input
+                type="radio"
+                id="medicamentoSi"
+                name="medicamento"
+                value="true"
+              />
+              <label for="medicamentoSi">Si</label>
+            </div>
+          </div>
+
+               <!-- PREGUNTA: INDICAR MEDICAMENTO, SI LA RESPUESTA ES SI-->
+               <div class="groupDouble hidden2 chosen2">
+                <div class="boxIndique">
+                  <p class="pregunta" >
+                    Indique qué medicamento toma:
+                  </p>
+                </div>
+                <div class="areaTexto">
+                  <input type="text" name="medicamentoTomado" id="medicamentoTomado" />
+                </div>
+              </div>
+
+
+          <!-- PREGUNTA: MEDICAMENTO ALERGIA-->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" >
+                ¿Es alérgico/a a algún medicamento?
+              </p>
+            </div>
+
+            <div class="areaBotones">
+              <input
+                type="radio"
+                id="alergiaMedNo"
+                name="alergiaMed"
+                value="false"
+               
+              />
+              <label for="alergiaMedNo">No</label>
+              <input
+                type="radio"
+                id="alergiaMedSi"
+                name="alergiaMed"
+                value="true"
+              />
+              <label for="alergiaMedSi">Si</label>
+            </div>
+          </div>
+
+           <!-- PREGUNTA: INDICAR MEDICAMENTO, SI LA RESPUESTA ES SI-->
+           <div class="groupDouble hidden3 chosen3">
+            <div class="boxIndique">
+              <p class="pregunta" >
+                Indique qué medicamento le causa alergia:
+              </p>
+            </div>
+            <div class="areaTexto">
+              <input type="text" name="medicamentoAlergia" id="medicamentoAlergia" />
+            </div>
+          </div>
+
+
+          <!-- PREGUNTA: ALERGIA ALIMENTARIA-->
+          <div class="groupDouble">
+            <div class="boxPregunta">
+              <p class="pregunta" >
+                ¿Tiene alguna alergia alimentaria?
+              </p>
+            </div>
+            <div class="areaBotones">
+              <input
+                type="radio"
+                id="alergiaAlimentoNo"
+                name="alergiaAlimento"
+                value="false"
+               
+              />
+              <label for="alergiaAlimentoNo">No</label>
+              <input
+                type="radio"
+                id="alergiaAlimentoSi"
+                name="alergiaAlimento"
+                value="true"
+              />
+              <label for="alergiaAlimentoSi">Si</label>
+            </div>
+          </div>
+
+          <!-- PREGUNTA: INDICAR ALIMENTO, SI LA RESPUESTA ES SI-->
+          <div class="groupDouble hidden chosen">
+            <div class="boxIndique">
+              <p class="pregunta" >
+                Indique a qué alimento:
+              </p>
+            </div>
+            <div class="areaTexto">
+              <input type="text" name="alimento" id="alimento" />
+            </div>
+          </div>
+
+          <!-- PREGUNTA: TIPO DE ALERGIA, SI LA RESPUESTA ES SI-->
+          <div class="groupDouble hidden chosen">
+            <div class="boxIndique">
+              <p class="pregunta" >
+                Indique el tipo de alergia:
+              </p>
+            </div>
+
+            <div class="areaAlergias hidden chosen">
+              <input
+              type="checkbox"
+              id="ingestion"
+              value="ingestion"
+              class="botonesSaberMas tipoAlergia"
+            />
+            <label for="ingestion">Ingestión </label>
+
+            <input
+            type="checkbox"
+            id="olfato"
+            value="olfato"
+            class="botonesSaberMas tipoAlergia"
+          />
+          <label for="olfato">Olfato </label>
+
+          <input
+          type="checkbox"
+          id="tacto"
+          value="tacto"
+          class="botonesSaberMas tipoAlergia"
+        />
+        <label for="tacto">Tacto </label>
+
+            </div>
+          </div>
+
+          <div class="directionRow">
+            <div class="iconoMas">
+              <img
+                src="../img/formulario-registro/49-plus-circle-outline.gif"
+                alt=""
+              />
+            </div>
+            <div>Agregar otro alimento</div>
+          </div>
+
+          <!-- PREGUNTA: DISCAPACIDAD-->
+          <div class="groupDouble discapacidad">
+            <div class="boxPregunta">
+              <p class="pregunta" >
+                ¿Tiene algun tipo de discapacidad?
+              </p>
+            </div>
+            <div class="areaBotones">
+              <input
+                type="radio"
+                id="discapacidadNo"
+                name="discapacidad"
+                value="false"
+              />
+              <label for="discapacidadNo">No</label>
+              <input
+                type="radio"
+                id="discapacidadSi"
+                name="discapacidad"
+                value="true"
+              />
+              <label for="discapacidadSi">Si</label>
+            </div>
+          </div>
+
+           <!-- PREGUNTA: INDICAR MAS INFO DE LA DISCAPACIDAD, SI LA RESPUESTA ES SI-->
+           <div class="groupDouble hidden4 chosen4">
+            <div class="boxIndique">
+              <p class="pregunta" >
+                Indicar más información acerca de la discapacidad:
+              </p>
+            </div>
+            <div class="areaTexto">
+              <input type="text" name="discapacidadInfo" id="discapacidadInfo" />
+            </div>
+          </div>
+
+
+          <div class="directionRow">
+            <div class="captionInfo">
+              Al hacer click en 'Siguiente', consiente a nuestro uso de la
+              información con fines de un mejor cuidado del niño/niña de acuerdo
+              a nuestra Política de Privacidad.
+            </div>
+          </div>
+
+          <!-- BOTON REGISTRARSE Y CANCELAR  -->
+          <div class="botones">
+            <div class="btnCancel" id="btnVolver">Volver</div>
+            <div class="btnRegister" id="siguiente2">Siguiente</div>
+          </div>
+
+          <!-- FIN FORMULARIO -->
+        </div>
+        <!-- FIN FORMSECTION -->
+      </section>
+
+
+<!-- ******************************************************************
+                               TUTORES
+****************************************************************** -->
+
+
+      <section class="containerTres tres">
+        <div class="formSection">
+
+          <!-- AREA DEL TITULO -->
+          <div class="tituloPrincipalTutores">
+            <p>Datos de los representantes o guardadores legales del niño/niña:</p>
+            <p class="segundoTitulo" >Datos del primer tutor o tutora legal:</p>
+          </div>
+          <!-- FIN AREA DEL TITULO -->
+  
+  
+          <!-- FORMULARIO -->
+          <form action="" method="POST" id="formularioBebe">
+            <!-- NOMBRE Y APELLIDO -->
+            <div class="groupDouble">
+              <div class="box">
+                <label for="nombreTutor1" class="form_label">Nombre del tutor Legal</label>
+                <input
+                  type="text"
+                  name="nombreTutor1"
+                  id="nombreTutor1"
+                  placeholder=" "
+                  required
+                />
+              </div>
+              <div class="box">
+                <label for="apellidosTutor1">Apellidos  del tutor Legal</label>
+                <input type="text" name="apellidosTutor1" id="apellidosTutor1" required />
+              </div>
+            </div>
+  
+            <!-- RELACIÓN CON EL NIÑO Y LUGAR DE NACIMIENTO -->
+            <div class="groupDouble">
+              <div class="box">
+                <label for="relacion1" class="form_label"
+                  >Relación con el niño/la niña</label
+                >
+                <input
+                  type="text"
+                  name="relacion1"
+                  id="relacion1"
+              
+                  placeholder=" "
+                  required
+                />
+              </div>
+              <div class="box">
+                <label for="lugarNacimientoTutor1">Lugar de Nacimiento</label>
+                <input type="text" name="lugarNacimientoTutor1" id="lugarNacimientoTutor1" required />
+              </div>
+            </div>
+  
+            <!-- FECHA DE NACIMIENTO Y DNI-->
+            <div class="groupDouble">
+              <div class="box">
+                <label for="fechaNacimientoTutor1">Fecha de nacimiento</label>
+                <input
+                  type="date"
+                  name="fechaNacimientoTutor1"
+                  id="fechaNacimientoTutor1"
+                  required
+                  min="1918-01-01"
+                />
+              </div>
+              <div class="box">
+                <label for="dni1">DNI/ NIE</label>
+                <input type="text" name="dni1" id="dni1" required />
+              </div>
+            </div>
+  
+             <!-- NUMERO DEL MOVIL Y DIRECCION-->
+             <div class="groupDouble">
+              <div class="box">
+                <label for="telefono1">Número de teléfono Móvil</label>
+                <input
+                 type="tel"
+                  name="telefono1"
+                  id="telefono1"
+                  required
+                 
+                />
+              </div>
+              <div class="box">
+                <label for="direccion1">Dirección del domicilio</label>
+                <input type="text" name="direccion1" id="direccion1" required />
+              </div>
+            </div>
+  
+    <!-- FORMULARIO PARA SEGUNDO TUTOR-->
+    <div class="directionRow">
+      <div class="iconoMas" id="agregarTutor">
+        <img
+          src="../img/formulario-registro/49-plus-circle-outline.gif"
+          alt=""
+        />
       </div>
-      <!-- FIN FORMSECTION -->
-    </section>
+      <div>Agregar segundo tutor legal</div>
+    </div>
+     
+    <p class="segundoTitulo hidden5">Datos del segundo tutor o tutora legal:</p>
+  
+      <!-- NOMBRE Y APELLIDO -->
+      <div class="groupDouble  hidden5">
+        <div class="box">
+          <label for="nombreTutor2" class="form_label">Nombre del tutor Legal</label>
+          <input
+            type="text"
+            name="nombreTutor2"
+            id="nombreTutor2"
+            placeholder=" "
+            required
+          />
+        </div>
+        <div class="box  hidden5">
+          <label for="apellidosTutor2">Apellidos  del tutor Legal</label>
+          <input type="text" name="apellidosTutor2" id="apellidosTutor2" required />
+        </div>
+      </div>
+  
+      <!-- RELACIÓN CON EL NIÑO Y LUGAR DE NACIMIENTO -->
+      <div class="groupDouble  hidden5">
+        <div class="box">
+          <label for="relacion" class="form_label"
+            >Relación con el niño/la niña</label
+          >
+          <input
+            type="text"
+            name="relacion2"
+            id="relacion2"
+            placeholder=" "
+            required
+          />
+        </div>
+        <div class="box  hidden5">
+          <label for="lugarNacimiento">Lugar de Nacimiento</label>
+          <input type="text" name="lugarNacimiento" id="lugarNacimiento" required />
+        </div>
+      </div>
+  
+      <!-- FECHA DE NACIMIENTO Y DNI-->
+      <div class="groupDouble  hidden5">
+        <div class="box">
+          <label for="fechaNacimientoTutor2">Fecha de nacimiento</label>
+          <input
+            type="date"
+            name="fechaNacimientoTutor2"
+            id="fechaNacimientoTutor2"
+            required
+            min="1918-01-01"
+          />
+        </div>
+        <div class="box  hidden5">
+          <label for="dni2">DNI/ NIE</label>
+          <input type="text" name="dni2" id="dni2" required />
+        </div>
+      </div>
+  
+       <!-- NUMERO DEL MOVIL Y DIRECCION-->
+       <div class="groupDouble  hidden5">
+        <div class="box">
+          <label for="telefono2">Número de teléfono Móvil</label>
+          <input
+           type="tel"
+            name="telefono2"
+            id="telefono2"
+            required
+           
+          />
+        </div>
+        <div class="box  hidden5">
+          <label for="direccion2">Dirección del domicilio</label>
+          <input type="text" name="direccion2" id="direccion2" required />
+        </div>
+      </div>
+  
+      <div class="infoTutor"></div>
+            <!-- BOTON REGISTRARSE Y CANCELAR  -->
+            <div class="botones">
+              <div class="btnCancel" id="btnVolver2">Volver</div>
+              <div class="btnRegister" id="siguiente3">Siguiente</div>
+            </div>
+          </form>
+          <!-- FIN FORMULARIO -->
+        </div>
+        <!-- FIN FORMSECTION -->
+      </section>
+  <!-- FINAL TUTORES -->
+
+      
+<!-- ******************************************************************
+                    AUTORIZADOS
+****************************************************************** -->
+<section class="containerCuatro cuatro">
+  <div class="formSection">
+    <!-- AREA DE PESTAÑAS-->
+
+
+
+    <!-- AREA DEL TITULO -->
+    <div class="tituloPrincipalTutores">
+      <p>Datos de las personas autorizadas para recoger el niño/niña:</p>
+      <p class="segundoTitulo" >Persona Autorizada a parte de los tutores:</p>
+    </div>
+    <!-- FIN AREA DEL TITULO -->
+
+
+    <!-- FORMULARIO -->
+  
+      <!-- NOMBRE Y APELLIDO -->
+      <div class="groupDouble">
+        <div class="box">
+          <label for="nombreAutorizado1" class="form_label">Nombre</label>
+          <input
+            type="text"
+            name="nombreAutorizado1"
+            id="nombreAutorizado1"
+          
+            placeholder=" "
+            required
+          />
+        </div>
+        <div class="box">
+          <label for="apellidosAutorizado1">Apellidos</label>
+          <input type="text" name="apellidosAutorizado1" id="apellidosAutorizado1" required />
+        </div>
+      </div>
+
+      <!-- RELACIÓN CON EL NIÑO Y DNI -->
+      <div class="groupDouble">
+        <div class="box">
+          <label for="relacionAutorizado1" class="form_label"
+            >Relación con el niño/la niña</label
+          >
+          <input
+            type="text"
+            name="relacionAutorizado1"
+            id="relacionAutorizado1"
+         
+            placeholder=" "
+            required
+          />
+        </div>
+        <div class="box">
+            <label for="dniAutorizado1">DNI/ NIE</label>
+            <input type="text" name="dniAutorizado1" id="dniAutorizado1" required />
+          </div>
+      </div>
+
+      <div class="directionRow">
+        <div class="iconoMas">
+          <img
+            src="../img/formulario-registro/49-plus-circle-outline.gif"
+            alt=""
+          />
+        </div>
+        <div>Autorizar a otra persona</div>
+      </div>
+        
+     
+      <!-- BOTON REGISTRARSE Y CANCELAR  -->
+      <div class="botones">
+        <button class="btnCancel" id="btnVolver3">Volver</button>
+        <input type="submit" value="Enviar matrícula" class="btnRegister" id="enviarform" />
+      </div>
+  
+    <!-- FIN FORMULARIO -->
+  </div>
+  <!-- FIN FORMSECTION -->
+</section>
+
+
+    
+    </form>
+    <!-- FIN FORMULARIO -->
 
     <!-- FIN CONTAINER -->
   </body>
+  <script src="../js/matricula.js" type="module"></script>
 </html>

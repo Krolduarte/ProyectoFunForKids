@@ -16,7 +16,7 @@
   <body>
     <!-- navbar -->
     <div class="navBar">
-      <img id="logo" src="../img/formulario-registro/logo white.png" alt="" />
+      <img id="logo" src="../img/formulario-registro/logo-white.png" alt="" />
     </div>
     <!-- fin nav bar -->
 
@@ -40,7 +40,7 @@
                 name="nombre"
                 id="nombre"
                 class="form_input"
-                placeholder=" "
+               
                 required
               />
             </div>
@@ -59,7 +59,7 @@
                 name="fecha"
                 id="fecha"
                 required
-                min="1918-01-01"
+                min="1922-01-01"
               />
             </div>
             <div class="box">
@@ -121,7 +121,7 @@
 
           <!-- BOTON REGISTRARSE Y CANCELAR  -->
           <div class="botones">
-            <button class="btnCancel">Cancelar</button>
+            <button class="btnCancel" id="volverLogin">Cancelar</button>
             <input type="submit" value="Registrarse" class="btnRegister" />
           </div>
         </form>
@@ -132,4 +132,6 @@
 
     <!-- FIN CONTAINER -->
   </body>
+
+  <script src="../js/registro.js" type="module"></script>
 </html>
