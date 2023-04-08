@@ -1,4 +1,7 @@
 import {
+  addRedBorderIfIncomplete,
+  addRedBorderIfEmpty,
+  checkIfInputChosen,
   removeErrorMsg,
   checkDate,
   validateText,
@@ -24,56 +27,29 @@ let genero = "";
 let validBirthday = false;
 let validGender = false;
 
+//Poner primera seccion de las pestañas en verde
 document
   .querySelector(".groupPestanas")
   .children[0].classList.add("green-color");
 
 // ###############################################
-//        NOMBRE
+//        NOMBRE, APELLIDOS Y LUGAR NACIMIENTO: agregando eventos
 // ###############################################
-nombreBebe.addEventListener("keydown", validateText);
-nombreBebe.addEventListener("focus", removeErrorMsg);
+let camposBebe = [nombreBebe, apellido1Bebe, apellido2Bebe, lugarNacimiento,fechaNacimiento];
+camposBebe.forEach((campo) => {
+  campo.addEventListener("keydown", validateText);
+  campo.addEventListener("blur", addRedBorderIfIncomplete);
+  campo.addEventListener("focus", removeErrorMsg);
+});
 
-// ###############################################
-//       APELLIDO 1
-// ###############################################
 
-apellido1Bebe.addEventListener("keydown", validateText);
-apellido1Bebe.addEventListener("focus", removeErrorMsg);
-// ###############################################
-//       APELLIDO2
-// ###############################################
 
-apellido2Bebe.addEventListener("keydown", validateText);
-apellido2Bebe.addEventListener("focus", removeErrorMsg);
-// ###############################################
-//        LUGAR DE NACIMIENTO
-// ###############################################
-
-lugarNacimiento.addEventListener("keydown", validateText);
-lugarNacimiento.addEventListener("focus", removeErrorMsg);
 // ###############################################
 //        VERIFICAR FECHA
 // ###############################################
 
-fechaNacimiento.addEventListener("blur", revisarFecha);
+fechaNacimiento.addEventListener("change", revisarFecha);
 fechaNacimiento.addEventListener("focus", removeErrorMsg);
-
-// ###############################################
-//        VERIFICAR SI GENERO HA SIDO ESCOGIDO
-// ###############################################
-
-let radioButtons = document.querySelectorAll('input[name="genero"]');
-
-for (let radioButton of radioButtons) {
-  radioButton.addEventListener("change", function (e) {
-    if (this.checked) {
-      genero = this.value;
-      validGender = true;
-    }
-  });
-}
-// let genero = document.querySelector('input[name="genero"]:checked');
 
 function revisarFecha() {
   if (!checkDate(fechaNacimiento, 0)) {
@@ -82,9 +58,28 @@ function revisarFecha() {
     validBirthday = false;
   } else {
     infoBebe.innerHTML = "";
+    fechaNacimiento.classList.remove("border-red");
     validBirthday = true;
   }
 }
+
+// ###############################################
+//        VERIFICAR SI GENERO HA SIDO ESCOGIDO
+// ###############################################
+
+let radioButtonsGeneros = document.querySelectorAll('input[name="genero"]');
+
+for (let radioButton of radioButtonsGeneros) {
+  radioButton.addEventListener("change", function (e) {
+    if (this.checked) {
+      genero = this.value;
+      validGender = true;
+        radioButtonsGeneros[0].nextElementSibling.classList.remove("red"); 
+        radioButtonsGeneros[1].nextElementSibling.classList.remove("red");
+    }
+  });
+}
+
 
 // ###############################################
 //        VERIFICAR  QUE DATOS ESTEN COMPLETOS ANTES DE SIGUIENTE
@@ -95,6 +90,12 @@ document
 
 function permitirSiguiente(e) {
   e.preventDefault();
+
+  checkIfInputChosen(genero, radioButtonsGeneros);
+  camposBebe.forEach((campo) => {
+    addRedBorderIfEmpty(campo)});
+
+
   if (
     validBirthday &&
     validGender &&
@@ -125,7 +126,8 @@ function permitirSiguiente(e) {
       .querySelector(".groupPestanas")
       .children[1].classList.add("green-color");
   } else {
-    alert("Revise que todos los campos esten completos");
+    infoBebe.innerHTML = "<p>Revise que todos los campos esten completos</p>";
+  
     // console.log(validBirthday);
     // console.log(validGender);
     // console.log(nombreBebe.value != "");
@@ -210,14 +212,15 @@ for (let med of meds) {
   med.addEventListener("change", function (e) {
     if (this.checked) {
       isTakingMed = this.value;
+      meds[0].nextElementSibling.classList.remove("red");
+     meds[1].nextElementSibling.classList.remove("red");
+    
     }
   });
 
   //Escoger Label opcion que dice No:
-  document
-    .querySelector("#medicamentoNo")
-    .nextElementSibling.addEventListener("click", function () {
-      document.querySelector("#medicamentoTomado").value = "";
+  meds[0].nextElementSibling.addEventListener("click", function () {
+     medicamentoTomado.value = "";
       medicamentoTomadoValido = true;
 
       let hiddenDivs = document.querySelectorAll(".chosen2");
@@ -227,9 +230,7 @@ for (let med of meds) {
     });
 
   //Escoger Label opcion que dice Si:
-  document
-    .querySelector("#medicamentoSi")
-    .nextElementSibling.addEventListener("click", function () {
+  meds[1].nextElementSibling.addEventListener("click", function () {
       medicamentoTomadoValido = false;
 
       let hiddenDivs = document.querySelectorAll(".hidden2");
@@ -259,14 +260,14 @@ for (let medAlergia of medsAlergia) {
   medAlergia.addEventListener("change", function (e) {
     if (this.checked) {
       isAllergicToMed = this.value;
+      medsAlergia[0].nextElementSibling.classList.remove("red");
+      medsAlergia[1].nextElementSibling.classList.remove("red");
     }
   });
 }
 
 //Escoger Label opcion que dice No:
-document
-  .querySelector("#alergiaMedNo")
-  .nextElementSibling.addEventListener("click", function () {
+medsAlergia[0].nextElementSibling.addEventListener("click", function () {
     document.querySelector("#medicamentoAlergia").value = "";
     medicamentoAlergiaValido = true;
 
@@ -277,9 +278,7 @@ document
   });
 
 //Escoger Label opcion que dice Si:
-document
-  .querySelector("#alergiaMedSi")
-  .nextElementSibling.addEventListener("click", function () {
+medsAlergia[1].nextElementSibling.addEventListener("click", function () {
     medicamentoAlergiaValido = false;
 
     let hiddenDivs = document.querySelectorAll(".hidden3");
@@ -311,6 +310,8 @@ for (let opcion of alergiaAlimentosOpciones) {
   opcion.addEventListener("change", function (e) {
     if (this.checked) {
       hasFoodAllergy = this.value;
+      alergiaAlimentosOpciones[0].nextElementSibling.classList.remove("red");
+      alergiaAlimentosOpciones[1].nextElementSibling.classList.remove("red");
     }
   });
 }
@@ -346,9 +347,8 @@ let tipoAlergiasElegidasValido = false;
 
 //Escoger Label opcion que dice Si:
 
-document
-  .querySelector("#alergiaAlimentoSi")
-  .nextElementSibling.addEventListener("click", function () {
+
+alergiaAlimentosOpciones[1].nextElementSibling.addEventListener("click", function () {
     alimentoAlergiaValido = false;
     tipoAlergiasElegidasValido = false;
 
@@ -359,9 +359,7 @@ document
   });
 
 //Escoger Label opcion que dice No:
-document
-  .querySelector("#alergiaAlimentoNo")
-  .nextElementSibling.addEventListener("click", function () {
+alergiaAlimentosOpciones[0].nextElementSibling.addEventListener("click", function () {
     alimentoAlergiaValido = true;
     tipoAlergiasElegidasValido = true;
     document.querySelector("#alimento").value = "";
@@ -391,20 +389,20 @@ function revisarAlimento() {
 let discapacidadInfoValido = false;
 let hasDisability = "";
 let discapacidadOpciones = document.querySelectorAll(
-  'input[name="alergiaAlimento"]'
+  'input[name="discapacidad"]'
 );
 let discapacidad = document.querySelector("#discapacidadInfo");
 for (let opcion of discapacidadOpciones) {
   opcion.addEventListener("change", function (e) {
     if (this.checked) {
       hasDisability = this.value;
+      discapacidadOpciones[0].nextElementSibling.classList.remove("red");
+      discapacidadOpciones[1].nextElementSibling.classList.remove("red");
     }
   });
 }
 
-document
-  .querySelector("#discapacidadSi")
-  .nextElementSibling.addEventListener("click", function () {
+discapacidadOpciones[1].nextElementSibling.addEventListener("click", function () {
     discapacidadInfoValido = false;
 
     let hiddenDivs = document.querySelectorAll(".hidden4");
@@ -413,9 +411,7 @@ document
     }
   });
 
-document
-  .querySelector("#discapacidadNo")
-  .nextElementSibling.addEventListener("click", function () {
+  discapacidadOpciones[0].nextElementSibling.addEventListener("click", function () {
     document.querySelector("#discapacidadInfo").value = "";
     discapacidadInfoValido = true;
 
@@ -433,9 +429,6 @@ function revisarDiscapacidad() {
     discapacidadInfoValido = false;
   }
 }
-// let medicamentoAutorizado = document.querySelector(
-//   'input[name="medicamento"]:checked'
-// ).value;
 
 // ###############################################
 //   VERIFICAR  QUE DATOS ESTEN COMPLETOS ANTES DE SIGUIENTE
@@ -448,6 +441,12 @@ function checkIfComplete() {
   if (alergias.length > 0) {
     tipoAlergiasElegidasValido = true;
   }
+
+  checkIfInputChosen(isTakingMed, meds);
+   checkIfInputChosen(isAllergicToMed, medsAlergia);
+  checkIfInputChosen(hasFoodAllergy, alergiaAlimentosOpciones);
+   checkIfInputChosen(hasDisability, discapacidadOpciones);
+
 
   if (
     document.querySelector('input[name="medicamento"]:checked') &&
@@ -499,65 +498,71 @@ function checkIfComplete() {
 let validBirthdayTutor1 = false;
 let dniValido1 = false;
 
-// nombre de Tutor1
+
+// Datos del tutor
 let nombreTutor1 = document.querySelector("#nombreTutor1");
-nombreTutor1.addEventListener("keydown", validateText);
-nombreTutor1.addEventListener("focus", removeErrorMsg);
-
-// apellidos de Tutor1
 let apellidosTutor1 = document.querySelector("#apellidosTutor1");
-apellidosTutor1.addEventListener("keydown", validateText);
-apellidosTutor1.addEventListener("focus", removeErrorMsg);
-
-// relacion de Tutor1
 let relacion1 = document.querySelector("#relacion1");
-relacion1.addEventListener("keydown", validateText);
-relacion1.addEventListener("focus", removeErrorMsg);
-
-// lugar de Nacimiento de Tutor1
 let lugarNacimientoTutor1 = document.querySelector("#lugarNacimientoTutor1");
-lugarNacimientoTutor1.addEventListener("keydown", validateText);
-lugarNacimientoTutor1.addEventListener("focus", removeErrorMsg);
-
-//fecha Nacimiento Tutor1
 let fechaNacimientoTutor1 = document.querySelector("#fechaNacimientoTutor1");
-fechaNacimientoTutor1.addEventListener("blur", revisarFechaTutor);
-fechaNacimientoTutor1.addEventListener("focus", removeErrorMsg);
+let dni1 = document.querySelector("#dni1");
+let direccion1 = document.querySelector("#direccion1");
+let telefono1 = document.querySelector("#telefono1");
 
-//INFO TUTOR
-let infoTutor = document.querySelector(".infoTutor");
+//Agregando eventos
 
+let camposTutor = [nombreTutor1, apellidosTutor1, relacion1, lugarNacimientoTutor1,fechaNacimientoTutor1,dni1,direccion1,telefono1 ];
+camposTutor.forEach((campo) => {
+  campo.addEventListener("blur", addRedBorderIfIncomplete);
+  campo.addEventListener("focus", removeErrorMsg);
+  if(campo == telefono1) {
+    campo.addEventListener("keydown", validateNumbers);
+  
+  }else{
+    campo.addEventListener("keydown", validateText);
+    if(campo == dni1) {
+      campo.removeEventListener("keydown", validateText);
+    }
+    if(campo == direccion1) {
+      campo.removeEventListener("keydown", validateText);
+      campo.removeEventListener("keydown", validateText);
+    }
+  }
+});
+
+
+//fecha de nacimiento
+fechaNacimientoTutor1.addEventListener('blur', revisarFechaTutor);
 function revisarFechaTutor() {
-  if (!checkDate(fechaNacimientoTutor1, 18)) {
+  if ((!checkDate(fechaNacimientoTutor1, 18))|| (fechaNacimientoTutor1 == "")) {
     fechaNacimientoTutor1.classList.add("border-red");
-    infoTutor.innerHTML = "Fecha no válida";
+    infoTutor.innerHTML = "<p>Fecha no válida</p>";
     validBirthdayTutor1 = false;
   } else {
     infoTutor.innerHTML = "";
+    fechaNacimientoTutor1.classList.remove("border-red");
     validBirthdayTutor1 = true;
   }
 }
 
 //dnitutor1
-
-let dni1 = document.querySelector("#dni1");
-
 dni1.addEventListener("blur", revisarDniTutor);
 
 function revisarDniTutor() {
   dniValido1 = false;
   if (revisarDni(dni1)) {
     dniValido1 = true;
+    dni1.classList.remove("border-red");
+    infoTutor.innerHTML = "";
   } else {
     dniValido1 = false;
+    dni1.classList.add("border-red");
+    infoTutor.innerHTML = "<p> DNI no válido, revise el DNI ingresado.</p>";
   }
 }
 
-//direccion tutor1
-let direccion1 = document.querySelector("#direccion1");
-//numero movil
-let telefono1 = document.querySelector("#telefono1");
-telefono1.addEventListener("keydown", validateNumbers);
+
+
 
 //agregar tutor
 document.querySelector("#agregarTutor").addEventListener("click", agregarTutor);
@@ -567,6 +572,10 @@ function agregarTutor() {
     div.classList.remove("hidden5");
   }
 }
+
+//INFO TUTOR
+let infoTutor = document.querySelector(".infoTutor");
+
 // ###############################################
 //   VERIFICAR  QUE DATOS ESTEN COMPLETOS ANTES DE SIGUIENTE
 // ###############################################
@@ -575,6 +584,10 @@ document
   .addEventListener("click", checkifTutorComplete);
 
 function checkifTutorComplete() {
+
+  camposTutor.forEach((campo) => {
+    addRedBorderIfEmpty(campo)});
+
   if (
     dniValido1 &&
     validBirthdayTutor1 &&
@@ -606,9 +619,12 @@ function checkifTutorComplete() {
       .children[3].classList.add("green-color");
   } else {
     console.log(" Parte 3 no valida");
-    console.log(dni1.value);
-    console.log(dniValido1);
-    console.log(validBirthdayTutor1);
+    camposTutor.forEach((campo) => {
+      addRedBorderIfEmpty(campo)});
+
+    // console.log(dni1.value);
+    // console.log(dniValido1);
+    // console.log(validBirthdayTutor1);
   }
 }
 
@@ -638,15 +654,33 @@ let nombreAutorizado1 = document.querySelector("#nombreAutorizado1");
 let apellidosAutorizado1 = document.querySelector("#apellidosAutorizado1");
 let relacionAutorizado1 = document.querySelector("#relacionAutorizado1");
 let dniAutorizado1 = document.querySelector("#dniAutorizado1");
-
+let divInfoAutorizados = document.querySelector(".infoAutorizados");
 dniAutorizado1.addEventListener("blur", checkDniAutorizado);
+
+let camposAutorizados = [nombreAutorizado1, apellidosAutorizado1, relacionAutorizado1, dniAutorizado1];
+camposAutorizados.forEach((campo) => {
+
+  campo.addEventListener("blur", addRedBorderIfIncomplete);
+  campo.addEventListener("keydown", validateText);
+  campo.addEventListener("focus", removeErrorMsg);
+if (campo == dniAutorizado1){
+  campo.removeEventListener("keydown", validateText);
+}
+
+});
+
+
 
 function checkDniAutorizado() {
   dniValidoAutorizado = false;
   if (revisarDni(dniAutorizado1)) {
     dniValidoAutorizado = true;
+    dniAutorizado1.classList.remove("border-red");
+    divInfoAutorizados.innerHTML = "";
   } else {
     dniValidoAutorizado = false;
+    dniAutorizado1.classList.add("border-red");
+    divInfoAutorizados.innerHTML = "<p>Dni no válido. Por favor revise el DNI ingresado</p>";
   }
 }
 
@@ -660,6 +694,9 @@ document
 
 function checkifAuthorizedPersonComplete(e) {
   e.preventDefault();
+  camposAutorizados.forEach((campo) => {
+    addRedBorderIfEmpty(campo)});
+
   if (
     dniValidoAutorizado &&
     nombreAutorizado1.value != "" &&
@@ -688,101 +725,191 @@ function enviarMatricula() {
     terceraParteValida &&
     cuartaParteValida
   ) {
-    //Convertir estos datos en objeto json para enviar a la Api
-    console.log(nombreBebe.value);
-    console.log(apellido1Bebe.value);
-    console.log(apellido2Bebe.value);
-    console.log(genero);
-    console.log(fechaNacimiento.value);
-    console.log(lugarNacimiento.value);
-    console.log(isTakingMed);
-    console.log(medicamentoTomado.value);
 
-    console.log(isAllergicToMed);
-    console.log(medicamentoAlergia.value);
+    generarIdUnicoChild = () => { 
+      return Math.random().toString(30).substring(2) + Date.now().toString();  
+    }
+      generarIdUnicoTutor= () => { 
+        return Math.random().toString(30).substring(2)+Date.now().toString(); 
+      }
 
-    console.log(hasFoodAllergy);
-    console.log(alergeno.value);
-    console.log(alergias);
+      generarIdUnicoAutorizado= () => { 
+        return Math.random().toString(30).substring(2)+Date.now().toString(); 
+      }
 
-    console.log(hasDisability);
-    console.log(discapacidad.value);
 
-    console.log(nombreTutor1.value);
-    console.log(apellidosTutor1.value);
-    console.log(relacion1.value);
-    console.log(lugarNacimientoTutor1.value);
-    console.log(fechaNacimientoTutor1.value);
-    console.log(dni1.value);
-    console.log(direccion1.value);
-    console.log(telefono1.value);
-    console.log(nombreAutorizado1.value);
-    console.log(apellidosAutorizado1.value);
-    console.log(relacionAutorizado1.value);
-    console.log(dniAutorizado1.value);
+    let idChild = generarIdUnicoChild();
+    let idTutor = generarIdUnicoTutor();
+    let idAutorizado = generarIdUnicoAutorizado();
 
-    // fetch("http://localhost/proyectofinalciclo/api/matricula/", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json;charset=utf-8",
-    //     },
+    fetch("http://localhost/proyectofinalciclo/api/matricula/children/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
 
-    //     body: JSON.stringify({
-    //       nombre: nombreBebe.value,
-    //       apellido1: apellido1Bebe.value,
-    //       apellido2: apellido2Bebe.value,
-    //       genero: genero,
-    //       fechaNacimiento:fechaNacimiento.value,
-    //       lugarNacimiento: lugarNacimiento.value,
-    //       tomaMedicamento : medicamentoTomado,
-    //       medicamento: medsButtons.value,
-    //       tieneAlergiaMed: medicamentoAlergiaValido,
-    //       medicamentoAlergiaValido : medsAllergyButtons.value,
-    //       tieneAlergiaAlimento : foodAllergyButtons.value,
-    //       alimentoAlergia: alimentoAlergia.value,
-    //       causaAlergia :alergias,
-    //       tieneDiscapacidad: discapacidadInfo,
-    //       discapacidad :disabilityButtons.value,
-    //       nombreTutor: nombreTutor1.value,
-    //       apellidosTutor: apellidosTutor1.value,
-    //       relacion1:relacion1.value,
-    //       lugarNacimientoTutor1: lugarNacimientoTutor1.value,
-    //       fechaNacimientoTutor1: fechaNacimientoTutor1.value,
-    //       dni1 : dni1.value,
-    //       direccion1: direccion1.value,
-    //       telefono1: telefono1.value,
-    //       nombreAutorizado1: nombreAutorizado1.value,
-    //       apellidosAutorizado1: apellidosAutorizado1.value,
-    //       relacionAutorizado1: relacionAutorizado1.value,
-    //       dniAutorizado1: dniAutorizado1.value,
+        body: JSON.stringify({
+          idChild: idChild,
+          nombreBebe:nombreBebe.value,
+          apellido1Bebe:apellido1Bebe.value,
+          apellido2Bebe:apellido2Bebe.value,
+          genero:genero,
+          fechaNacimiento:fechaNacimiento.value,
+          lugarNacimiento:lugarNacimiento.value,
+          isTakingMed:isTakingMed,
+          medicamentoTomado:medicamentoTomado.value,
+          isAllergicToMed:isAllergicToMed,
+          medicamentoAlergia:medicamentoAlergia.value,
+          hasFoodAllergy:hasFoodAllergy,
+          alergeno:alergeno.value,
+          alergias:alergias,
+          hasDisability:hasDisability,
+          discapacidad :discapacidad.value,
 
-    //     }),
-    //   })
-    //     .then((response) => {
-    //       switch (response.status) {
-    //         case 200:
-    //           divInfo.innerHTML = "<h1>Usuario registrado con éxito</h1>";
-    //           divInfo.classList.add("success");
-    //           // sessionStorage.setItem("id", data["id"]);
-    //           break;
-    //         case 400:
-    //           divInfo.innerHTML = "<h2>Hubo un fallo en el registro</h2>";
-    //           break;
-    //       }
-    //       return response.json();
-    //     })
-    //     .then((data) => {
-    //       console.log(data);
-    //       // clearForm();
-    //       divInfo.innerHTML =
-    //         "<h3>Registro exitoso! ahora puedes iniciar Sesión</h3>";
 
-    //       // window.location.href = "../html/login.html";
-    //       setTimeout(() => {
-    //         window.location.href = "../html/login.html";
-    //         // clearForm();
-    //       }, 5000);
-    //     });
+        }),
+      })
+        .then((response) => {
+          switch (response.status) {
+            case 200:
+              divInfoAutorizados.innerHTML = "<h1>Bebé registrado con éxito</h1>";
+           
+              // sessionStorage.setItem("id", data["id"]);
+              break;
+            case 400:
+              divInfoAutorizados.innerHTML = "<h2>Hubo un fallo en el registro</h2>";
+              break;
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // clearForm();
+          divInfoAutorizados.innerHTML =
+            "<h3>Bebé ha sido registrado</h3>";
+
+          // // window.location.href = "../html/login.html";
+          // setTimeout(() => {
+          //   window.location.href = "../html/login.html";
+          //   // clearForm();
+          // }, 5000);
+        });
+
+        fetch("http://localhost/proyectofinalciclo/api/matricula/tutors/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+
+        body: JSON.stringify({
+          idTutor: idTutor,
+          nombreTutor:nombreTutor1.value,
+          apellidosTutor:apellidosTutor1.value,
+          relacion:relacion1.value,
+          lugarNacimientoTutor:lugarNacimientoTutor1.value,
+          fechaNacimientoTutor:fechaNacimientoTutor1.value,
+          dni:dni1.value,
+          direccion:direccion1.value,
+          telefono:telefono1.value,
+
+        }),
+      })
+        .then((response) => {
+          switch (response.status) {
+            case 200:
+              divInfoAutorizados.innerHTML += "<h1>Tutor registrado con éxito</h1>";
+           
+              // sessionStorage.setItem("id", data["id"]);
+              break;
+            case 400:
+              divInfoAutorizados.innerHTML += "<h2>Hubo un fallo en el registro</h2>";
+              break;
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // clearForm();
+          divInfoAutorizados.innerHTML =
+            "<h3>Tutor ha sido registrado</h3>";
+
+    
+        });
+
+        fetch("http://localhost/proyectofinalciclo/api/matricula/pickuplist/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+  
+          body: JSON.stringify({
+            idAutorizado: idAutorizado,
+            nombreAutorizado:nombreAutorizado1.value,
+            apellidosAutorizado:apellidosAutorizado1.value,
+            relacionAutorizado:relacionAutorizado1.value,
+            dniAutorizado:dniAutorizado1.value,
+          
+          }),
+        }).then((response) => {
+            switch (response.status) {
+              case 200:
+                divInfoAutorizados.innerHTML += "<h1>Autorizado registrado con éxito</h1>";
+             
+                // sessionStorage.setItem("id", data["id"]);
+                break;
+              case 400:
+                divInfoAutorizados.innerHTML += "<h2>Hubo un fallo en el registro</h2>";
+                break;
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            // clearForm();
+            divInfoAutorizados.innerHTML =
+              "<h3>Autorizado ha sido registrado</h3>";
+  
+          });
+
+          fetch("http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+    
+            body: JSON.stringify({
+              idUsuario: idUsuario,
+              idChild:idChild,
+              idTutor1:idTutor,
+              idTutor2: idTutor2,
+              idAutorizado1: idAutorizado,
+              idAutorizado2: idAutorizado2
+            
+            }),
+          }).then((response) => {
+              switch (response.status) {
+                case 200:
+                  divInfoAutorizados.innerHTML += "<h1>Autorizado registrado con éxito</h1>";
+               
+                  // sessionStorage.setItem("id", data["id"]);
+                  break;
+                case 400:
+                  divInfoAutorizados.innerHTML += "<h2>Hubo un fallo en el registro</h2>";
+                  break;
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log(data);
+              // clearForm();
+              divInfoAutorizados.innerHTML =
+                "<h3>Autorizado ha sido registrado</h3>";
+    
+            });
+
+
+
+
   } else {
     console.log("Alguna de las partes del formulario no es válida");
   }

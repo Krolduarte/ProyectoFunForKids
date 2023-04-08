@@ -43,9 +43,41 @@ export { checkDate };
 //función que quita el borde rojo del cuadro de texto
 function removeErrorMsg(e) {
   e.target.classList.remove("border-red");
+  if(e.target.placeholder == "Campo Obligatorio"){
+    e.target.placeholder = "";
+
+  }
 }
 
 export { removeErrorMsg };
+
+//función que añadeel borde rojo del cuadro de texto si ha hecho focus y no esta completo
+function addRedBorderIfIncomplete(e){
+  if (e.target.value == "" ){
+    e.target.classList.add("border-red");
+    e.target.placeholder = "Campo Obligatorio";
+    
+  }
+  }
+  export { addRedBorderIfIncomplete };
+
+  function addRedBorderIfEmpty(input){
+    if( input.value == ""){
+      input.classList.add("border-red");
+      input.placeholder = "Campo Obligatorio";
+  }
+ }
+
+  export { addRedBorderIfEmpty };
+
+  function checkIfInputChosen(value, radioButton) {
+    if (value === "") {
+      radioButton[0].nextElementSibling.classList.add("red");
+      radioButton[1].nextElementSibling.classList.add("red");
+    }
+  }
+
+  export { checkIfInputChosen };
 
 function revisarDni(dni) {
   let regExDni = /(([XYZ]{1})([0-9]{7})([A-Z]{1}))|(([0-9]{8})([A-Z]{1}))/;

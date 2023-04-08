@@ -361,6 +361,9 @@ input {
   outline: none;
 }
 
+.red{
+ color: red;
+}
 .border-red {
   border-bottom-color: red;
 }
@@ -373,14 +376,14 @@ input {
   border-bottom-color: green;
 }
 
-.info {
+/* .info {
   padding: 10px 15px;
   font-size: 15px;
   color: #254441;
   line-height: 5px;
   width: 470px;
   height: 120px;
-}
+} */
 
 .green {
   color: green;
@@ -390,7 +393,7 @@ input {
   border-bottom-color: yellowgreen;
 }
 
-.infoBebe {
+.info, .infoBebe, .infoAutorizados {
   padding: 10px 15px;
   font-size: 15px;
   color: #254441;
@@ -475,4 +478,14 @@ input {
   min-height: 760px;
 }
 
+
+/* ******************************************************************
+               MANEJO DE BLUR EN INPUT FALTANTE
+****************************************************************** */
+::placeholder{
+  color:red;
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.5;
+}
 
