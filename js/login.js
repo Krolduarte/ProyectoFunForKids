@@ -48,7 +48,7 @@ function registrar(e){
               "usuario",
               document.querySelector("#username").value
             );
-            // sessionStorage.setItem("token", data["token"]);
+            sessionStorage.setItem("token", data["token"]);
 
             window.location.href= "../html/matricula.html";
           }
@@ -73,3 +73,39 @@ function revisarCredenciales() {
     document.querySelector("#password").classList.remove("border-red");
   }
 }
+
+// **********************************************************
+  // LLAMADA A LA API PARA CONSEGUIR ID DE USUARIO Q INICIA SESION
+  // **********************************************************
+
+  document.querySelector("#btnEntrar").addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let url = `http://localhost/proyectofinalciclo/api/iduser/?usuario=${document.querySelector("#username").value}`
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    })
+      .then((response) => {
+        switch (response.status) {
+          case 200:
+            return response.json();
+            break;
+          case 401:
+           
+        }
+      })
+      .then((data) => {
+        console.log(data[0]);
+        console.log(url);
+        if(data[0]){
+          sessionStorage.setItem(
+                  "IdUsuario",
+                  data[0]['idUsuario']
+                );
+        }
+       
+      });
+  });

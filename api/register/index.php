@@ -12,10 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = json_decode(file_get_contents('php://input'), true);
 
 
-    if (isset($json['nombre']) && isset($json['apellidos'])  && isset($json['fechaNacimiento']) && isset($json['lugarNacimiento'])  && isset($json['usuario']) && isset($json['email']) && isset($json['contrasena'])) {
+    if (isset($json['idUsuario']) &&isset($json['nombre']) && isset($json['apellidos'])  && isset($json['fechaNacimiento']) && isset($json['lugarNacimiento'])  && isset($json['usuario']) && isset($json['email']) && isset($json['contrasena'])) {
 
     
-  
+        $idUsuario = $json['idUsuario'];
         $nombre = $json['nombre'];
         $apellidos = $json['apellidos'];
         $fechaNacimiento = $json['fechaNacimiento'];
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        
       
 
-        $sql = "INSERT INTO users (nombre,apellidos,fechaNacimiento,lugarNacimiento,usuario,email,contrasena) VALUES ('$nombre', '$apellidos', '$fechaNacimiento',  '$lugarNacimiento', '$usuario', '$email', '$contrasena')";
+        $sql = "INSERT INTO users (idUsuario,nombre,apellidos,fechaNacimiento,lugarNacimiento,usuario,email,contrasena) VALUES ('$idUsuario','$nombre', '$apellidos', '$fechaNacimiento',  '$lugarNacimiento', '$usuario', '$email', '$contrasena')";
         try {
             $con->query($sql);
             $idUsuario = $con->insert_id;

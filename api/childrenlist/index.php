@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $sql = "SELECT * FROM children WHERE 1 ";
     if (isset($_GET['idChild'])) {
         $idChild = $_GET['idChild'];
-        $sql .= "AND idChildChild='$idChild'";
+        $sql .= "AND idChild='$idChild'";
     } elseif (isset($_GET['nombreBebe'])) {
         $nombreBebe = $_GET['nombreBebe'];
         $sql .= " AND nombreBebe='$nombreBebe'";
@@ -60,6 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } elseif (isset($_GET['discapacidad'])) {
         $discapacidad = $_GET['discapacidad'];
         $sql .= " AND discapacidad='$discapacidad'";
+
+    } elseif (isset($_GET['foto'])) {
+        $foto = $_GET['foto'];
+        $sql .= " AND foto='$foto'";
 
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");

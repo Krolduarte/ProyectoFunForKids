@@ -264,6 +264,8 @@ function checkMissingFields() {
   }
 }
 
+let idUsuario = Math.random().toString(30).substring(2) + Date.now().toString(); 
+
 document.querySelector(".btnRegister").addEventListener("click", () => {
   // Hacer el fetch solo si se cumplen estasn condiciones
   checkMissingFields();
@@ -285,6 +287,7 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
       },
 
       body: JSON.stringify({
+        idUsuario : idUsuario,
         nombre: nombre.value,
         apellidos: apellidos.value,
         fechaNacimiento: fecha.value,
@@ -299,7 +302,7 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
           case 200:
             divInfo.innerHTML = "<h1>Usuario registrado con éxito</h1>";
             divInfo.classList.add("success");
-            // sessionStorage.setItem("id", data["id"]);
+          
             break;
           case 400:
             divInfo.innerHTML = "<h2>Hubo un fallo en el registro</h2>";
@@ -309,6 +312,7 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
       })
       .then((data) => {
         console.log(data);
+        
         clearForm();
         divInfo.innerHTML =
           "<h3>Registro exitoso! ahora puedes iniciar Sesión</h3>";

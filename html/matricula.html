@@ -17,6 +17,8 @@
     <!-- navbar -->
     <div class="navBar">
       <img id="logo" src="../img/formulario-registro/logo-white.png" alt="" />
+      <div> <a id="cerrarSesion" href="../html/index.html">Cerrar Sesión</a></div>
+       
     </div>
     <!-- fin nav bar -->
     <div class="pestanasBar">
@@ -28,7 +30,7 @@
        
       </div>
     </div>
-    <form action="" method="POST" id="formularioBebe" name="formularioBebe">
+    <form action="" method="POST" id="formularioBebe" name="formularioBebe" enctype="multipart/formdata">
       <section class="container uno">
         <div class="formSection">
           <!-- AREA DE PESTAÑAS-->
@@ -46,6 +48,8 @@
               src="../img/formulario-registro/61-camera-outline.gif"
               alt=""
             />
+            <input type="file" id="inpFile">
+            <button type="submit" id="btnPhoto">Subir Foto</button>
           </div>
 
           <!-- FORMULARIO -->
@@ -512,8 +516,8 @@
           />
         </div>
         <div class="box  hidden5">
-          <label for="lugarNacimiento">Lugar de Nacimiento</label>
-          <input type="text" name="lugarNacimiento" id="lugarNacimiento" required />
+          <label for="lugarNacimientoTutor2">Lugar de Nacimiento</label>
+          <input type="text" name="lugarNacimientoTutor2" id="lugarNacimientoTutor2" required />
         </div>
       </div>
   

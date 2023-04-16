@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Content-Type: application/json");
             echo json_encode([
                 'success' => true,
-                'idUsuario' => $idTutor,
-                'msg' => "este tutor ha sido agregado a la lista"
+                'idTutor' => $idTutor,
+                'msg' => "Tutor agregado a la base de datos"
             ]);
             // echo json_encode($con->insert_id);
         } catch (mysqli_sql_exception $e) {
@@ -57,7 +57,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $sql = "SELECT * FROM tutors WHERE 1 ";
+    if (isset($_GET['idTutor'])) {
+        $idTutor = $_GET['idTutor'];
+        $sql .= " AND idTutor='$idTutor'";
+    } elseif (isset($_GET['nombreTutor'])) {
+        $nombreTutor = $_GET['nombreTutor'];
+        $sql .= " AND nombreTutor='$nombreTutor'";
+    } elseif (isset($_GET['apellidosTutor'])) {
+        $apellidosTutor = $_GET['apellidosTutor'];
+        $sql .= " AND apellidosTutor='$apellidosTutor'";
+    } elseif (isset($_GET['relacion'])) {
+        $relacion = $_GET['relacion'];
+        $sql .= " AND relacion='$relacion'";
+    } elseif (isset($_GET['lugarNacimientoTutor'])) {
+        $lugarNacimientoTutor = $_GET['lugarNacimientoTutor'];
+        $sql .= " AND lugarNacimientoTutor='$lugarNacimientoTutor'";
+   
+    } elseif (isset($_GET['fechaNacimientoTutor'])) {
+        $fechaNacimientoTutor = $_GET['fechaNacimientoTutor'];     
+        $sql .= " AND fechaNacimientoTutor='$fechaNacimientoTutor'";
 
+   
+    } elseif (isset($_GET['dni'])) {
+        $dni = $_GET['dni'];
+        $sql .= " AND dni='$dni'";
+    } elseif (isset($_GET['direccion'])) {
+        $direccion = $_GET['direccion'];
+        $sql .= " AND direccion='$direccion'";
+    } elseif (isset($_GET['telefono'])) {
+        $telefono = $_GET['telefono'];
+        $sql .= " AND telefono='$telefono'";
+    } elseif (count($_GET) > 0) {
+        header("HTTP/1.1 400 Bad Request");
+        exit;
+    }
+
+    try {
+        $result = $con->query($sql);
+        $tutors = $result->fetch_all(MYSQLI_ASSOC);
+        header("HTTP/1.1 200 OK");
+        echo json_encode($tutors);
+          
+
+    } catch (mysqli_sql_exception $e) {
+        header("HTTP/1.1 404 Not Found");
+    }
+    exit;
+}
 
 
 

@@ -20,30 +20,36 @@
         <div class="headbar">
             <div class="logo">
               <img
-                src="../img/formulario-registro/logo white.png"
+                src="../img/formulario-registro/logo-white.png"
                 alt=""
                 class="imglogo"
               />
             </div>
+            <div> <a id="cerrarSesion" href="../html/index.html"><lord-icon
+              src="https://cdn.lordicon.com/moscwhoj.json"
+              trigger="hover"
+              colors="primary:#121331,secondary:#eee966"
+              style="width:80px;height:80px">
+          </lord-icon></a></div>
           </div>
       
           <div class="imagenydatos">
             <!-- foto de niño/niña -->
             <div class="fotoBebe"></div>
             <div class="datos">
-              <p class="nombreBebe">Paula Robles</p>
-              <p class="edadBebe">7 meses</p>
+              <p class="nombreBebe"></p>
+              <p class="edadBebe"></p>
             </div>
            
           </div>
       
             <div class="opciones">
               <!-- pestañas -->
-       
-              <button class="btnPestanas">Reporte Diario</button>
-              <button class="btnPestanas">Perfil</button>
-              <button class="btnPestanas">Mensajes</button>
-              <button class="btnPestanas">Documentos</button>
+            
+              <button class="btnPestanas pestanaPerfil"><a href="../html/perfil.html">Perfil</a></button>
+              <button class="btnPestanas  pestanaReporte"><a href="../html/reporte-diario.html">Reporte Diario</a></button>
+              <button class="btnPestanas pestanaMensajes"><a href="../html/mensajes.html">Reporte Diario</a></button>
+              <button class="btnPestanas pestanaDocs"><a href="../html/documentos.html">Reporte Diario</a></button>
             </div>
     </header> 
     <!-- fin headbar -->
@@ -156,4 +162,7 @@
 
 </div>
   </body>
+  <script src="../js/reporte-diario.js" type="module"></script>
+  <script src="../js/pestanas.js" type="module"></script>
+  <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
 </html>

@@ -91,3 +91,90 @@ function revisarDni(dni) {
 }
 
 export { revisarDni };
+
+
+function calcularEdadBebe(dateString) {
+  let res = "";
+  let hoy = new Date();
+  let fechaNacimiento = new Date(dateString);
+  var days = (hoy - fechaNacimiento) / 1000 / 60 / 60 / 24;
+  var meses = parseInt((days % 365) / 30);
+  var years = parseInt(days / 365);
+  days = parseInt((days % 365) % 30);
+
+  if (years <= 0) {
+    if (meses < 2) {
+      res = meses + " mes";
+    } else {
+      res = meses + " meses";
+    }
+  } else {
+    if(years == 1 && meses== 1){
+      res = years + " año y " + meses + " mes ";
+
+    } else {
+      res = years + " años y " + meses + " meses ";
+    }
+
+  }
+
+  return res;
+}
+export { calcularEdadBebe };
+
+function loadInfoBaby(){
+
+  let idUser = sessionStorage.getItem("IdUsuario");
+  let idChild = "";
+  let nombreBebe = document.querySelector(".nombreBebe");
+let fotoBebe = document.querySelector(".fotoBebe");
+let edadBebe = document.querySelector(".edadBebe");
+let fechaNacimiento = "";
+let routePhoto = "";
+
+  fetch(
+    `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${idUser}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.forEach((element) => {
+        idChild = element["idChild"];
+        fetch(
+          `http://localhost/proyectofinalciclo/api/childrenlist/?idChild=${idChild}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            data.forEach((element) => {
+              nombreBebe.innerHTML = `<span>${element["nombreBebe"]} ${element["apellido1Bebe"]} ${element["apellido2Bebe"]}</span>`;
+              fechaNacimiento = element["fechaNacimiento"];
+              console.log(fechaNacimiento);
+              edadBebe.innerHTML = `<span>${calcularEdadBebe(
+                fechaNacimiento
+              )}</span>`;
+
+              fotoBebe.style.backgroundImage = `url('../uploads/${element["foto"]}')`;              
+            });
+            // clearForm();
+          });
+      });
+      // clearForm();
+    });
+}
+
+export { loadInfoBaby };
