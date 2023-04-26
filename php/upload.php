@@ -1,5 +1,7 @@
 <?php
-
+echo "<pre>";
+var_dump ($_FILES);
+echo "</pre>";
 $texto = $_POST['text'];
 $targetPath = "../uploads/".$texto . basename($_FILES["inpFile"]["name"]);
 move_uploaded_file($_FILES["inpFile"]["tmp_name"], $targetPath);
@@ -33,8 +35,8 @@ move_uploaded_file($_FILES["inpFile"]["tmp_name"], $targetPath);
 // echo $_FILES['inpFile']['size'];
 // echo $_FILES['inpFile']['error'];
 //Mueve el archivo al directorio escogido
-// $extensiones = array(0=>'image/jpg',1=>'image/jpeg',2=>'image/png');
-// $max_tamanyo = 1024 * 1024 * 8;
+//  $extensiones = array(0=>'image/jpg',1=>'image/jpeg',2=>'image/png');
+// /$max_tamanyo = 1024 * 1024 * 8;
 
 // $ruta_destino = "../uploads/" . basename($_FILES["inpFile"]["name"]);
 // $ruta_fichero_origen = $_FILES['inpFile']['tmp_name'];

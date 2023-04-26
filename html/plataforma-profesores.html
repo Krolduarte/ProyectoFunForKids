@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta http-equiv="refresh" content="40" /> -->
+    <link rel="stylesheet" href="../css/plataforma-profesores.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Reporte Diario</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="headbar">
+          <div class="logo">
+            <img
+              src="../img/formulario-registro/logo-white.png"
+              alt=""
+              class="imglogo"
+            />
+          </div>
+          <div>
+            <a id="cerrarSesion" href="../html/index.html"
+              ><lord-icon
+                src="https://cdn.lordicon.com/moscwhoj.json"
+                trigger="hover"
+                colors="primary:#121331,secondary:#eee966"
+                style="width: 80px; height: 80px"
+              >
+              </lord-icon
+            ></a>
+          </div>
+        </div>
+      </header>
+      <!-- fin headbar -->
+
+      <div class="contenedor">
+        <div class="listabebes">
+          <div class="fecha"></div>
+          <div class="cuadros">
+            <div class="checkedin">
+              <h1>Total</h1>
+              <p id="total">41</p>
+            </div>
+            <div class="sala1 sala1Color">
+              <h1>Sala 1</h1>
+              <span>(0-1 años)</span>
+              <p id="salaUno"></p>
+            </div>
+            <div class="sala2 sala2Color">
+              <h1>Sala 2</h1>
+              <span>(1-2 años)</span>
+              <p id="salaDos"></p>
+            </div>
+            <div class="sala3 sala3Color">
+              <h1>Sala 3</h1>
+              <span>(2-3 años)</span>
+              <p id="salaTres"></p>
+            </div>
+          </div>
+          <div class="childrenList"></div>
+        </div>
+
+        <div class="secciones">
+          <div class="opciones">
+            <!-- pestañas -->
+
+            <button class="btnPestanas pestanaPerfil">
+              <a href="../html/perfil.html">Perfil</a>
+            </button>
+            <button class="btnPestanas pestanaReporte">
+              <a href="../html/reporte-diario.html">Reporte Diario</a>
+            </button>
+            <button class="btnPestanas pestanaMensajes">
+              <a href="../html/mensajes.html">Mensajes</a>
+            </button>
+            <button class="btnPestanas pestanaDocs">
+              <a href="../html/documentos.html">Documentos Diario</a>
+            </button>
+          </div>
+          <section class="infoBabyPicked"></section>
+          <section class="grisDiaper">
+          
+            <div class="colIcono">
+              <div class="icono diaper">
+                <img src="../img/reporte-diario/diaper.png" alt="" />
+              </div>
+            </div>
+
+            <div class="colInfoGrid diaperGrid"></div>
+            <!-- fin ColInfoGrid -->
+          </section>
+
+          <section class="white">
+            <div class="colIcono">
+              <div class="icono apple">
+                <img src="../img/reporte-diario/apple.png" alt="" />
+              </div>
+            </div>
+            <div class="colInfoGrid foodGrid"></div>
+          </section>
+
+          <section class="grisSiesta">
+            <div class="colIcono">
+              <div class="icono siesta">
+                <img src="../img/reporte-diario/siesta.png" alt="" />
+              </div>
+            </div>
+
+            <div class="colInfoGrid siestaGrid"></div>
+          </section>
+         
+        </div>
+      </div>
+
+      <!-- <footer>
+        <div class="logo">
+            <img src="../img/landing-img/logo.png" alt="" class="imglogo" />
+          </div>
+          <p>Copyrights ©2023 | Condiciones legales | Política de privacidad | Diseño Web: Carol Duarte</p>
+    </footer> -->
+    </div>
+  </body>
+  <script src="../js/plataforma-profesores.js" type="module"></script>
+  <script src="../js/pestanas.js" type="module"></script>
+  <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+</html>

@@ -178,3 +178,17 @@ let routePhoto = "";
 }
 
 export { loadInfoBaby };
+
+function cambiarColorSiEscogido(input) {
+            
+  input.forEach((element) => {
+    
+    if (element.checked) {
+      element.nextElementSibling.classList.add("selectedOption");
+    } else {
+      element.nextElementSibling.classList.remove("selectedOption");
+    }
+  });
+}
+
+export { cambiarColorSiEscogido };

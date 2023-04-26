@@ -7,10 +7,23 @@ $con = new Conexion();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     
-    $sql = "SELECT * FROM children WHERE 1 ";
+    $sql = "SELECT * FROM checkedin inner join children WHERE checkedin.idChild = children.idChild ";
     if (isset($_GET['idChild'])) {
         $idChild = $_GET['idChild'];
         $sql .= "AND idChild='$idChild'";
+    } elseif (isset($_GET['sala'])) {
+        $sala = $_GET['sala'];
+        $sql .= " AND sala='$sala'";
+    } elseif (isset($_GET['idTutorDrop'])) {
+        $idTutorDrop = $_GET['idTutorDrop'];
+        $sql .= " AND idTutorDrop='$idTutorDrop'";
+    } elseif (isset($_GET['idTutorPickUp'])) {
+        $idTutorPickUp = $_GET['idTutorPickUp'];
+        $sql .= " AND idTutorPickUp='$idTutorPickUp'";
+    } elseif (isset($_GET['horaIngreso'])) {
+        $horaIngreso = $_GET['horaIngreso'];
+        $sql .= " AND horaIngreso='$horaIngreso'";
+
     } elseif (isset($_GET['nombreBebe'])) {
         $nombreBebe = $_GET['nombreBebe'];
         $sql .= " AND nombreBebe='$nombreBebe'";

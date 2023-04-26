@@ -1,13 +1,6 @@
 
 document.querySelector("#btnRegister").addEventListener('click', registrar);
 
-
-// function ingresar(e){
-// e.preventDefault();
-//     window.location.href= "../html/matricula.html";
-// }
-
-
 function registrar(e){
     e.preventDefault();
         window.location.href= "../html/registro.html";
@@ -81,6 +74,7 @@ function revisarCredenciales() {
   document.querySelector("#btnEntrar").addEventListener("click", (e) => {
     e.preventDefault();
 
+
     let url = `http://localhost/proyectofinalciclo/api/iduser/?usuario=${document.querySelector("#username").value}`
     fetch(url, {
       method: "GET",
@@ -106,6 +100,7 @@ function revisarCredenciales() {
                   data[0]['idUsuario']
                 );
         }
+        
        
       });
   });
