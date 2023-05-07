@@ -1,6 +1,6 @@
 <?php
-require '../../vendor/autoload.php';
-require_once('../clases/conexion.php');
+require '../../../vendor/autoload.php';
+require_once('../../clases/conexion.php');
 
 use Firebase\JWT\JWT;
 
@@ -58,3 +58,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     exit;
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+    $sql = "SELECT idUsuario,usuario FROM users WHERE 1 ";
+    
+    if (isset($_GET['idUsuario'])) {
+        $idUsuario = $_GET['idUsuario'];
+        $sql .= "AND idUsuario='$idUsuario'";
+
+    } elseif (isset($_GET['usuario'])) {
+        $usuario = $_GET['usuario'];
+        $sql .= " AND usuario='$usuario'";
+
+   
+    } elseif (count($_GET) > 0) {
+        header("HTTP/1.1 400 Bad Request");
+        exit;
+    }
+
+    try {
+        $result = $con->query($sql);
+        $deposiciones = $result->fetch_all(MYSQLI_ASSOC);
+        header("HTTP/1.1 200 OK");
+        echo json_encode($deposiciones);
+    } catch (mysqli_sql_exception $e) {
+        header("HTTP/1.1 404 Not Found");
+    }
+    exit;
+}
+
+
+header("HTTP/1.1 400 Bad Request");

@@ -9,26 +9,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $json = json_decode(file_get_contents('php://input'), true);
 
-    if (
-        isset($json['idUsuario']) &&
+    if (isset($json['idUsuario']) &&
         isset($json['idChild'])  &&
-        isset($json['idTutor1']) &&
-        isset($json['idTutor2']) &&
-        isset($json['idAutorizado1']) 
-       
-        
-    ) {
+        isset($json['idTutor1']))  {
+
+        $valor = "";
 
         $idUsuario = $json['idUsuario'];
         $idChild = $json['idChild'];
         $idTutor1 = $json['idTutor1'];
-        $idTutor2 = $json['idTutor2'];
-        $idAutorizado1 = $json['idAutorizado1'];
-      
-      
        
-    
-        $sql = "INSERT INTO matricula (idUsuario,idChild,idTutor1,idTutor2,idAutorizado1) VALUES ('$idUsuario', '$idChild', '$idTutor1', '$idTutor2','$idAutorizado1')";
+        $valor = "idUsuario,idChild,idTutor1";
+        $values = "'$idUsuario', '$idChild', '$idTutor1'";
+
+        if (isset($json['idAutorizado1'])||isset($json['idAutorizado2'])||isset($json['idTutor2']) ){
+
+            if (isset($json['idAutorizado1'])){
+                $idAutorizado1 = $json['idAutorizado1'];
+                $valor .= ",idAutorizado1";
+                $values .= ",'$idAutorizado1'";  
+            }
+
+            if (isset($json['idTutor2'])){
+                $idTutor2 = $json['idTutor2'];
+                $valor .= ",idTutor2";
+                $values .= " ,'$idTutor2'";
+            }
+
+            if (isset($json['idAutorizado2'])){
+                $idAutorizado2 = $json['idAutorizado2'];
+                $valor .= ",idAutorizado2";
+                $values .= ",'$idAutorizado2'";
+            }
+              
+        }
+       
+
+        $sql = "INSERT INTO matricula ($valor) VALUES ($values)";
+
         try {
             $con->query($sql);
             $idMatricula= $con->insert_id;
@@ -51,6 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $sql = "SELECT * FROM matricula WHERE 1 ";
+
+    if (isset($_GET['idUsuario'])) {
+        $idUsuario = $_GET['idUsuario'];
+        $sql .= " AND idUsuario='$idUsuario'";
+    }
     if (isset($_GET['idMatricula'])) {
         $idMatricula = $_GET['idMatricula'];
         $sql .= " AND idMatricula='$idMatricula'";

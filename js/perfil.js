@@ -1,9 +1,12 @@
 import {
-    loadInfoBaby
+    loadInfoBaby,CerrarSesionTutores 
    } from "../js/funciones.js";
    let idUser = sessionStorage.getItem("IdUsuario");
    let token = sessionStorage.getItem("token");
 
+
+   // gesionar cerrar session
+document.querySelector("#cerrarSesion").addEventListener("click", CerrarSesionTutores);
 
    if (idUser && token) {
     loadInfoBaby();
@@ -31,16 +34,19 @@ let alergias = document.querySelector(".alergias");
 let disability = document.querySelector(".disability");
 
 // Informacion de Tutores
-let tutorNombre = document.querySelector(".tutorNombre");
-let tutorApellidos = document.querySelector(".tutorApellidos");
+let tutorNombreCompleto = document.querySelector(".tutorNombreCompleto");
 let relacionTutor = document.querySelector(".relacionTutor");
 let direccionTutor = document.querySelector(".direccionTutor");
 let telefonoTutor = document.querySelector(".telefonoTutor");
 
+let tutorNombreCompleto2 = document.querySelector(".tutorNombreCompleto2");
+let relacionTutor2 = document.querySelector(".relacionTutor2");
+let direccionTutor2 = document.querySelector(".direccionTutor2");
+let telefonoTutor2 = document.querySelector(".telefonoTutor2");
+
 // Informacion de Autorizados
-let autorizadoNombre = document.querySelector(".tutorNombre");
-let autorizadoApellidos = document.querySelector(".tutorApellidos");
-let autorizadoRelacion = document.querySelector(".relacionTutor");
+let autorizadoNombreCompleto = document.querySelector(".autorizadoNombreCompleto");
+let autorizadoRelacion = document.querySelector(".autorizadoRelacion");
 
 let idChild = "";
 let isTakingMedResponse = "";
@@ -48,7 +54,6 @@ let isAllergicToMedResponse = "";
 let isAllergicToFoodResponse = "";
 let hasFoodAllergyResponse = "";
 let disabilityResponse = "";
-
 
 
 
@@ -67,9 +72,80 @@ fetch(
   })
   .then((data) => {
     data.forEach((element) => {
+
+   
+// ****************************************************
+//           FETCH PARA INFO DE PADRES
+// ****************************************************
+
+      fetch(
+        `http://localhost/proyectofinalciclo/api/matricula/tutors/?idTutor=${element.idTutor1}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        }
+      ).then((response) => {
+        return response.json();
+      }).then((data) => {
+        data.forEach((element) => {
+          tutorNombreCompleto.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
+          relacionTutor.innerHTML += `<span>${element["relacion"]} `;
+         direccionTutor.innerHTML += `<span>${element["direccion"]} `;
+          telefonoTutor.innerHTML += `<span>${element["telefono"]}`;
+          sessionStorage.setItem('nombreTutor1', element["nombreTutor"] )
+        })});
+
+        fetch(
+          `http://localhost/proyectofinalciclo/api/matricula/tutors/?idTutor=${element.idTutor2}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        ).then((response) => {
+          return response.json();
+        }).then((data) => {
+          data.forEach((element) => {
+            tutorNombreCompleto2.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
+            relacionTutor2.innerHTML += `<span>${element["relacion"]} `;
+           direccionTutor2.innerHTML += `<span>${element["direccion"]} `;
+            telefonoTutor2.innerHTML += `<span>${element["telefono"]}`;
+            sessionStorage.setItem('nombreTutor2', element["nombreTutor"] )
+          })});
+
+// ****************************************************
+//           FETCH PARA AUTORIZADOS
+// ****************************************************
+
+fetch(
+  `http://localhost/proyectofinalciclo/api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  }
+).then((response) => {
+  return response.json();
+}).then((data) => {
+  data.forEach((element) => {
+    autorizadoNombreCompleto.innerHTML += `<span>${element["nombreAutorizado"]} ${element["apellidosAutorizado"]}</span>`;
+    autorizadoRelacion.innerHTML += `<span>${element["relacionAutorizado"]} `;
+   
+  })});
+
+// ****************************************************
+//           FETCH PARA INFO DE NIÑO
+// ****************************************************
+
+
+
       idChild = element["idChild"];
       fetch(
-        `http://localhost/proyectofinalciclo/api/childrenlist/?idChild=${idChild}`,
+        `http://localhost/proyectofinalciclo/api/children/childrenlist/?idChild=${idChild}`,
         {
           method: "GET",
           headers: {
@@ -82,7 +158,8 @@ fetch(
         })
         .then((data) => {
           data.forEach((element) => {
-
+            
+       
             console.log(element);
             if (element.isTakingMed == 0) {
                 isTakingMedResponse = "NO";

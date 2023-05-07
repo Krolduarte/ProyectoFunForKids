@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
             }
         }
 
-        $sql .= "WHERE idreporte ='$idreporte'";
+        $sql .= " WHERE idreporte ='$idreporte'";
 
 
 

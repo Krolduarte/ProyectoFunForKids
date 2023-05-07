@@ -52,3 +52,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     exit;
 }
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $sql = "SELECT * FROM pickuplist WHERE 1 ";
+    if (isset($_GET['idAutorizado'])) {
+        $idAutorizado = $_GET['idAutorizado'];
+        $sql .= " AND idAutorizado='$idAutorizado'";
+    } elseif (isset($_GET['nombreAutorizado'])) {
+        $nombreAutorizado = $_GET['nombreAutorizado'];
+        $sql .= " AND nombreAutorizado='$nombreAutorizado'";
+    } elseif (isset($_GET['apellidosAutorizado'])) {
+        $apellidosAutorizado = $_GET['apellidosAutorizado'];
+        $sql .= " AND apellidosAutorizado='$apellidosAutorizado'";
+    } elseif (isset($_GET['relacionAutorizado'])) {
+        $relacionAutorizado = $_GET['relacionAutorizado'];
+        $sql .= " AND relacionAutorizado='$relacionAutorizado'";
+    } elseif (isset($_GET['dniAutorizado'])) {
+        $dniAutorizado = $_GET['dniAutorizado'];
+        $sql .= " AND dniAutorizado='$dniAutorizado'";
+
+    } elseif (count($_GET) > 0) {
+        header("HTTP/1.1 400 Bad Request");
+        exit;
+    }
+
+    try {
+        $result = $con->query($sql);
+        $tutors = $result->fetch_all(MYSQLI_ASSOC);
+        header("HTTP/1.1 200 OK");
+        echo json_encode($tutors);
+          
+
+    } catch (mysqli_sql_exception $e) {
+        header("HTTP/1.1 404 Not Found");
+    }
+    exit;
+}
+
+
+
+header("HTTP/1.1 400 Bad Request");

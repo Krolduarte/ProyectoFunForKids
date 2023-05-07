@@ -47,35 +47,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['idreporte'])) {
         $idreporte = $_GET['idreporte'];
         $sql .= "AND idreporte='$idreporte'";
-    }
-    if (isset($_GET['fechayhora'])) {
-        $fechayhora = $_GET['fechayhora'];
-        $sql .= "AND fechayhora='$fechayhora'";
+    } elseif (isset($_GET['fechayhora']) || isset($_GET['idChild'])) {
 
+        if (isset($_GET['fechayhora'])) {
+            $fechayhora = $_GET['fechayhora'] . ' 00:00:00';
+            $finfecha = $_GET['fechayhora'] . ' 23:59:59';
+            $sql .= " AND fechayhora between '$fechayhora' and '$finfecha'";
+        }
+        if (isset($_GET['idChild'])) {
+            $idChild = $_GET['idChild'];
+            $sql .= " AND idChild='$idChild'";
+        }
     } elseif (isset($_GET['idMonitor'])) {
         $idMonitor = $_GET['idMonitor'];
         $sql .= " AND idMonitor='$idMonitor'";
-
-    } elseif (isset($_GET['idChild'])) {
-        $idChild = $_GET['idChild'];
-        $sql .= " AND idChild='$idChild'";
-
     } elseif (isset($_GET['desayuno'])) {
         $desayuno = $_GET['desayuno'];
         $sql .= " AND desayuno='$desayuno'";
-
     } elseif (isset($_GET['merienda'])) {
         $merienda = $_GET['merienda'];
         $sql .= " AND merienda='$merienda'";
-
     } elseif (isset($_GET['comida'])) {
         $comida = $_GET['comida'];
         $sql .= " AND comida='$comida'";
-
     } elseif (isset($_GET['siesta'])) {
         $siesta = $_GET['siesta'];
         $sql .= " AND siesta='$siesta'";
-        
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
         exit;

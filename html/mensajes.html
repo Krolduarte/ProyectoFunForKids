@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/mensajes.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Reporte Diario</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="headbar">
+          <div class="logo">
+            <img
+              src="../img/formulario-registro/logo-white.png"
+              alt=""
+              class="imglogo"
+            />
+          </div>
+          <div>
+            <a id="cerrarSesion" href="../html/index.html"
+              ><lord-icon
+                src="https://cdn.lordicon.com/moscwhoj.json"
+                trigger="hover"
+                colors="primary:#121331,secondary:#eee966"
+                style="width: 80px; height: 80px"
+              >
+              </lord-icon
+            ></a>
+          </div>
+        </div>
+
+        <div class="imagenydatos">
+          <!-- foto de niño/niña -->
+          <div class="fotoBebe"></div>
+          <div class="datos">
+            <p class="nombreBebe"></p>
+            <p class="edadBebe"></p>
+          </div>
+        </div>
+
+        <div class="opciones">
+          <button class="btnPestanas pestanaPerfil">
+            <a href="../html/perfil.html">Perfil</a>
+          </button>
+          <button class="btnPestanas pestanaReporte">
+            <a href="../html/reporte-diario.html">Reporte Diario</a>
+          </button>
+          <button class="btnPestanas pestanaMensajes">
+            <a href="../html/mensajes.html">Mensajes</a>
+          </button>
+          
+        </div>
+      </header>
+    </div>
+
+    <!-- fin headbar -->
+    <section class="msger">
+        <header class="msger-header">
+          <div class="msger-header-title">
+            <i class="fas fa-comment-alt"></i> Fun For Kids Chat
+          </div>
+          <div class="msger-header-options">
+            <span><i class="fas fa-cog"></i></span>
+          </div>
+        </header>
+      
+        <main class="msger-chat">
+          <div class="msg left-msg">
+            <div
+             class="msg-img"
+             style="background-image: url(../img/mensajes/admin.png)"
+            ></div>
+      
+            <div class="msg-bubble">
+              <div class="msg-info">
+                <div class="msg-info-name">Fun For Kids</div>
+                <div class="msg-info-time"></div>
+              </div>
+      
+              <div class="msg-text">
+                Bienvenido a fun for kids! 😄
+              </div>
+            </div>
+          </div>
+      
+          <!-- <div class="msg right-msg">
+            <div
+             class="msg-img"
+             style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
+            ></div>
+      
+            <div class="msg-bubble">
+              <div class="msg-info">
+                <div class="msg-info-name"></div>
+                <div class="msg-info-time"></div>
+              </div>
+      
+              <div class="msg-text">
+               
+              </div>
+            </div>
+          </div> -->
+        </main>
+      
+        <form class="msger-inputarea">
+          <input type="text" class="msger-input" placeholder="Escribe tu mensaje...">
+          <button type="submit" class="msger-send-btn">Send</button>
+        </form>
+      </section>
+
+    
+    
+    
+
+   
+   
+    <script src="../js/mensajes.js" type="module"></script>
+    <script src="../js/pestanas.js" type="module"></script>
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+  </body>
+ 
+</html>

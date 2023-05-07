@@ -9,8 +9,8 @@ $con = new Conexion();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $sql = "SELECT * FROM users WHERE 1 ";
     if (isset($_GET['idUsuario'])) {
-        $id = $_GET['idUsuario'];
-        $sql .= "AND idUsuario='$id'";
+        $idUsuario = $_GET['idUsuario'];
+        $sql .= "AND idUsuario='$idUsuario'";
     } elseif (isset($_GET['nombre'])) {
         $nombre = $_GET['nombre'];
         $sql .= " AND nombre='$nombre'";

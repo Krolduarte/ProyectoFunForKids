@@ -1,5 +1,5 @@
 <?php
-require_once('../clases/conexion.php');
+require_once('../../clases/conexion.php');
 
 //crear conexion
 $con = new Conexion();
@@ -7,12 +7,10 @@ $con = new Conexion();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     
-    $sql = "SELECT COUNT(idChild) as count FROM `checkedin` where 1 ";
-    if (isset($_GET['sala'])) {
-        $sala = $_GET['sala'];
-        $sql .= "AND sala='$sala'";
+    $sql = "SELECT COUNT(idChild) as count FROM `children` where 1 ";
+    
 
-    } elseif (count($_GET) > 0) {
+    if (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
         exit;
     }

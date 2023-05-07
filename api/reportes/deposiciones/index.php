@@ -38,31 +38,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $sql = "SELECT * FROM deposiciones WHERE 1 ";
-    
+
     if (isset($_GET['id_deposiciones'])) {
         $id_deposiciones = $_GET['id_deposiciones'];
-        $sql .= "AND id_deposiciones='$id_deposiciones'";
+        $sql .= " AND id_deposiciones='$id_deposiciones'";
+        
+    } elseif (isset($_GET['fechayhora']) || isset($_GET['idChild'])) {
 
-    } elseif (isset($_GET['idChild'])) {
-        $idChild = $_GET['idChild'];
-        $sql .= " AND idChild='$idChild'";
-
+        if (isset($_GET['fechayhora'])) {
+            $fechayhora = $_GET['fechayhora'] . ' 00:00:00';
+            $finfecha = $_GET['fechayhora'] . ' 23:59:59';
+            $sql .= " AND fechayhora between '$fechayhora' and '$finfecha'";
+        }
+        if (isset($_GET['idChild'])) {
+            $idChild = $_GET['idChild'];
+            $sql .= " AND idChild='$idChild'";
+        }
     } elseif (isset($_GET['idMonitor'])) {
         $idMonitor = $_GET['idMonitor'];
+
         $sql .= " AND idMonitor='$idMonitor'";
-
-    } elseif (isset($_GET['fechayhora'])) {
-        $fechayhora = $_GET['fechayhora'];
-        $sql .= "AND fechayhora='$fechayhora'";
-
+    } elseif (isset($_GET['diaMax'])) {
+        $diaMax = $_GET['diaMax'];
+        $sql .= " AND diaMax='$diaMax'";
     } elseif (isset($_GET['consistencia'])) {
         $consistencia = $_GET['consistencia'];
         $sql .= " AND consistencia='$consistencia'";
-
     } elseif (isset($_GET['cambio_panal'])) {
         $cambio_panal = $_GET['cambio_panal'];
         $sql .= " AND cambio_panal='$cambio_panal'";
-   
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
         exit;
@@ -73,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $deposiciones = $result->fetch_all(MYSQLI_ASSOC);
         header("HTTP/1.1 200 OK");
         echo json_encode($deposiciones);
+       
     } catch (mysqli_sql_exception $e) {
         header("HTTP/1.1 404 Not Found");
     }

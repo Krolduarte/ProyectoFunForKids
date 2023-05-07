@@ -42,9 +42,17 @@ body {
   padding-right: 35px;
 }
 
-div.avatarInfo{
+.avatarInfo{
  cursor: pointer;
+ display: flex;
+ justify-content: space-around;
+
  }
+
+ .avatarInfo a {
+  padding: 5px;
+  text-decoration: none;
+  }
 
 @media (max-width: 800px) {
   .logo {

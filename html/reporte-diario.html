@@ -15,54 +15,64 @@
   </head>
   <body>
     <div class="container">
-    <header>
-
+      <header>
         <div class="headbar">
-            <div class="logo">
-              <img
-                src="../img/formulario-registro/logo-white.png"
-                alt=""
-                class="imglogo"
-              />
-            </div>
-            <div> <a id="cerrarSesion" href="../html/index.html"><lord-icon
-              src="https://cdn.lordicon.com/moscwhoj.json"
-              trigger="hover"
-              colors="primary:#121331,secondary:#eee966"
-              style="width:80px;height:80px">
-          </lord-icon></a></div>
+          <div class="logo">
+            <img
+              src="../img/formulario-registro/logo-white.png"
+              alt=""
+              class="imglogo"
+            />
           </div>
-      
-          <div class="imagenydatos">
-            <!-- foto de niño/niña -->
-            <div class="fotoBebe"></div>
-            <div class="datos">
-              <p class="nombreBebe"></p>
-              <p class="edadBebe"></p>
-            </div>
-           
+          <div>
+            <a id="cerrarSesion" href="../html/index.html"
+              ><lord-icon
+                src="https://cdn.lordicon.com/moscwhoj.json"
+                trigger="hover"
+                colors="primary:#121331,secondary:#eee966"
+                style="width: 80px; height: 80px"
+              >
+              </lord-icon
+            ></a>
           </div>
-      
-            <div class="opciones">
-              <!-- pestañas -->
-            
-              <button class="btnPestanas pestanaPerfil"><a href="../html/perfil.html">Perfil</a></button>
-              <button class="btnPestanas  pestanaReporte"><a href="../html/reporte-diario.html">Reporte Diario</a></button>
-              <button class="btnPestanas pestanaMensajes"><a href="../html/mensajes.html">Mensajes</a></button>
-              <button class="btnPestanas pestanaDocs"><a href="../html/documentos.html">Documentos Diario</a></button>
-            </div>
-    </header> 
-    <!-- fin headbar -->
-<section class="gris">
-    <div class="colIcono">
-        <div class="icono diaper">
-            <img src="../img/reporte-diario/diaper.png" alt="">
         </div>
-    </div>
-   
-    <div class="colInfoGrid">
-     
-            <div class="titulo1">Deposiciones</div>
+
+        <div class="imagenydatos">
+          <!-- foto de niño/niña -->
+          <div class="fotoBebe"></div>
+          <div class="datos">
+            <p class="nombreBebe"></p>
+            <p class="edadBebe"></p>
+          </div>
+        </div>
+
+        <div class="opciones">
+          <!-- pestañas -->
+
+          <button class="btnPestanas pestanaPerfil">
+            <a href="../html/perfil.html">Perfil</a>
+          </button>
+          <button class="btnPestanas pestanaReporte">
+            <a href="../html/reporte-diario.html">Reporte Diario</a>
+          </button>
+          <button class="btnPestanas pestanaMensajes">
+            <a href="../html/mensajes.html">Mensajes</a>
+          </button>
+         
+        </div>
+      </header>
+  
+      <div class="areaFecha"></div>
+      <!-- fin headbar -->
+      <section class="gris">
+        <div class="colIcono">
+          <div class="icono diaper">
+            <img src="../img/reporte-diario/diaper.png" alt="" />
+          </div>
+        </div>
+
+        <div class="colInfoGrid diaperGrid">
+          <!-- <div class="titulo1">Deposiciones</div>
             <div class="consistencia">Consistencia</div>
             <div class="btnConsistencia">
                 <button>Liquida</button>
@@ -86,20 +96,19 @@
             <button>2</button>
             <button>3</button>
             <button>4</button>
-          </div>
-    </div>
-    <!-- fin ColInfoGrid -->
-    
-</section>
-
-<section class="white">
-    <div class="colIcono">
-        <div class="icono apple">
-            <img src="../img/reporte-diario/apple.png" alt="">
+          </div> -->
         </div>
-    </div>
-    <div class="colInfoGrid">
-        <div class="titulo1">Desayuno</div>
+        <!-- fin ColInfoGrid -->
+      </section>
+
+      <section class="white">
+        <div class="colIcono">
+          <div class="icono apple">
+            <img src="../img/reporte-diario/apple.png" alt="" />
+          </div>
+        </div>
+        <div class="colInfoGrid foodGrid">
+          <!-- <div class="titulo1">Desayuno</div>
         <div class="titulo2">Merienda</div>
         <div class="titulo3">Comida</div>
 
@@ -126,20 +135,19 @@
             <button>Mucho</button>
             <button>Todo</button>
           
-          </div>
-    </div>
-</section>
-
-<section class="gris">
-    <div class="colIcono">
-        <div class="icono siesta">
-            <img src="../img/reporte-diario/siesta.png" alt="">
+          </div> -->
         </div>
-    </div>
-           
-         
-         <div class="colInfoGrid"> 
-            <div class="titulo2">Siesta</div>
+      </section>
+
+      <section class="gris">
+        <div class="colIcono">
+          <div class="icono siesta">
+            <img src="../img/reporte-diario/siesta.png" alt="" />
+          </div>
+        </div>
+
+        <div class="colInfoGrid siestaGrid">
+          <!-- <div class="titulo2">Siesta</div>
             <div class="rango2">
                 <button>15 min.</button>
                 <button>30 min.</button>
@@ -147,22 +155,19 @@
                 <button>60 min.</button>
                 <button>90 min.</button>
               
-              </div>
-    </div>
+              </div> -->
+        </div>
+      </section>
 
-</section>
-
-
-    <!-- <footer>
+      <!-- <footer>
         <div class="logo">
             <img src="../img/landing-img/logo.png" alt="" class="imglogo" />
           </div>
           <p>Copyrights ©2023 | Condiciones legales | Política de privacidad | Diseño Web: Carol Duarte</p>
     </footer> -->
-
-</div>
+    </div>
+    <script src="../js/reporte-diario.js" type="module"></script>
+    <script src="../js/pestanas.js" type="module"></script>
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
   </body>
-  <script src="../js/reporte-diario.js" type="module"></script>
-  <script src="../js/pestanas.js" type="module"></script>
-  <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
 </html>

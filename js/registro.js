@@ -140,7 +140,8 @@ contrasena.addEventListener("focus", removeErrorMsg);
 function checkSecurity(e) {
   let pass = e.target.value;
 
-  divInfo.innerHTML = ` <p>Incluye una letra mayúscula</p>
+  divInfo.innerHTML = ` 
+  <p>Incluye una letra mayúscula</p>
   <p>Incluye una letra Minúscula</p>
   <p>Incluye un número</p>
   <p>Incluye un símbolo</p>
@@ -179,6 +180,13 @@ function checkSecurity(e) {
   if (pass.length >= 8) {
     divInfo.children[4].classList.add("green");
   }
+
+var arrDivInfo = Array.prototype.slice.call( divInfo.children )
+arrDivInfo.forEach((child) => child.classList.contains('green') ? child.textContent= "" : child.classList.contains('red'))
+
+  // if( divInfo.children.classList.contains('green')){
+  
+  // }
   //longitud
   security += Math.floor(pass.length / 2);
   security += numDigits > 0 ? 1 : 0;

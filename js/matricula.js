@@ -23,11 +23,12 @@ function CerrarSesion() {
 //        GESTIONAR INGRESO A PÁGINA DE MATRICULA O REPORTE
 // ###############################################
 
-
 window.addEventListener("load", checkifRegistered);
 
-function checkifRegistered(){
-  let url = `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem('IdUsuario')}`
+function checkifRegistered() {
+  let url = `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem(
+    "IdUsuario"
+  )}`;
   fetch(url, {
     method: "GET",
     headers: {
@@ -35,17 +36,19 @@ function checkifRegistered(){
     },
   })
     .then((response) => {
-       return response.json();
-        
+      return response.json();
     })
     .then((data) => {
-if (data[0].idMatricula > 0){
-  window.location.href = "../html/reporte-diario.html";
-}else{
-  console.log("Aun no esta matriculado");
-}
-    
-    });
+      if (data.length > 0) {
+        if (data[0].idMatricula > 0) {
+          window.location.href = "../html/reporte-diario.html";
+        }
+      } else {
+        if (data === undefined || data.length === 0)
+          console.log("Aun no esta matriculado");
+      }
+    })
+    .catch((error) => console.error(error));
 }
 
 let primeraParteValida = false;
@@ -657,14 +660,78 @@ function revisarDniTutor() {
   }
 }
 
+// **************************************************************
+//     GESTION DE EXISTENCIA DE SEGUNDO TUTOR
+// *************************************************************
 let segundoTutor = false;
+let hiddenDivs = document.querySelectorAll(".hidden5");
 //agregar tutor
 document.querySelector("#agregarTutor").addEventListener("click", agregarTutor);
 function agregarTutor() {
-  let hiddenDivs = document.querySelectorAll(".hidden5");
   for (let div of hiddenDivs) {
     div.classList.remove("hidden5");
   }
+}
+
+document
+  .querySelector("#cboxUnTutor")
+  .addEventListener("change", anularSegundoTutor);
+function anularSegundoTutor() {
+  if (this.checked) {
+    document.querySelector("#agregarTutor").classList.add("hidden");
+
+    segundoTutor = false;
+    dniValido2 = true;
+    validBirthdayTutor2 = true;
+    nombreTutor2.value = "Blank";
+    apellidosTutor2.value = "Blank";
+    relacion2.value = "Blank";
+    lugarNacimientoTutor2.value = "Blank";
+    telefono2.value = "Blank";
+    direccion2.value = "Blank";
+    fechaNacimientoTutor2.removeEventListener("blur", revisarFechaTutor2);
+    fechaNacimientoTutor2.value = "2001-01-01";
+    dni2.value = "00000000A ";
+  } else {
+    for (let div of hiddenDivs) {
+      div.classList.remove("hidden5");
+    }
+    segundoTutor = true;
+    validBirthdayTutor2 = false;
+    dniValido2 = false;
+  }
+}
+
+// *****************Fetch a tabla Users para autocompletar información de Tutor*************************
+
+document
+  .querySelector("#siguiente2")
+  .addEventListener("click", cargarInfoDeRegistro);
+
+function cargarInfoDeRegistro() {
+  fetch(
+    `http://localhost/proyectofinalciclo/api/users/?idUsuario=${sessionStorage.getItem(
+      "IdUsuario"
+    )}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      document.querySelector("#nombreTutor1").value = data[0].nombre;
+      document.querySelector("#apellidosTutor1").value = data[0].apellidos;
+      document.querySelector("#lugarNacimientoTutor1").value =
+        data[0].lugarNacimiento;
+      document.querySelector("#fechaNacimientoTutor1").value =
+        data[0].fechaNacimiento;
+    });
 }
 
 // ###############################################
@@ -826,6 +893,7 @@ function checkifTutorComplete() {
       });
     }
   } else {
+    console.log("PARTE 3-TUTORES NO NOOOOO válida");
     console.log(dniValido1);
     console.log(validBirthdayTutor1);
     console.log(nombreTutor1.value);
@@ -996,7 +1064,7 @@ function enviarMatricula() {
     terceraParteValida &&
     cuartaParteValida
   ) {
-   // ****************************************************
+    // ****************************************************
     // GENERANDO ID RANDOMS PARA BEBE, TUTORES Y AUTORIZADOS
     // ****************************************************
 
@@ -1004,6 +1072,7 @@ function enviarMatricula() {
       Math.random().toString(30).substring(2) + Date.now().toString();
     let idTutor =
       Math.random().toString(30).substring(2) + Date.now().toString();
+
     let idTutor2 =
       Math.random().toString(30).substring(2) + Date.now().toString();
     let idAutorizado =
@@ -1103,36 +1172,79 @@ function enviarMatricula() {
             // ****************************************************
             // FETCH PARA ENVIAR INFO DE TUTOR2
             // ****************************************************
+            if (segundoTutor) {
+              fetch(
+                "http://localhost/proyectofinalciclo/api/matricula/tutors/",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                  },
 
-            fetch("http://localhost/proyectofinalciclo/api/matricula/tutors/", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
+                  body: JSON.stringify({
+                    idTutor: idTutor2,
+                    nombreTutor: nombreTutor2.value,
+                    apellidosTutor: apellidosTutor2.value,
+                    relacion: relacion2.value,
+                    lugarNacimientoTutor: lugarNacimientoTutor2.value,
+                    fechaNacimientoTutor: fechaNacimientoTutor2.value,
+                    dni: dni2.value,
+                    direccion: direccion2.value,
+                    telefono: telefono2.value,
+                  }),
+                }
+              )
+                .then((response) => {
+                  switch (response.status) {
+                    case 200:
+                      divInfoAutorizados.innerHTML +=
+                        "<h1>Tutor registrado con éxito</h1>";
 
-              body: JSON.stringify({
-                idTutor: idTutor2,
-                nombreTutor: nombreTutor2.value,
-                apellidosTutor: apellidosTutor2.value,
-                relacion: relacion2.value,
-                lugarNacimientoTutor: lugarNacimientoTutor2.value,
-                fechaNacimientoTutor: fechaNacimientoTutor2.value,
-                dni: dni2.value,
-                direccion: direccion2.value,
-                telefono: telefono2.value,
-              }),
-            })
+                      // sessionStorage.setItem("id", data["id"]);
+                      break;
+                    case 400:
+                      divInfoAutorizados.innerHTML +=
+                        "<h2>Hubo un fallo en el registro</h2>";
+                      break;
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log(data);
+                  // clearForm();
+                  divInfoAutorizados.innerHTML =
+                    "<h3>Tutor ha sido registrado</h3>";
+                });
+            }
+
+            // FETCH PARA AUTORIZADOS
+            fetch(
+              "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                },
+
+                body: JSON.stringify({
+                  idAutorizado: idAutorizado,
+                  nombreAutorizado: nombreAutorizado1.value,
+                  apellidosAutorizado: apellidosAutorizado1.value,
+                  relacionAutorizado: relacionAutorizado1.value,
+                  dniAutorizado: dniAutorizado1.value,
+                }),
+              }
+            )
               .then((response) => {
                 switch (response.status) {
                   case 200:
                     divInfoAutorizados.innerHTML +=
-                      "<h1>Tutor registrado con éxito</h1>";
-
+                      "<h1>Autorizado registrado con éxito</h1>";
                     // sessionStorage.setItem("id", data["id"]);
                     break;
                   case 400:
                     divInfoAutorizados.innerHTML +=
-                      "<h2>Hubo un fallo en el registro</h2>";
+                      "<h2>Autorizado no ha sido registrado</h2>";
                     break;
                 }
                 return response.json();
@@ -1141,36 +1253,49 @@ function enviarMatricula() {
                 console.log(data);
                 // clearForm();
                 divInfoAutorizados.innerHTML =
-                  "<h3>Tutor ha sido registrado</h3>";
-                // FETCH PARA AUTORIZADOS
+                  "<h3>Autorizado ha sido registrado</h3>";
+
+                // ****************************************************
+                // FETCH PARA MATRICULA
+                // ****************************************************
+                let idUserfromfetch = sessionStorage.getItem("IdUsuario");
+                let body = {};
+                body = {
+                  idUsuario: idUserfromfetch,
+                  idChild: idChild,
+                  idTutor1: idTutor,
+                  idAutorizado1: idAutorizado,
+                };
+
+                if (segundoTutor) {
+                  body.idTutor2 = idTutor2;
+                }
+
                 fetch(
-                  "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
+                  "http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/",
                   {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json;charset=utf-8",
                     },
 
-                    body: JSON.stringify({
-                      idAutorizado: idAutorizado,
-                      nombreAutorizado: nombreAutorizado1.value,
-                      apellidosAutorizado: apellidosAutorizado1.value,
-                      relacionAutorizado: relacionAutorizado1.value,
-                      dniAutorizado: dniAutorizado1.value,
-                    }),
-                  }
-                )
+                    body: JSON.stringify(body),
+                  })
                   .then((response) => {
                     switch (response.status) {
                       case 200:
                         divInfoAutorizados.innerHTML +=
-                          "<h1>Autorizado registrado con éxito</h1>";
-
+                          "<h1>Matricula se ha realizado exitosamente, Ingrese al Portal de Padres</h1>";
+                        setTimeout(() => {
+                          window.location.href = "../html/index.html";
+                          // clearForm();
+                        }, 7000);
+                        //  matriculaRealizada = true;
                         // sessionStorage.setItem("id", data["id"]);
                         break;
                       case 400:
                         divInfoAutorizados.innerHTML +=
-                          "<h2>Hubo un fallo en el registro</h2>";
+                          "<h2>Hubo un fallo en la matricula</h2>";
                         break;
                     }
                     return response.json();
@@ -1178,58 +1303,8 @@ function enviarMatricula() {
                   .then((data) => {
                     console.log(data);
                     // clearForm();
-                    divInfoAutorizados.innerHTML =
-                      "<h3>Autorizado ha sido registrado</h3>";
 
-                    // ****************************************************
-                    // FETCH PARA MATRICULA
-                    // ****************************************************
-                    let idUserfromfetch = sessionStorage.getItem("IdUsuario");
-
-                    fetch(
-                      "http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/",
-                      {
-                        method: "POST",
-                        headers: {
-                          "Content-Type": "application/json;charset=utf-8",
-                        },
-
-                        body: JSON.stringify({
-                          idUsuario: idUserfromfetch,
-                          idChild: idChild,
-                          idTutor1: idTutor,
-                          idTutor2: idTutor2,
-                          idAutorizado1: idAutorizado,
-                        }),
-                      }
-                    )
-                      .then((response) => {
-                        switch (response.status) {
-                          case 200:
-                            divInfoAutorizados.innerHTML +=
-                              "<h1>Matricula Exitosa/h1>";
-                            setTimeout(() => {
-                              window.location.href =
-                                "../html/reporte-diario.html";
-                              // clearForm();
-                            }, 7000);
-                            //  matriculaRealizada = true;
-                            // sessionStorage.setItem("id", data["id"]);
-                            break;
-                          case 400:
-                            divInfoAutorizados.innerHTML +=
-                              "<h2>Hubo un fallo en el registro</h2>";
-                            break;
-                        }
-                        return response.json();
-                      })
-                      .then((data) => {
-                        console.log(data);
-                        // clearForm();
-
-                        divInfoAutorizados.innerHTML =
-                          "<h3>Autorizado ha sido registrado</h3>";
-                      });
+                    divInfoAutorizados.innerHTML = "<h3>Matricula exitosa</h3>";
                   });
               });
           });

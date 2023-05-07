@@ -200,7 +200,7 @@ section {
 }
 
 .gris {
-  height: 250px;
+  height: 120px;
   background: #eee0e0;
   display: flex;
 }
@@ -231,8 +231,8 @@ section {
 }
 
 .icono {
-  width: 150px;
-  height: 150px;
+  width: 60px;
+  height: 60px;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -240,8 +240,8 @@ section {
 }
 
 .icono img {
-  width: 70px;
-  height: 70px;
+  width: 30px;
+  height: 30px;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -306,6 +306,21 @@ section {
   display: flex;
   justify-content: space-between;
 }
+
+.titulo5 {
+  grid-column: 1/2;
+  grid-row: 3/4;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.rango5 {
+  grid-column: 2/4;
+  grid-row: 3/4;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .rango button,
 .rango2 button,
@@ -439,15 +454,37 @@ section {
 }
 
 .colInfoPerfil{
-  width: 75%;
 
+  width: 75%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding-left: 15%;
   padding-bottom: 5%;
   padding-top: 5%;
   
+}
+
+.primerTutor{
+width: 50%;
+
+}
+
+.segundoTutor{
+  width: 50%;
+
+}
+
+.colInfoTutores{
+
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-left: 15%;
+  padding-bottom: 5%;
+  padding-top: 5%;
+  gap:5px;
 }
 
 .colTitulo{
@@ -458,6 +495,7 @@ section {
 }
 
 .tituloBox {
+  font-size: 24px;
   background-color: #f3b90f;
   width: 100%;
   height: 110px;
@@ -467,17 +505,59 @@ section {
   align-items: center;
 }
 
-.tituloLabel{
-  font-size: 17px;
+.tituloLabel :first-child{
+  font-size: 20px;
+  color:#254441;
   font-weight: 700;
 }
 
 .tituloLabel span{
-  font-size: 17px;
+  font-size: 25px;
   font-weight: 200;
   padding-left: 10px;
 }
 
 .yellow{
   background-color: #f3b90f;
+}
+
+/* Para fetch con info de matricula */
+
+
+ label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15px;
+  width: 91px;
+  cursor:context-menu;
+  padding: 7px 7px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+input {
+visibility: hidden;
+}
+
+.selectedOption {
+  color: white;
+  background-color: #56beb7;
+}
+
+.areaFecha{
+  width: 100%;
+  height:45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:15px;
+}
+
+.arrows{
+  width: 35px;
+  height: 35px;
+  
 }

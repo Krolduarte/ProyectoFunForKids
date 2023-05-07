@@ -17,7 +17,15 @@
     <!-- navbar -->
     <div class="navBar">
       <img id="logo" src="../img/formulario-registro/logo-white.png" alt="" />
-      <div> <a id="cerrarSesion" href="../html/index.html">Cerrar Sesión</a></div>
+      <div>  <a id="cerrarSesion" href="../html/index.html"
+        ><lord-icon
+          src="https://cdn.lordicon.com/moscwhoj.json"
+          trigger="hover"
+          colors="primary:#121331,secondary:#eee966"
+          style="width: 80px; height: 80px"
+        >
+        </lord-icon
+      ></a> </div>
        
     </div>
     <!-- fin nav bar -->
@@ -25,7 +33,7 @@
       <div class="groupPestanas">
         <div class="pestana">Bebé</div>
         <div class="pestana">Cuestionario</div>
-        <div class="pestana">Tutores</div>
+        <div class="pestana tutors" >Tutores</div>
         <div class="pestana">Autorizados</div>
        
       </div>
@@ -46,7 +54,7 @@
           <div class="fotoBebe">
             <img
               src="../img/formulario-registro/61-camera-outline.gif"
-              alt=""
+              alt="camara" id="camaraBtn"
             />
             <input type="file" id="inpFile">
             <button type="submit" id="btnPhoto">Subir Foto</button>
@@ -479,6 +487,8 @@
         />
       </div>
       <div>Agregar segundo tutor legal</div>
+      <label for="cboxUnTutor">Único tutor legal</label>
+      <input type="checkbox" name="cboxUnTutor" id="cboxUnTutor">
     </div>
      
     <p class="segundoTitulo hidden5">Datos del segundo tutor o tutora legal:</p>
@@ -659,6 +669,8 @@
     <!-- FIN FORMULARIO -->
 
     <!-- FIN CONTAINER -->
+    <script src="../js/matricula.js" type="module"></script>
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
   </body>
-  <script src="../js/matricula.js" type="module"></script>
+
 </html>

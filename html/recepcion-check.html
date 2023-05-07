@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <meta http-equiv="refresh" content="40" /> -->
     <link rel="stylesheet" href="../css/plataforma-profesores.css" />
- 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,6 +18,7 @@
     <div class="container">
       <header>
         <div class="headbar">
+         
           <div class="home"> <a href="../html/plataforma-profesores-opciones.html">Volver</a></div>
           <div class="logo">
             <img
@@ -28,7 +28,6 @@
             />
           </div>
           <div>
-           
             <a id="cerrarSesion" href="../html/index.html"
               ><lord-icon
                 src="https://cdn.lordicon.com/moscwhoj.json"
@@ -37,54 +36,55 @@
                 style="width: 80px; height: 80px"
               >
               </lord-icon
-            ></a> 
+            ></a>
           </div>
-          <div class="idMonitor">Hola, </div>
+          <div class="idMonitor">Hola,</div>
         </div>
       </header>
       <!-- fin headbar -->
 
-      <div class="contenedor">
-        <div class="listabebes">
+      <div class="contenedorRecepcion">
+        <div class="listabebesRecepcion">
           <div class="fecha"></div>
+
           <!-- *************FILTROS***************** -->
-          <div class="filtrosProfesores">
+          <div class="filtros">
 
          
-            <div class="buscador">
-              
-              <input
-                type="text"
-                name="buscadorNombre"
-                id="buscadorNombre"
-                placeholder="Filtrar por Nombre"
-            />
-            </div>
-            <div class="buscador">
-              
-              <input
-                type="text"
-                name="buscadorApellido"
-                id="buscadorApellido"
-                placeholder="Filtrar por Apellido"
-            />
-            </div>
-            <div class="buscador">
-              <span></span>
-              <input
-                type="text"
-                name="buscadorGenero"
-                id="buscadorGenero"
-                placeholder="Filtrar por Genero"
-            />
-            </div>
-  
-        
+          <div class="buscador">
+            
+            <input
+              type="text"
+              name="buscadorNombre"
+              id="buscadorNombre"
+              placeholder="Filtrar por Nombre"
+          />
           </div>
-          
+          <div class="buscador">
+            
+            <input
+              type="text"
+              name="buscadorApellido"
+              id="buscadorApellido"
+              placeholder="Filtrar por Apellido"
+          />
+          </div>
+          <div class="buscador">
+            <span></span>
+            <input
+              type="text"
+              name="buscadorGenero"
+              id="buscadorGenero"
+              placeholder="Filtrar por Genero"
+          />
+          </div>
+
+      
+        </div>
+
 
           <div class="cuadros">
-            <div class="registrados salaRegisteredColor hidden">
+            <div class="registrados salaRegisteredColor">
               <h1>Total Registrados</h1>
               <span id="totalregistrados"></span>
             </div>
@@ -110,61 +110,31 @@
           </div>
           <div class="childrenList"></div>
         </div>
-
-        <div class="secciones">
-          <div class="opciones">
-            <!-- pestañas -->
-            <div class="closeIconPestanas">
-              <img class="closebtnSala"src="../img/plataforma-profesores/close.png" alt="" />
-            </div>
-           
-            <button class="btnPestanas pestanaReporte">
-              <a >Reporte Diario</a>
-            </button>
-            <button class="btnPestanas pestanaPerfil">
-              <a >Perfil</a>
-            </button>
-            <button class="btnPestanas pestanaMensajes">
-              <a >Mensajes</a>
-            </button>
-            
-          </div>
-          <section class="infoBabyPicked"></section>
-          <section class="profileBaby"></section>
-          <section class="mensajesBaby"></section>
-          <section class="grisDiaper">
-          
-            <div class="colIcono">
-              <div class="icono diaper">
-                <img src="../img/reporte-diario/diaper.png" alt="" />
-              </div>
-            </div>
-
-            <div class="colInfoGrid diaperGrid"></div>
-            <!-- fin ColInfoGrid -->
-          </section>
-
-          <section class="white">
-            <div class="colIcono">
-              <div class="icono apple">
-                <img src="../img/reporte-diario/apple.png" alt="" />
-              </div>
-            </div>
-            <div class="colInfoGrid foodGrid"></div>
-          </section>
-
-          <section class="grisSiesta">
-            <div class="colIcono">
-              <div class="icono siesta">
-                <img src="../img/reporte-diario/siesta.png" alt="" />
-              </div>
-            </div>
-
-            <div class="colInfoGrid siestaGrid"></div>
-          </section>
-         
-        </div>
       </div>
+
+      <!-- <div class="contenedorModal hidden">
+        <div class="modalSignIn hidden" id="modalSignIn">
+          <div class="closeIcon">
+            <img src="../img/plataforma-profesores/close.png" alt="" />
+          </div>
+          <div class="tituloModal">Entrada</div>
+          <div class="fotoBebe"><img src="" alt="" /></div>
+          <div class="nombreBebe">Nombre bEBE</div>
+          <select>
+            <option value="0">Seleccione una sala</option>
+            <option value="1">Sala 1</option>
+            <option value="2">Sala 2</option>
+            <option value="3">Sala 3</option>
+          </select>
+          <select>
+            <option value="0">Tutor/Autorizado</option>
+            <option value="1">Sala 1</option>
+            <option value="2">Sala 2</option>
+            <option value="3">Sala 3</option>
+          </select>
+          <button class="btnModal">Entrada</button>
+        </div>
+      </div> -->
 
       <!-- <footer>
         <div class="logo">
@@ -177,5 +147,4 @@
     <script src="../js/pestanas.js" type="module"></script>
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
   </body>
- 
 </html>
