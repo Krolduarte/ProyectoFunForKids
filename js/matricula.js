@@ -4,6 +4,7 @@ import {
   checkIfInputChosen,
   removeErrorMsg,
   checkDate,
+  checkBabyDate,
   validateText,
   validateNumbers,
   revisarDni,
@@ -63,6 +64,7 @@ let cuartaParteValida = false;
 //   window.location.href = "../html/matricula.html";
 // }
 
+
 // ###############################################
 //      PRIMERA PARTE DE LA MATRÍCULA : BEBÉ
 // ###############################################
@@ -106,7 +108,7 @@ fechaNacimiento.addEventListener("change", revisarFecha);
 fechaNacimiento.addEventListener("focus", removeErrorMsg);
 
 function revisarFecha() {
-  if (!checkDate(fechaNacimiento, 0)) {
+  if (!checkBabyDate(fechaNacimiento, 5)) {
     fechaNacimiento.classList.add("border-red");
     infoBebe.innerHTML = "Fecha no válida";
     validBirthday = false;
@@ -124,6 +126,7 @@ function revisarFecha() {
 let radioButtonsGeneros = document.querySelectorAll('input[name="genero"]');
 
 for (let radioButton of radioButtonsGeneros) {
+ 
   radioButton.addEventListener("change", function (e) {
     if (this.checked) {
       genero = this.value;
@@ -131,8 +134,25 @@ for (let radioButton of radioButtonsGeneros) {
       radioButtonsGeneros[0].nextElementSibling.classList.remove("red");
       radioButtonsGeneros[1].nextElementSibling.classList.remove("red");
     }
-  });
+
+  }
+  );
 }
+for (let radioButton of radioButtonsGeneros) {
+ 
+  radioButton.addEventListener("blur", function (e) {
+    if (this.checked) {
+      genero = this.value;
+      validGender = true;
+      radioButtonsGeneros[0].nextElementSibling.classList.remove("red");
+      radioButtonsGeneros[1].nextElementSibling.classList.remove("red");
+    }
+
+  }
+  );
+}
+
+
 // ###############################################
 //     GESTION DE FOTO
 // ###############################################
@@ -613,11 +633,14 @@ let camposTutor = [
   direccion1,
   telefono1,
 ];
+
 camposTutor.forEach((campo) => {
   campo.addEventListener("blur", addRedBorderIfIncomplete);
   campo.addEventListener("focus", removeErrorMsg);
-  if (campo == telefono1) {
+
+  if (campo == telefono1 ) {
     campo.addEventListener("keydown", validateNumbers);
+    
   } else {
     campo.addEventListener("keydown", validateText);
     if (campo == dni1) {
@@ -625,13 +648,14 @@ camposTutor.forEach((campo) => {
     }
     if (campo == direccion1) {
       campo.removeEventListener("keydown", validateText);
-      campo.removeEventListener("keydown", validateText);
+     
     }
   }
 });
 
 //fecha de nacimiento
 fechaNacimientoTutor1.addEventListener("blur", revisarFechaTutor);
+
 function revisarFechaTutor() {
   if (!checkDate(fechaNacimientoTutor1, 18) || fechaNacimientoTutor1 == "") {
     fechaNacimientoTutor1.classList.add("border-red");
@@ -670,6 +694,7 @@ document.querySelector("#agregarTutor").addEventListener("click", agregarTutor);
 function agregarTutor() {
   for (let div of hiddenDivs) {
     div.classList.remove("hidden5");
+    segundoTutor = true;
   }
 }
 
@@ -731,6 +756,7 @@ function cargarInfoDeRegistro() {
         data[0].lugarNacimiento;
       document.querySelector("#fechaNacimientoTutor1").value =
         data[0].fechaNacimiento;
+        validBirthdayTutor1 = true;
     });
 }
 
@@ -862,7 +888,7 @@ function checkifTutorComplete() {
     console.log(dni1.value);
     console.log(direccion1.value);
     console.log(telefono1.value);
-    console.log("******");
+    console.log("***InfoTutor2***");
     console.log(nombreTutor2.value);
     console.log(apellidosTutor2.value);
     console.log(relacion2.value);
@@ -893,74 +919,34 @@ function checkifTutorComplete() {
       });
     }
   } else {
-    console.log("PARTE 3-TUTORES NO NOOOOO válida");
-    console.log(dniValido1);
-    console.log(validBirthdayTutor1);
-    console.log(nombreTutor1.value);
-    console.log(apellidosTutor1.value);
-    console.log(relacion1.value);
-    console.log(lugarNacimientoTutor1.value);
-    console.log(fechaNacimientoTutor1.value);
-    console.log(dni1.value);
-    console.log(direccion1.value);
-    console.log(telefono1.value);
-    console.log("******");
-    console.log(dniValido2);
-    console.log(validBirthdayTutor2);
-    console.log(nombreTutor2.value);
-    console.log(apellidosTutor2.value);
-    console.log(relacion2.value);
-    console.log(lugarNacimientoTutor2.value);
-    console.log(fechaNacimientoTutor2.value);
-    console.log(dni2.value);
-    console.log(direccion2.value);
-    console.log(telefono2.value);
+    console.log("PARTE 3-TUTORES NO válida");
+    // console.log(dniValido1);
+    // console.log(validBirthdayTutor1);
+    // console.log(nombreTutor1.value);
+    // console.log(apellidosTutor1.value);
+    // console.log(relacion1.value);
+    // console.log(lugarNacimientoTutor1.value);
+    // console.log(fechaNacimientoTutor1.value);
+    // console.log(dni1.value);
+    // console.log(direccion1.value);
+    // console.log(telefono1.value);
+    // console.log("******");
+    // console.log(dniValido2);
+    // console.log(validBirthdayTutor2);
+    // console.log(nombreTutor2.value);
+    // console.log(apellidosTutor2.value);
+    // console.log(relacion2.value);
+    // console.log(lugarNacimientoTutor2.value);
+    // console.log(fechaNacimientoTutor2.value);
+    // console.log(dni2.value);
+    // console.log(direccion2.value);
+    // console.log(telefono2.value);
   }
 
-  // if (
-  //   dniValido2 &&
-  //   validBirthdayTutor2 &&
-  //   nombreTutor2.value != "" &&
-  //   apellidosTutor2.value != "" &&
-  //   relacion2.value != "" &&
-  //   lugarNacimientoTutor2.value != "" &&
-  //   telefono2.value != "" &&
-  //   direccion2.value != ""
-  //   ) {
-  //   console.log("PARTE 3-segundo tutor válido");
-  //   tutor2Valid = true;
-  //   console.log(nombreTutor2.value);
-  //   console.log(apellidosTutor2.value);
-  //   console.log(relacion2.value);
-  //   console.log(lugarNacimientoTutor2.value);
-  //   console.log(fechaNacimientoTutor2.value);
-  //   console.log(dni2.value);
-  //   console.log(direccion2.value);
-  //   console.log(telefono2.value);
-
-  //   } else {
-  //   tutor2Valid= false;
-  //   console.log(" Parte 3 no valida");
-  //   console.log(nombreTutor2.value);
-  //   console.log(apellidosTutor2.value);
-  //   console.log(relacion2.value);
-  //   console.log(lugarNacimientoTutor2.value);
-  //   console.log(fechaNacimientoTutor2.value);
-  //   console.log(dni2.value);
-  //   console.log(direccion2.value);
-  //   console.log(telefono2.value);
-  //   camposTutor2.forEach((campo) => {
-  //     addRedBorderIfEmpty(campo)});
-  //   }
-  //FIN PARTE2
+  
 }
 
-// function checkifTutor2Complete() {
 
-//     // console.log(dni1.value);
-//     // console.log(dniValido1);
-//     // console.log(validBirthdayTutor1);
-//   }
 
 // ###############################################
 //     GESTION DE BOTON VOLVER
@@ -984,12 +970,21 @@ function volver2(e) {
 // ###############################################
 
 let dniValidoAutorizado = false;
+
 let nombreAutorizado1 = document.querySelector("#nombreAutorizado1");
 let apellidosAutorizado1 = document.querySelector("#apellidosAutorizado1");
 let relacionAutorizado1 = document.querySelector("#relacionAutorizado1");
 let dniAutorizado1 = document.querySelector("#dniAutorizado1");
+
+let nombreAutorizado2 = document.querySelector("#nombreAutorizado2");
+let apellidosAutorizado2 = document.querySelector("#apellidosAutorizado2");
+let relacionAutorizado2 = document.querySelector("#relacionAutorizado2");
+let dniAutorizado2 = document.querySelector("#dniAutorizado2");
+let dniValidoAutorizado2 = false;
+
 let divInfoAutorizados = document.querySelector(".infoAutorizados");
 dniAutorizado1.addEventListener("blur", checkDniAutorizado);
+dniAutorizado2.addEventListener("blur", checkDniAutorizado2);
 
 let camposAutorizados = [
   nombreAutorizado1,
@@ -1008,6 +1003,7 @@ camposAutorizados.forEach((campo) => {
 
 function checkDniAutorizado() {
   dniValidoAutorizado = false;
+
   if (revisarDni(dniAutorizado1)) {
     dniValidoAutorizado = true;
     dniAutorizado1.classList.remove("border-red");
@@ -1020,9 +1016,145 @@ function checkDniAutorizado() {
   }
 }
 
+function checkDniAutorizado2() {
+  dniValidoAutorizado2 = false;
+
+  if (revisarDni(dniAutorizado2)) {
+    dniValidoAutorizado2 = true;
+    dniAutorizado2.classList.remove("border-red");
+    divInfoAutorizados.innerHTML = "";
+  } else {
+    dniValidoAutorizado2 = false;
+    dniAutorizado2.classList.add("border-red");
+    divInfoAutorizados.innerHTML =
+      "<p>Dni no válido. Por favor revise el DNI ingresado</p>";
+  }
+}
+
+//   *****************************************
+//       si escogen que solo haya un autorizado
+
+//   ****************************************
+
+
+
+
+//   *****************************************
+//       si escogen que no hayan autorizados
+
+//   ****************************************
+document
+  .querySelector("#soloPadresAutorizados")
+  .addEventListener("change", anularAutorizados);
+
+function anularAutorizados() {
+  if (this.checked) {
+    primerAutorizado = false;
+    dniValidoAutorizado = true;
+
+    camposAutorizados.forEach((campo) => {
+        campo.value = "0000000A";
+      });
+
+      camposAutorizados2.forEach((campo) => {
+        campo.value = "0000000A";
+      });
+
+
+    document.querySelector("#agregarOtroAutorizado").classList.add("hidden");
+    document.querySelector(".autorizadodiv1").classList.add("hidden");
+    document.querySelector(".autorizadodiv2").classList.add("hidden");
+    document.querySelector("#autorizadosBox").classList.add("hidden");
+
+    
+
+
+  } else {
+   
+    document.querySelector("#agregarOtroAutorizado").classList.remove("hidden");
+    document.querySelector(".autorizadodiv1").classList.remove("hidden");
+    document.querySelector(".autorizadodiv2").classList.remove("hidden");
+    primerAutorizado = true;
+    dniValidoAutorizado = false;
+   
+    camposAutorizados.forEach((campo) => {
+      campo.value = "";
+    });
+  }
+}
+
+
+
+//Gestión de segundo Autorizado
+let segundoAutorizado = false;
+
+document
+  .querySelector("#agregarOtroAutorizado")
+  .addEventListener("click", desplegarSegundoAutorizado);
+
+function desplegarSegundoAutorizado() {
+  nombreAutorizado2.value = "";
+  apellidosAutorizado2.value = "";
+  relacionAutorizado2.value = "";
+  dniAutorizado2.value = "";
+
+  document.querySelector("#autorizadosBox").classList.remove("hidden");
+  document.querySelector("#cancelAdd").classList.remove("hidden");
+
+  segundoAutorizado = true;
+}
+
+let camposAutorizados2 = [
+  nombreAutorizado2,
+  apellidosAutorizado2,
+  relacionAutorizado2,
+  dniAutorizado2,
+];
+
+if (segundoAutorizado) {
+  camposAutorizados2.forEach((campo) => {
+    campo.addEventListener("blur", addRedBorderIfIncomplete);
+    campo.addEventListener("keydown", validateText);
+    campo.addEventListener("focus", removeErrorMsg);
+    if (campo == dniAutorizado2) {
+      campo.removeEventListener("keydown", validateText);
+    }
+  });
+}
+document.querySelector('#cancelAdd').addEventListener('click',cancelarAutorizarSegundaPersona);
+
+function cancelarAutorizarSegundaPersona() {
+    this.classList.add('hidden');
+    document.querySelector("#autorizadosBox").classList.add("hidden");
+    segundoAutorizado = false;
+    dniValidoAutorizado2 = true;
+    nombreAutorizado2.value = "Blank";
+    apellidosAutorizado2.value = "Blank";
+    relacionAutorizado2.value = "Blank";
+    dniAutorizado2.value = "00000000A ";
+
+}
+
+
+if (document.querySelector("#autorizadosBox").classList.contains("hidden")) {
+  segundoAutorizado = false;
+  dniValidoAutorizado2 = true;
+  nombreAutorizado2.value = "Blank";
+  apellidosAutorizado2.value = "Blank";
+  relacionAutorizado2.value = "Blank";
+  dniAutorizado2.value = "00000000A ";
+}else{
+    segundoAutorizado = true;
+    dniValidoAutorizado2 = false;
+}
+
 // ###############################################
 //     ENVIAR TODO EL FORMULARIO CON LA INFORMACIÓN DE LA MATRÍCULA
 // ###############################################
+// ###############################################
+//     ENVIAR TODO EL FORMULARIO CON LA INFORMACIÓN DE LA MATRÍCULA
+// ###############################################
+let segundoAutorizadoValido = false;
 
 document
   .querySelector("#enviarform")
@@ -1030,7 +1162,12 @@ document
 
 function checkifAuthorizedPersonComplete(e) {
   e.preventDefault();
+
   camposAutorizados.forEach((campo) => {
+    addRedBorderIfEmpty(campo);
+  });
+
+  camposAutorizados2.forEach((campo) => {
     addRedBorderIfEmpty(campo);
   });
 
@@ -1038,19 +1175,40 @@ function checkifAuthorizedPersonComplete(e) {
     dniValidoAutorizado &&
     nombreAutorizado1.value != "" &&
     apellidosAutorizado1.value != "" &&
-    relacionAutorizado1.value != ""
+    relacionAutorizado1.value != "" &&
+    dniValidoAutorizado2 &&
+    nombreAutorizado2.value != "" &&
+    apellidosAutorizado2.value != "" &&
+    relacionAutorizado2.value != ""
   ) {
-    console.log("PARTE 4 -AUTORIZADOS- válida");
+    console.log("PARTE 4 -AUTORIZADOS con 1 solo es-  válida");
     cuartaParteValida = true;
-    console.log(nombreAutorizado1.value);
-    console.log(apellidosAutorizado1.value);
-    console.log(relacionAutorizado1.value);
-    console.log(dniAutorizado1.value);
+      enviarMatricula();
+    // console.log(dniValidoAutorizado);
+    // console.log(dniAutorizado1.value);
+    // console.log(nombreAutorizado1.value);
+    // console.log(apellidosAutorizado1.value);
+    // console.log(relacionAutorizado1.value);
+    // console.log(dniValidoAutorizado2);
+    // console.log(dniAutorizado2.value);
+    // console.log(nombreAutorizado2.value);
+    // console.log(apellidosAutorizado2.value);
+    // console.log(relacionAutorizado2.value);
   } else {
-    console.log("Parte 4 -Autorizados NO valida");
+    cuartaParteValida = false;
+    console.log("PARTE 4 -AUTORIZADOS con 1 solo es- NO válida");
+    // console.log(dniValidoAutorizado);
+    // console.log(dniAutorizado1.value);
+    // console.log(nombreAutorizado1.value);
+    // console.log(apellidosAutorizado1.value);
+    // console.log(relacionAutorizado1.value);
+    // console.log(dniValidoAutorizado2);
+    // console.log(dniAutorizado2.value);
+    // console.log(nombreAutorizado2.value);
+    // console.log(apellidosAutorizado2.value);
+    // console.log(relacionAutorizado2.value);
   }
-
-  enviarMatricula();
+  
 }
 
 // document
@@ -1076,6 +1234,9 @@ function enviarMatricula() {
     let idTutor2 =
       Math.random().toString(30).substring(2) + Date.now().toString();
     let idAutorizado =
+      Math.random().toString(30).substring(2) + Date.now().toString();
+
+      let idAutorizado2 =
       Math.random().toString(30).substring(2) + Date.now().toString();
 
     // ****************************************************
@@ -1217,6 +1378,48 @@ function enviarMatricula() {
                 });
             }
 
+
+            if (segundoAutorizado) {
+              fetch(
+                "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                  },
+
+                  body: JSON.stringify({
+                    idAutorizado: idAutorizado,
+                    nombreAutorizado: nombreAutorizado2.value,
+                    apellidosAutorizado: apellidosAutorizado2.value,
+                    relacionAutorizado: relacionAutorizado2.value,
+                    dniAutorizado: dniAutorizado2.value,
+                  }),
+                }
+              )
+                .then((response) => {
+                  switch (response.status) {
+                    case 200:
+                      divInfoAutorizados.innerHTML +=
+                        "<h1>Autorizado registrado con éxito</h1>";
+                      // sessionStorage.setItem("id", data["id"]);
+                      break;
+                    case 400:
+                      divInfoAutorizados.innerHTML +=
+                        "<h2>Autorizado no ha sido registrado</h2>";
+                      break;
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log(data);
+                  // clearForm();
+                  divInfoAutorizados.innerHTML =
+                    "<h3>Autorizado ha sido registrado</h3>";
+                });
+            }
+
+
             // FETCH PARA AUTORIZADOS
             fetch(
               "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
@@ -1227,7 +1430,7 @@ function enviarMatricula() {
                 },
 
                 body: JSON.stringify({
-                  idAutorizado: idAutorizado,
+                  idAutorizado: idAutorizado2,
                   nombreAutorizado: nombreAutorizado1.value,
                   apellidosAutorizado: apellidosAutorizado1.value,
                   relacionAutorizado: relacionAutorizado1.value,
@@ -1269,6 +1472,10 @@ function enviarMatricula() {
 
                 if (segundoTutor) {
                   body.idTutor2 = idTutor2;
+                }
+
+                if (segundoAutorizado) {
+                  body.idAutorizado2 = idAutorizado2;
                 }
 
                 fetch(

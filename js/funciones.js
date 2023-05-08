@@ -12,12 +12,13 @@ function validateText(event) {
 export { validateText };
 
 function validateNumbers(e) {
-  let key = e.keyCode;
-  let excludedKeys = [8, 9];
 
-  if (key < 48 || key > 57 || excludedKeys.includes(key)) {
-    e.preventDefault();
-  }
+  var charCode = (e.which) ? e.which : e.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)){
+      e.preventDefault();
+    }
+   
+ 
 }
 
 export { validateNumbers };
@@ -39,6 +40,24 @@ function checkDate(fecha, edadMin) {
 }
 
 export { checkDate };
+
+//Función que permite revisar que las fechas sean válidas
+function checkBabyDate(fecha, edadMax) {
+  let hoy = new Date();
+  let birthday = new Date(fecha.value);
+  let years = 1000 * 86400 * 365 * 0;
+  let limitRange = 1000 * 86400 * 365 * edadMax;
+
+  if (
+    hoy.getTime() - birthday.getTime() < years ||
+    hoy.getTime() - birthday.getTime() > limitRange
+  ) {
+    return false;
+  }
+  return true;
+}
+
+export { checkBabyDate };
 
 //función que quita el borde rojo del cuadro de texto
 function removeErrorMsg(e) {
@@ -354,6 +373,7 @@ document.querySelector(
 <label for="noventa">90 min</label>
   </div>
    <button class="saveChanges">Guardar Cambios</button>
+   <button class="reportReady">Completo</button>
    `;
 
 }

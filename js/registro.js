@@ -322,8 +322,10 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
         console.log(data);
         
         clearForm();
+        divInfo.classList.add('green');
         divInfo.innerHTML =
           "<h3>Registro exitoso! ahora puedes iniciar Sesión</h3>";
+         
 
         // window.location.href = "../html/login.html";
         setTimeout(() => {

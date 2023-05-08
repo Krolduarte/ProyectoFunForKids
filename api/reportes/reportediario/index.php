@@ -73,6 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } elseif (isset($_GET['siesta'])) {
         $siesta = $_GET['siesta'];
         $sql .= " AND siesta='$siesta'";
+
+    } elseif (isset($_GET['ready'])) {
+        $ready = $_GET['ready'];
+        $sql .= " AND ready='$ready'";
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
         exit;

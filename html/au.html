@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/formulario-registro.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Matricula</title>
+  </head>
+  <body>
+    <!-- navbar -->
+    <div class="navBar">
+      <img id="logo" src="../img/formulario-registro/logo-white.png" alt="" />
+      <div>  <a id="cerrarSesion" href="../html/index.html"
+        ><lord-icon
+          src="https://cdn.lordicon.com/moscwhoj.json"
+          trigger="hover"
+          colors="primary:#121331,secondary:#eee966"
+          style="width: 80px; height: 80px"
+        >
+        </lord-icon
+      ></a> </div>
+       
+    </div>
+    <!-- fin nav bar -->
+    <div class="pestanasBar">
+      <div class="groupPestanas">
+        <div class="pestana">Bebé</div>
+        <div class="pestana">Cuestionario</div>
+        <div class="pestana tutors" >Tutores</div>
+        <div class="pestana">Autorizados</div>
+       
+      </div>
+    </div>
+    <form action="" method="POST" id="formularioBebe" name="formularioBebe" enctype="multipart/formdata">
+      <section class="container uno">
+        <div class="formSection">
+          <!-- AREA DE PESTAÑAS-->
+
+    
+
+       
+
+      
+
+      
+<!-- ******************************************************************
+                    AUTORIZADOS
+****************************************************************** -->
+<section class="">
+  <div class="formSection">
+    <!-- AREA DE PESTAÑAS-->
+
+
+
+    <!-- AREA DEL TITULO -->
+    <div class="tituloPrincipalTutores">
+      <p>Datos de las personas autorizadas para recoger el niño/niña:</p>
+      <p class="segundoTitulo" >Persona Autorizada a parte de los tutores:</p>
+    </div>
+    <!-- FIN AREA DEL TITULO -->
+
+
+    <!-- FORMULARIO -->
+  
+      <!-- NOMBRE Y APELLIDO -->
+      <div class="groupDouble autorizadodiv1">
+        <div class="box">
+          <label for="nombreAutorizado1" class="form_label">Nombre</label>
+          <input
+            type="text"
+            name="nombreAutorizado1"
+            id="nombreAutorizado1"
+          
+            
+            required
+          />
+        </div>
+        <div class="box">
+          <label for="apellidosAutorizado1">Apellidos</label>
+          <input type="text" name="apellidosAutorizado1" id="apellidosAutorizado1" required />
+        </div>
+      </div>
+
+      <!-- RELACIÓN CON EL NIÑO Y DNI -->
+      <div class="groupDouble autorizadodiv2">
+        <div class="box">
+          <label for="relacionAutorizado1" class="form_label"
+            >Relación con el niño/la niña</label
+          >
+          <input
+            type="text"
+            name="relacionAutorizado1"
+            id="relacionAutorizado1"
+         
+            
+            required
+          />
+        </div>
+        <div class="box">
+            <label for="dniAutorizado1">DNI/ NIE</label>
+            <input type="text" name="dniAutorizado1" id="dniAutorizado1" required />
+          </div>
+      </div>
+
+      <div class="botonesAutorizados" >
+        
+     
+       
+<div class="soloPadres">
+  <input type="checkbox" name="soloPadresAutorizados" id="soloPadresAutorizados">
+  <label for="soloPadresAutorizados">Solo tutores autorizados</label>
+</div>
+       
+       
+
+        <div class=" iconoMas" id="agregarOtroAutorizado">
+        
+          <img
+            src="../img/formulario-registro/49-plus-circle-outline.gif"
+            alt=""
+          />  <span>Autorizar a otra persona</span>
+        
+        </div>
+       
+      </div>
+
+
+      <span id="cancelAdd" class="hidden">Cancelar</span>
+
+      <div id="autorizadosBox" class="hidden">
+        <div class="groupDouble">
+          <div class="box">
+            <label for="nombreAutorizado2" class="form_label">Nombre</label>
+            <input
+              type="text"
+              name="nombreAutorizado2"
+              id="nombreAutorizado2"
+              required
+            />
+          </div>
+          <div class="box">
+            <label for="apellidosAutorizado2">Apellidos</label>
+            <input type="text" name="apellidosAutorizado2" id="apellidosAutorizado2" required />
+          </div>
+        </div>
+        
+        
+        <div class="groupDouble">
+          <div class="box">
+            <label for="relacionAutorizado2" class="form_label"
+              >Relación con el niño/la niña</label
+            >
+            <input
+              type="text"
+              name="relacionAutorizado2"
+              id="relacionAutorizado2"
+           
+              
+              required
+            />
+          </div>
+          <div class="box">
+              <label for="dniAutorizado2">DNI/ NIE</label>
+              <input type="text" name="dniAutorizado2" id="dniAutorizado2" required />
+            </div>
+        </div>
+      </div>
+     
+        
+     <div class="infoAutorizados"></div>
+
+      <!-- BOTON REGISTRARSE Y CANCELAR  -->
+      <div class="botones">
+        <button class="btnCancel" id="btnVolver3">Volver</button>
+        <input type="submit" value="Enviar matrícula" class="btnRegister" id="enviarform" />
+      </div>
+  
+    <!-- FIN FORMULARIO -->
+  </div>
+  <!-- FIN FORMSECTION -->
+</section>
+
+
+    
+    </form>
+    <!-- FIN FORMULARIO -->
+
+    <!-- FIN CONTAINER -->
+   
+<script src="../js/au.js" type="module"></script>
+  </body>
+
+</html>

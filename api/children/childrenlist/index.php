@@ -65,6 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } elseif (isset($_GET['checkedIn'])) {
         $checkedIn = $_GET['checkedIn'];
         $sql .= " AND checkedIn='$checkedIn'";
+    } elseif (isset($_GET['checkedIn'])) {
+        $checkedIn = $_GET['checkedIn'];
+        $sql .= " AND checkedIn='$checkedIn'";
+    } elseif (isset($_GET['dailyReportReady'])) {
+        $dailyReportReady = $_GET['dailyReportReady'];
+        $sql .= " AND dailyReportReady='$dailyReportReady'";
+   
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
         exit;

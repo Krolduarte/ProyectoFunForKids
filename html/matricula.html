@@ -584,7 +584,7 @@
 <!-- ******************************************************************
                     AUTORIZADOS
 ****************************************************************** -->
-<section class="containerCuatro cuatro">
+<section class="">
   <div class="formSection">
     <!-- AREA DE PESTAÑAS-->
 
@@ -601,7 +601,7 @@
     <!-- FORMULARIO -->
   
       <!-- NOMBRE Y APELLIDO -->
-      <div class="groupDouble">
+      <div class="groupDouble autorizadodiv1">
         <div class="box">
           <label for="nombreAutorizado1" class="form_label">Nombre</label>
           <input
@@ -620,7 +620,7 @@
       </div>
 
       <!-- RELACIÓN CON EL NIÑO Y DNI -->
-      <div class="groupDouble">
+      <div class="groupDouble autorizadodiv2">
         <div class="box">
           <label for="relacionAutorizado1" class="form_label"
             >Relación con el niño/la niña</label
@@ -640,15 +640,70 @@
           </div>
       </div>
 
-      <div class="directionRow">
-        <div class="iconoMas">
+      <div class="botonesAutorizados" >
+        
+     
+       
+<div class="soloPadres">
+  <input type="checkbox" name="soloPadresAutorizados" id="soloPadresAutorizados">
+  <label for="soloPadresAutorizados">Solo tutores autorizados</label>
+</div>
+       
+       
+
+        <div class=" iconoMas" id="agregarOtroAutorizado">
+        
           <img
             src="../img/formulario-registro/49-plus-circle-outline.gif"
             alt=""
-          />
+          />  <span>Autorizar a otra persona</span>
+        
         </div>
-        <div>Autorizar a otra persona</div>
+       
       </div>
+
+
+      <span id="cancelAdd" class="hidden">Cancelar</span>
+
+      <div id="autorizadosBox" class="hidden">
+        <div class="groupDouble">
+          <div class="box">
+            <label for="nombreAutorizado2" class="form_label">Nombre</label>
+            <input
+              type="text"
+              name="nombreAutorizado2"
+              id="nombreAutorizado2"
+              required
+            />
+          </div>
+          <div class="box">
+            <label for="apellidosAutorizado2">Apellidos</label>
+            <input type="text" name="apellidosAutorizado2" id="apellidosAutorizado2" required />
+          </div>
+        </div>
+        
+        
+        <div class="groupDouble">
+          <div class="box">
+            <label for="relacionAutorizado2" class="form_label"
+              >Relación con el niño/la niña</label
+            >
+            <input
+              type="text"
+              name="relacionAutorizado2"
+              id="relacionAutorizado2"
+           
+              
+              required
+            />
+          </div>
+          <div class="box">
+              <label for="dniAutorizado2">DNI/ NIE</label>
+              <input type="text" name="dniAutorizado2" id="dniAutorizado2" required />
+            </div>
+        </div>
+      </div>
+     
         
      <div class="infoAutorizados"></div>
 

@@ -71,6 +71,7 @@ fetch(
     return response.json();
   })
   .then((data) => {
+  
     data.forEach((element) => {
 
    
@@ -144,6 +145,8 @@ fetch(
 
 
       idChild = element["idChild"];
+      console.log(idChild);
+      
       fetch(
         `http://localhost/proyectofinalciclo/api/children/childrenlist/?idChild=${idChild}`,
         {
@@ -157,6 +160,7 @@ fetch(
           return response.json();
         })
         .then((data) => {
+          sessionStorage.setItem("idChild",idChild );
           data.forEach((element) => {
             
        

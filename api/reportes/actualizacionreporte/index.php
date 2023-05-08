@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     $json = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($json['idreporte']) || isset($json['idMonitor']) || isset($json['idChild'])  || isset($json['desayuno']) || isset($json['merienda'])  || isset($json['comida']) || isset($json['siesta'])) {
+    if (isset($json['idreporte']) || isset($json['idMonitor']) || isset($json['idChild'])  || isset($json['desayuno']) || isset($json['merienda'])  || isset($json['comida']) || isset($json['siesta'])|| isset($json['ready'])) {
 
         $idreporte = $json['idreporte'];
         $idChild = $json['idChild'];
@@ -45,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
                 $sql .= ", siesta='$siesta'";
             }
         }
+
+       
 
         $sql .= " WHERE idreporte ='$idreporte'";
 

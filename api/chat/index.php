@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $sql = "SELECT * FROM chat where 1 ";
 
-    if (isset($_GET['idRemitente']) || isset($_GET['idChild']) ||isset($_GET['msgText'])|| isset($_GET['created_on']) || isset($_GET['idDestinatario'])){
+    if (isset($_GET['idRemitente']) || isset($_GET['idChild']) ||isset($_GET['msgText'])|| isset($_GET['created_on']) || isset($_GET['idDestinatario']) ||isset($_GET['notificacionFecha']) ){
 
         if (isset($_GET['idRemitente'])) {
             $idRemitente = $_GET['idRemitente'];
@@ -67,6 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if (isset($_GET['created_on'])) {
             $created_on = $_GET['created_on'];
             $sql .= " AND created_on='$created_on' ";
+
+        }
+
+        if (isset($_GET['notificacionFecha'])) {
+            $notificacionFecha = $_GET['notificacionFecha']. ' 00:00:00';
+            $finfecha = $_GET['notificacionFecha'] . ' 23:59:59';
+            $sql .= " AND created_on between ' $notificacionFecha' and ' $finfecha' ";
 
         }
 

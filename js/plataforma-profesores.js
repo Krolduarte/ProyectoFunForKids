@@ -71,6 +71,7 @@ let duty = sessionStorage.getItem("duty");
 // ##########################################################################
 
 window.addEventListener("load", checkRoster);
+window.addEventListener("load", updateOnComingMessages);
 
 let registrados = document.querySelector(".registrados");
 let childrenListDiv = document.querySelector(".childrenList");
@@ -174,9 +175,10 @@ function filtrar() {
 }
 
 // mostrarFicha();
-// window.setTimeout( function() {
-//   window.location.reload();
-// }, 30000);
+window.setTimeout(function () {
+  updateOnComingMessages();
+  console.log("reloading");
+}, 2000);
 
 //Actualizar conteo cada 5 segundos
 
@@ -219,6 +221,34 @@ function checkRoster() {
   fetchRoster(`?sala=2`, "#salaDos");
   fetchRoster(`?sala=3`, "#salaTres");
   fetchRosterRegistrados();
+}
+
+function updateOnComingMessages() {
+  let allDataId = document.querySelectorAll("[data-id");
+
+  fetch(
+    `http://localhost/proyectofinalciclo/api/chat/?notificacionFecha=${today}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.forEach((dato) => {
+        if (dato.idRemitente != "admin") {
+          allDataId.forEach((child) => {
+            child.dataset.id === dato.idChild
+              ? child.classList.remove("hidden")
+              : console.log("No hay mensajes nuevos");
+          });
+        }
+      });
+    });
 }
 
 function mostrarTodos() {
@@ -332,6 +362,7 @@ function fetchRoster(sala = "", nombreId) {
     .then((data) => {
       document.querySelector(nombreId).innerHTML = data[0]["count"];
     });
+  updateOnComingMessages();
 }
 
 function fetchRosterRegistrados() {
@@ -348,6 +379,7 @@ function fetchRosterRegistrados() {
     .then((data) => {
       document.querySelector("#totalregistrados").innerHTML = data[0]["count"];
     });
+  updateOnComingMessages();
 }
 
 function fetchRegistered() {
@@ -370,6 +402,7 @@ function fetchRegistered() {
 
   let url = `http://localhost/proyectofinalciclo/api/children/childrenlist/`;
   fetchKids(url);
+  updateOnComingMessages();
 }
 
 // ##########################################################################
@@ -388,7 +421,6 @@ function fetchKids(url) {
     })
     .then((data) => {
       data.forEach((bebe) => {
-        console.log(bebe);
         let div = document.createElement("div");
         div.setAttribute("data-bebe", bebe["idChild"]);
 
@@ -429,8 +461,11 @@ function fetchKids(url) {
           ${checkDisability()}
 
           </div>
-          <div class="msgIcon">
-          <img src="../img/plataforma-profesores/email(1).png" alt="" /> <img src="../img/plataforma-profesores/petition.png" alt="">
+          <div class="msgIcon "data-idChild="${bebe["idChild"]}">
+          ${checkReportReady()}
+          <img class="iconEmail hidden" data-id="${
+            bebe["idChild"]
+          }"  src="../img/plataforma-profesores/email(1).png" alt="" /> 
             </div>`;
           } else {
             // **************Si el duty es Recepcion que muestre los siguientes Datos*********
@@ -456,7 +491,10 @@ function fetchKids(url) {
           ${checkDisability()}
 
           </div>
-          <div class="msgIcon">
+          <div class="msgIcon" "data-idChild="${bebe["idChild"]}">
+       
+          <img class="iconEmail hidden" data-id="${bebe["idChild"]}" 
+           src="../img/plataforma-profesores/email(1).png" alt="" /> 
 
           <p class="nombreBebe"></p>
 
@@ -512,6 +550,14 @@ function fetchKids(url) {
           }
         }
 
+        function checkReportReady() {
+          if (bebe["dailyReportReady"] == 1) {
+            return `<img src="../img/plataforma-profesores/petition.png" alt="imagen_reporte_completo;>`;
+          } else {
+            return "";
+          }
+        }
+
         function checkAllergy() {
           if (bebe["hasFoodAllergy"] == 1 || bebe["isAllergicToMed"] == 1) {
             return `<div class="iconInfo alergic">Alergias</div>`;
@@ -529,17 +575,21 @@ function fetchKids(url) {
         }
 
         function clearPestana() {
+          document
+            .querySelector(".pestanaReporte")
+            .classList.add("selectedOption");
+          document
+            .querySelector(".pestanaMensajes")
+            .classList.remove("selectedOption");
+          document
+            .querySelector(".pestanaPerfil")
+            .classList.remove("selectedOption");
 
-          document.querySelector('.pestanaReporte').classList.add('selectedOption');
-          document.querySelector('.pestanaMensajes').classList.remove('selectedOption');
-          document.querySelector('.pestanaPerfil').classList.remove('selectedOption');
-
-          
           document.querySelector(".grisDiaper").classList.remove("hidden");
           document.querySelector(".white").classList.remove("hidden");
           document.querySelector(".grisSiesta").classList.remove("hidden");
-          document.querySelector(".profileBaby").style.display="none";
-          document.querySelector(".mensajesBaby").style.display="none";
+          document.querySelector(".profileBaby").style.display = "none";
+          document.querySelector(".mensajesBaby").style.display = "none";
         }
 
         // ##########################################################################
@@ -547,14 +597,22 @@ function fetchKids(url) {
         // ##########################################################################
 
         function mostrarFicha() {
-         document.querySelector('.pestanaReporte').classList.add('selectedOption');
-         document.querySelector('.pestanaMensajes').classList.remove('selectedOption');
-         document.querySelector('.pestanaPerfil').classList.remove('selectedOption');
-         
+          document
+            .querySelector(".pestanaReporte")
+            .classList.add("selectedOption");
+          document
+            .querySelector(".pestanaMensajes")
+            .classList.remove("selectedOption");
+          document
+            .querySelector(".pestanaPerfil")
+            .classList.remove("selectedOption");
+
           clearPestana();
           // sessionStorage.removeItem("idUsuario");
           sessionStorage.setItem("idChild", bebe["idChild"]);
           sessionStorage.setItem("idUsuario", bebe["idUsuario"]);
+          sessionStorage.setItem("nombreBebe", bebe["nombreBebe"]);
+          sessionStorage.setItem("apellido1Bebe", bebe["apellido1Bebe"]);
           let idChildSession = sessionStorage.getItem("idChild");
           let idUsuario = sessionStorage.getItem("idUsuario");
 
@@ -592,6 +650,9 @@ function fetchKids(url) {
             .querySelector(".saveChanges")
             .addEventListener("click", saveChanges);
 
+          document
+            .querySelector(".reportReady")
+            .addEventListener("click", showReportReadyicon);
 
           // ##########################################################################
           //     AÑADIENDO EVENTO CLICK A AGREGAR MÁS PARA HACER FECTH A DEPOSICIONES
@@ -749,15 +810,21 @@ function fetchKids(url) {
 
           // ********************************cargar Perfil*****************************************
           function loadBabyProfile(e) {
-            document.querySelector('.pestanaMensajes').classList.remove('selectedOption');
-            document.querySelector('.pestanaReporte').classList.remove('selectedOption');
-            document.querySelector('.pestanaPerfil').classList.add('selectedOption');
+            document
+              .querySelector(".pestanaMensajes")
+              .classList.remove("selectedOption");
+            document
+              .querySelector(".pestanaReporte")
+              .classList.remove("selectedOption");
+            document
+              .querySelector(".pestanaPerfil")
+              .classList.add("selectedOption");
 
             e.preventDefault();
             document.querySelector(".grisDiaper").classList.add("hidden");
             document.querySelector(".white").classList.add("hidden");
             document.querySelector(".grisSiesta").classList.add("hidden");
-             document.querySelector(".profileBaby").style.display = "flex";
+            document.querySelector(".profileBaby").style.display = "flex";
             document.querySelector(".mensajesBaby").style.display = "none";
 
             fetch(
@@ -774,7 +841,6 @@ function fetchKids(url) {
               })
               .then((data) => {
                 data.forEach((element) => {
-                
                   document.querySelector(
                     ".profileBaby"
                   ).innerHTML = `<section class="perfilSection">
@@ -915,8 +981,6 @@ function fetchKids(url) {
           }
 
           // **final carga perfil****
-
-     
 
           //             Cargar actualizaciones de la ficha
           // ***************************************************************
@@ -1395,6 +1459,8 @@ function fetchKids(url) {
         });
       });
     });
+
+  updateOnComingMessages();
 }
 
 // *********removido*********
@@ -1428,18 +1494,16 @@ if (duty == "sala") {
 // if (window.location == "http://localhost/proyectofinalciclo/html/recepcion-check.html"){
 
 // }
-     // ********************************cargar Mensajes*****************************************
+// ********************************cargar Mensajes*****************************************
 
-function mostrarFichaMensajes(){
+function mostrarFichaMensajes() {
+  document.querySelector(".pestanaMensajes").classList.add("selectedOption");
+  document.querySelector(".pestanaReporte").classList.remove("selectedOption");
+  document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
 
-  document.querySelector('.pestanaMensajes').classList.add('selectedOption');
-  document.querySelector('.pestanaReporte').classList.remove('selectedOption');
-  document.querySelector('.pestanaPerfil').classList.remove('selectedOption');
-
-
-   document.querySelector(".grisDiaper").classList.add("hidden");
-   document.querySelector(".white").classList.add("hidden");
-   document.querySelector(".grisSiesta").classList.add("hidden");
+  document.querySelector(".grisDiaper").classList.add("hidden");
+  document.querySelector(".white").classList.add("hidden");
+  document.querySelector(".grisSiesta").classList.add("hidden");
 
   document.querySelector(".profileBaby").style.display = "none";
   document.querySelector(".mensajesBaby").style.display = "flex";
@@ -1452,23 +1516,15 @@ function mostrarFichaMensajes(){
   // document.querySelector(".mensajesBaby").classList.remove("hidden");
 }
 
+function cargarMensajes() {
+  // document.querySelector(".grisDiaper").classList.remove("hidden");
+  // document.querySelector(".white").classList.remove("hidden");
+  // document.querySelector(".grisSiesta").classList.remove("hidden");
+  // document.querySelector(".mensajesBaby").classList.add("hidden");
 
+  let idUsuario = sessionStorage.getItem("idUsuario");
 
-     function cargarMensajes() {
-      // document.querySelector(".grisDiaper").classList.remove("hidden");
-      // document.querySelector(".white").classList.remove("hidden");
-      // document.querySelector(".grisSiesta").classList.remove("hidden");
-      // document.querySelector(".mensajesBaby").classList.add("hidden");
-   
-      
-
-
-      let idUsuario = sessionStorage.getItem("idUsuario");
-
-
-      document.querySelector(
-        ".mensajesBaby"
-      ).innerHTML = `<section class="msger">
+  document.querySelector(".mensajesBaby").innerHTML = `<section class="msger">
   <header class="msger-header">
     <div class="msger-header-title">
       <i class="fas fa-comment-alt"></i> Fun For Kids Chat
@@ -1492,64 +1548,64 @@ function mostrarFichaMensajes(){
   </form>
 </section>`;
 
-      const msgerForm = document.querySelector(".msger-inputarea");
-      const msgerInput = document.querySelector(".msger-input");
-      const msgerChat = document.querySelector(".msger-chat");
+  const msgerForm = document.querySelector(".msger-inputarea");
+  const msgerInput = document.querySelector(".msger-input");
+  const msgerChat = document.querySelector(".msger-chat");
 
-      const ADMIN_MSG = "Bienvenido a FunForKids!";
+  const ADMIN_MSG = "Bienvenido a FunForKids!";
 
-      // Icons made by Freepik from www.flaticon.com
-      const ADMIN_IMG = "../img/mensajes/admin.png";
-      const PERSON_IMG = "../img/mensajes/parent.png";
-      const ADMIN = "FUN FOR KIDS";
-      let tutor1 = "tutor1";
-      let tutor2 = "tutor2";
-      let tutorNames = "";
-      if (!tutor2) {
-        tutorNames = tutor1;
-      } else {
-        let tutorNames = tutor1 + "/" + tutor2;
-      }
+  // Icons made by Freepik from www.flaticon.com
+  const ADMIN_IMG = "../img/mensajes/admin.png";
+  const PERSON_IMG = "../img/mensajes/parent.png";
+  const ADMIN = "FUN FOR KIDS";
+  let tutor1 = "tutor1";
+  let tutor2 = "tutor2";
+  let tutorNames = "";
+  if (!tutor2) {
+    tutorNames = tutor1;
+  } else {
+    let tutorNames = tutor1 + "/" + tutor2;
+  }
 
-      // ******************************************************
-      //         CAPTURAR EVENTO AL ENVIAR EL MENSAJE
-      // *****************************************************
+  // ******************************************************
+  //         CAPTURAR EVENTO AL ENVIAR EL MENSAJE
+  // *****************************************************
 
-      msgerForm.addEventListener("submit", (event) => {
-        event.preventDefault();
+  msgerForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-        const msgText = msgerInput.value;
-        if (!msgText) return;
+    const msgText = msgerInput.value;
+    if (!msgText) return;
 
-        appendMessage(tutorNames, PERSON_IMG, "right", msgText);
-        msgerInput.value = "";
+    appendMessage(tutorNames, PERSON_IMG, "right", msgText);
+    msgerInput.value = "";
 
-        // Haciendo fetch con el mensaje a la tabla chat
+    // Haciendo fetch con el mensaje a la tabla chat
 
-        fetch("http://localhost/proyectofinalciclo/api/chat/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
+    fetch("http://localhost/proyectofinalciclo/api/chat/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
 
-          body: JSON.stringify({
-            idChild: sessionStorage.getItem('idChild'),
-            idRemitente: "admin",
-            idDestinatario: idUsuario,
-            msgText: msgText,
-          }),
-        })
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-          });
+      body: JSON.stringify({
+        idChild: sessionStorage.getItem("idChild"),
+        idRemitente: "admin",
+        idDestinatario: idUsuario,
+        msgText: msgText,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
       });
+  });
 
-      function appendMessage(name, img, side, text) {
-        //   Simple solution for small apps
-        const msgHTML = `
+  function appendMessage(name, img, side, text) {
+    //   Simple solution for small apps
+    const msgHTML = `
     <div class="msg ${side}-msg">
       <div class="msg-img" style="background-image: url(${img})"></div>
 
@@ -1564,60 +1620,125 @@ function mostrarFichaMensajes(){
     </div>
   `;
 
-        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-        msgerChat.scrollTop += 500;
-      }
+    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+    msgerChat.scrollTop += 500;
+  }
 
-      // function botResponse() {
-      //   const r = random(0, ADMIN_MSG.length - 1);
-      //   const msgText = ADMIN_MSG[r];
-      //   const delay = msgText.split(" ").length * 100;
+  // function botResponse() {
+  //   const r = random(0, ADMIN_MSG.length - 1);
+  //   const msgText = ADMIN_MSG[r];
+  //   const delay = msgText.split(" ").length * 100;
 
-      //   setTimeout(() => {
-      //     appendMessage(ADMIN, ADMIN_IMG, "left", msgText);
-      //   }, delay);
-      // }
+  //   setTimeout(() => {
+  //     appendMessage(ADMIN, ADMIN_IMG, "left", msgText);
+  //   }, delay);
+  // }
 
-      // // Utils
-      // function get(selector, root = document) {
-      //   return root.querySelector(selector);
-      // }
+  // // Utils
+  // function get(selector, root = document) {
+  //   return root.querySelector(selector);
+  // }
 
-      function formatDate(date) {
-        const h = "0" + date.getHours();
-        const m = "0" + date.getMinutes();
+  function formatDate(date) {
+    const h = "0" + date.getHours();
+    const m = "0" + date.getMinutes();
 
-        return `${h.slice(-2)}:${m.slice(-2)}`;
-      }
+    return `${h.slice(-2)}:${m.slice(-2)}`;
+  }
 
-      // function random(min, max) {
-      //   return Math.floor(Math.random() * (max - min) + min);
-      // }
+  // function random(min, max) {
+  //   return Math.floor(Math.random() * (max - min) + min);
+  // }
 
-      // ******************************************************
-      //        CARGAR MENSAJES ENVIADOS Y RECIBIDOS
-      // *****************************************************
+  // ******************************************************
+  //        CARGAR MENSAJES ENVIADOS Y RECIBIDOS
+  // *****************************************************
 
-      fetch(
-        `http://localhost/proyectofinalciclo/api/chat/?idChild=${sessionStorage.getItem('idChild')}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+  fetch(
+    `http://localhost/proyectofinalciclo/api/chat/?idChild=${sessionStorage.getItem(
+      "idChild"
+    )}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.forEach((dato) => {
+        if (dato.idRemitente == "admin") {
+          appendMessage(ADMIN, ADMIN_IMG, "right", dato.msgText);
         }
-      )
+        if (dato.idRemitente == idUsuario) {
+          appendMessage(tutorNames, PERSON_IMG, "left", dato.msgText);
+        }
+      });
+    });
+}
+
+//REPORT READY CHANGES
+
+let agregado = false;
+function showReportReadyicon() {
+
+
+  if (!agregado){
+    let msgIcons = document.querySelectorAll("[data-idChild]");
+
+    msgIcons.forEach((row) => {
+      if (row.dataset.idchild == sessionStorage.getItem("idChild")) {
+        var arrFila = Array.prototype.slice.call(row.children);
+  
+        let img = document.createElement("img");
+        row.append(img);
+        img.src = "../img/plataforma-profesores/petition.png";
+        agregado = true;
+      }
+  })
+  
+
+
+
+      // arrFila.forEach((fila) => {
+      //   if (
+      //     fila.src ===
+      //     "http://localhost/proyectofinalciclo/img/plataforma-profesores/petition.png"
+      //   ) {
+      //     console.log("ya hay un reporte");
+         
+         
+      //   } else {
+      //     row.append(img);
+      //     agregado = true;
+      //    
+      //   }
+      // });
+
+      // arrFila.forEach((fila) => console.log(fila.src));
+
+      fetch("../api/reportes/icono-reporte/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          idChild: sessionStorage.getItem("idChild"),
+          dailyReportReady: "1",
+        }),
+      })
         .then((response) => {
-          return response.json();
+          if (response.ok) {
+            return response.json();
+          }
         })
         .then((data) => {
-          data.forEach((dato) => {
-            if (dato.idRemitente == "admin") {
-              appendMessage(ADMIN, ADMIN_IMG, "right", dato.msgText);
-            }
-            if (dato.idRemitente == idUsuario) {
-              appendMessage(tutorNames, PERSON_IMG, "left", dato.msgText);
-            }
-          });
+          console.log(data);
         });
     }
+  }
+
+  // let found = allDataId.forEach((child) => child.dataset.idChild == sessionStorage.getItem('idChild') ? child. );
