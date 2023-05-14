@@ -65,7 +65,10 @@ document.querySelector(".idMonitor").innerHTML += idMonitor;
 
 //saber si el profesor esta en duty de recepcion o de sala
 let duty = sessionStorage.getItem("duty");
-
+if (duty == "recepcion") {
+  duty = "Recepción";
+}
+document.querySelector(".dutyDescription").innerHTML += duty.toUpperCase();
 // ##########################################################################
 //     GESTION DE ACTUALIZACION DE ROSTER : CANTIDAD DE NIÑOS POR SALA
 // ##########################################################################
@@ -91,85 +94,92 @@ RenderPage();
 
 document.querySelector("#buscadorNombre").addEventListener("keyup", filtrar);
 document.querySelector("#buscadorApellido").addEventListener("keyup", filtrar);
-document.querySelector("#buscadorGenero").addEventListener("keyup", filtrar);
+
+document.querySelector("#buscadorGenero").addEventListener("change", filtrar);
 
 function filtrar() {
+  let generoBabyInput = document.querySelector("#buscadorGenero").value;
   let nombreBabyInput = document.querySelector("#buscadorNombre").value;
   let apellidoBabyInput = document.querySelector("#buscadorApellido").value;
-  let generoBabyInput = document.querySelector("#buscadorGenero").value;
+
   let url = "";
-  if (
-    sala1.classList.contains("chosenBox") ||
-    sala2.classList.contains("chosenBox") ||
-    sala3.classList.contains("chosenBox") ||
-    todos.classList.contains("chosenBox")
-  ) {
-    url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
-    if (sala1.classList.contains("chosenBox")) {
-      if (nombreBabyInput) {
-        url += `&nombreBebe=${nombreBabyInput}&sala=1`;
-      }
-      if (apellidoBabyInput) {
-        url += `&apellido1Bebe=${apellidoBabyInput}&sala=1`;
-      }
 
-      if (generoBabyInput) {
-        url += `&genero=${generoBabyInput}&sala=1`;
+  if (sala1.classList.contains("chosenBox")) {
+    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
+      url += `&sala=1`;
+      if (generoBabyInput != "todos") {
+        url += `&genero=${generoBabyInput}`;
       }
-    }
-    if (sala2.classList.contains("chosenBox")) {
-      if (nombreBabyInput) {
-        url += `&nombreBebe=${nombreBabyInput}&sala=2`;
-      }
-      if (apellidoBabyInput) {
-        url += `&apellido1Bebe=${apellidoBabyInput}&sala=2`;
-      }
-
-      if (generoBabyInput) {
-        url += `&genero=${generoBabyInput}&sala=2`;
-      }
-    }
-    if (sala3.classList.contains("chosenBox")) {
-      if (nombreBabyInput) {
-        url += `&nombreBebe=${nombreBabyInput}&sala=3`;
-      }
-      if (apellidoBabyInput) {
-        url += `&apellido1Bebe=${apellidoBabyInput}&sala=3`;
-      }
-
-      if (generoBabyInput) {
-        url += `&genero=${generoBabyInput}&sala=3`;
-      }
-    }
-
-    if (todos.classList.contains("chosenBox")) {
       if (nombreBabyInput) {
         url += `&nombreBebe=${nombreBabyInput}`;
       }
       if (apellidoBabyInput) {
         url += `&apellido1Bebe=${apellidoBabyInput}`;
-      }
-
-      if (generoBabyInput) {
-        url += `&genero=${generoBabyInput}`;
-      }
-    }
-  } else {
-    if (registrados.classList.contains("chosenBox")) {
-      url = `http://localhost/proyectofinalciclo/api/children/childrenlist/?`;
-
-      if (nombreBabyInput) {
-        url += `&nombreBebe=${nombreBabyInput}`;
-      }
-      if (apellidoBabyInput) {
-        url += `&apellido1Bebe=${apellidoBabyInput}`;
-      }
-
-      if (generoBabyInput) {
-        url += `&genero=${generoBabyInput}`;
       }
     }
   }
+
+  if (sala2.classList.contains("chosenBox")) {
+    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
+      if (generoBabyInput != "todos") {
+        url += `&genero=${generoBabyInput}`;
+      }
+      if (nombreBabyInput) {
+        url += `&nombreBebe=${nombreBabyInput}`;
+      }
+      if (apellidoBabyInput) {
+        url += `&apellido1Bebe=${apellidoBabyInput}`;
+      }
+      url += `&sala=2`;
+    }
+  }
+
+  if (sala3.classList.contains("chosenBox")) {
+    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
+      url += `&sala=3`;
+      if (generoBabyInput != "todos") {
+        url += `&genero=${generoBabyInput}`;
+      }
+      if (nombreBabyInput) {
+        url += `&nombreBebe=${nombreBabyInput}`;
+      }
+      if (apellidoBabyInput) {
+        url += `&apellido1Bebe=${apellidoBabyInput}`;
+      }
+    }
+  }
+
+  if (todos.classList.contains("chosenBox")) {
+    url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1&`;
+    if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
+      if (generoBabyInput != "todos") {
+        url += `&genero=${generoBabyInput}`;
+      }
+      if (nombreBabyInput) {
+        url += `&nombreBebe=${nombreBabyInput}`;
+      }
+      if (apellidoBabyInput) {
+        url += `&apellido1Bebe=${apellidoBabyInput}`;
+      }
+    }
+  }
+
+  if (registrados.classList.contains("chosenBox")) {
+    url = `http://localhost/proyectofinalciclo/api/children/childrenlist/?`;
+    if (generoBabyInput != "todos") {
+      url += `&genero=${generoBabyInput}`;
+    }
+    if (nombreBabyInput) {
+      url += `&nombreBebe=${nombreBabyInput}`;
+    }
+    if (apellidoBabyInput) {
+      url += `&apellido1Bebe=${apellidoBabyInput}`;
+    }
+  }
+
   fetchKids(url);
   clearList();
 }
@@ -194,6 +204,7 @@ function clearList() {
 
 // Depende de si entra en sala o en recepcion la pestaña abierta por defecto será diferente
 function RenderPage() {
+  todos.classList.add("chosenBox");
   clearList();
 
   if (duty == "recepcion") {
@@ -224,10 +235,14 @@ function checkRoster() {
 }
 
 function updateOnComingMessages() {
-  let allDataId = document.querySelectorAll("[data-id");
+  let allDataId = document.querySelectorAll("[data-idChild]");
+  let elementonuevo = document.createElement('div');
+  elementonuevo.innerHTML= `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>` ;
+
 
   fetch(
-    `http://localhost/proyectofinalciclo/api/chat/?notificacionFecha=${today}`,
+    // `http://localhost/proyectofinalciclo/api/chat/?notificacionFecha=${today}&respondido=0`,
+    `http://localhost/proyectofinalciclo/api/updatechat/?idDestinatario=admin&respondido=0`,
     {
       method: "GET",
       headers: {
@@ -239,16 +254,24 @@ function updateOnComingMessages() {
       return response.json();
     })
     .then((data) => {
+    
       data.forEach((dato) => {
-        if (dato.idRemitente != "admin") {
-          allDataId.forEach((child) => {
-            child.dataset.id === dato.idChild
-              ? child.classList.remove("hidden")
-              : console.log("No hay mensajes nuevos");
-          });
+        allDataId.forEach((child) => {
+        if(child.dataset.idchild === dato.idChild ){
+         child.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`
         }
-      });
+         
+            //  child.parentElement.append(elementonuevo)
+            // // child.dataset.idchild === dato.idChild
+           
+            // // ? child.parentElement.append(elementonuevo)
+            // // : console.log("No hay mensajes nuevos");
+          });
+        
+      
     });
+
+  });
 }
 
 function mostrarTodos() {
@@ -362,7 +385,6 @@ function fetchRoster(sala = "", nombreId) {
     .then((data) => {
       document.querySelector(nombreId).innerHTML = data[0]["count"];
     });
-  updateOnComingMessages();
 }
 
 function fetchRosterRegistrados() {
@@ -379,7 +401,6 @@ function fetchRosterRegistrados() {
     .then((data) => {
       document.querySelector("#totalregistrados").innerHTML = data[0]["count"];
     });
-  updateOnComingMessages();
 }
 
 function fetchRegistered() {
@@ -441,16 +462,20 @@ function fetchKids(url) {
         // ##########################################################################
         function FetchDependingOnDuty() {
           if (duty == "sala") {
+            let bebeApellido2 = bebe["apellido2Bebe"].substring(0, 1) + ".";
             // **************Si el duty es Sala que muestre los siguientes Datos*********
             return `<div class="imagenydatos">
             <div class="fotoBebe "><img src="../uploads/${
               bebe["foto"]
             }" alt=""></div>
             <div class="datos">
-              <p class="nombreBebe">${bebe["nombreBebe"]}</p>
+              <p class="nombreBebe">${bebe["nombreBebe"]} ${
+              bebe["apellido1Bebe"]
+            } ${bebeApellido2}</p>
               <p class="edadBebe">
               ${calcularEdadBebe(bebe["fechaNacimiento"])}
               </p>
+              <span>Ingreso:${bebe["horaIngreso"].substring(10, 16)}</span>
               
 
             </div>
@@ -463,9 +488,7 @@ function fetchKids(url) {
           </div>
           <div class="msgIcon "data-idChild="${bebe["idChild"]}">
           ${checkReportReady()}
-          <img class="iconEmail hidden" data-id="${
-            bebe["idChild"]
-          }"  src="../img/plataforma-profesores/email(1).png" alt="" /> 
+     
             </div>`;
           } else {
             // **************Si el duty es Recepcion que muestre los siguientes Datos*********
@@ -493,8 +516,7 @@ function fetchKids(url) {
           </div>
           <div class="msgIcon" "data-idChild="${bebe["idChild"]}">
        
-          <img class="iconEmail hidden" data-id="${bebe["idChild"]}" 
-           src="../img/plataforma-profesores/email(1).png" alt="" /> 
+    
 
           <p class="nombreBebe"></p>
 
@@ -552,7 +574,7 @@ function fetchKids(url) {
 
         function checkReportReady() {
           if (bebe["dailyReportReady"] == 1) {
-            return `<img src="../img/plataforma-profesores/petition.png" alt="imagen_reporte_completo;>`;
+            return `<img src="../img/plataforma-profesores/petition.png" alt="imagen_reporte_completo>`;
           } else {
             return "";
           }
@@ -597,6 +619,8 @@ function fetchKids(url) {
         // ##########################################################################
 
         function mostrarFicha() {
+          updateOnComingMessages();
+
           document
             .querySelector(".pestanaReporte")
             .classList.add("selectedOption");
@@ -1460,7 +1484,7 @@ function fetchKids(url) {
       });
     });
 
-  updateOnComingMessages();
+  // updateOnComingMessages();
 }
 
 // *********removido*********
@@ -1564,7 +1588,7 @@ function cargarMensajes() {
   if (!tutor2) {
     tutorNames = tutor1;
   } else {
-    let tutorNames = tutor1 + "/" + tutor2;
+    tutorNames = tutor1 + "/" + tutor2;
   }
 
   // ******************************************************
@@ -1593,6 +1617,7 @@ function cargarMensajes() {
         idRemitente: "admin",
         idDestinatario: idUsuario,
         msgText: msgText,
+        respondido: 0
       }),
     })
       .then((response) => {
@@ -1600,10 +1625,49 @@ function cargarMensajes() {
       })
       .then((data) => {
         console.log(data);
+
+        //Buscar último mensaje a ese Id y ponerle respondido:
+        fetch(`../api/updatechat/?idRemitente=${idUsuario}&idChild=${sessionStorage.getItem("idChild")}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+          })
+          .then((data) => {
+            console.log(data);
+            let idmsg =  parseInt(data[0]["idmsg"]);
+            console.log(idmsg);
+
+            let msg = {
+              idmsg : parseInt(data[0]["idmsg"])
+            }
+            //Metodo put
+
+            fetch(`../api/updatechat/?idmsg=${idmsg}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+              body: JSON.stringify(msg),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  return response.json();
+                }
+              })
+              .then((data) => {
+                console.log(data);
+              });
+          });
       });
   });
 
-  function appendMessage(name, img, side, text) {
+  function appendMessage(name, img, side, text, date) {
     //   Simple solution for small apps
     const msgHTML = `
     <div class="msg ${side}-msg">
@@ -1612,7 +1676,7 @@ function cargarMensajes() {
       <div class="msg-bubble">
         <div class="msg-info">
           <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${formatDate(new Date())}</div>
+          <div class="msg-info-time">${date}</div>
         </div>
 
         <div class="msg-text">${text}</div>
@@ -1639,12 +1703,12 @@ function cargarMensajes() {
   //   return root.querySelector(selector);
   // }
 
-  function formatDate(date) {
-    const h = "0" + date.getHours();
-    const m = "0" + date.getMinutes();
+  // function formatDate(date) {
+  //   const h = "0" + date.getHours();
+  //   const m = "0" + date.getMinutes();
 
-    return `${h.slice(-2)}:${m.slice(-2)}`;
-  }
+  //   return `${h.slice(-2)}:${m.slice(-2)}`;
+  // }
 
   // function random(min, max) {
   //   return Math.floor(Math.random() * (max - min) + min);
@@ -1671,10 +1735,10 @@ function cargarMensajes() {
     .then((data) => {
       data.forEach((dato) => {
         if (dato.idRemitente == "admin") {
-          appendMessage(ADMIN, ADMIN_IMG, "right", dato.msgText);
+          appendMessage(ADMIN, ADMIN_IMG, "right", dato.msgText, dato.created_on);
         }
         if (dato.idRemitente == idUsuario) {
-          appendMessage(tutorNames, PERSON_IMG, "left", dato.msgText);
+          appendMessage(tutorNames, PERSON_IMG, "left", dato.msgText,dato.created_on);
         }
       });
     });
@@ -1684,61 +1748,55 @@ function cargarMensajes() {
 
 let agregado = false;
 function showReportReadyicon() {
-
-
-  if (!agregado){
+  if (!agregado) {
     let msgIcons = document.querySelectorAll("[data-idChild]");
 
     msgIcons.forEach((row) => {
       if (row.dataset.idchild == sessionStorage.getItem("idChild")) {
         var arrFila = Array.prototype.slice.call(row.children);
-  
+
         let img = document.createElement("img");
         row.append(img);
         img.src = "../img/plataforma-profesores/petition.png";
         agregado = true;
       }
-  })
-  
+    });
 
+    // arrFila.forEach((fila) => {
+    //   if (
+    //     fila.src ===
+    //     "http://localhost/proyectofinalciclo/img/plataforma-profesores/petition.png"
+    //   ) {
+    //     console.log("ya hay un reporte");
 
+    //   } else {
+    //     row.append(img);
+    //     agregado = true;
+    //
+    //   }
+    // });
 
-      // arrFila.forEach((fila) => {
-      //   if (
-      //     fila.src ===
-      //     "http://localhost/proyectofinalciclo/img/plataforma-profesores/petition.png"
-      //   ) {
-      //     console.log("ya hay un reporte");
-         
-         
-      //   } else {
-      //     row.append(img);
-      //     agregado = true;
-      //    
-      //   }
-      // });
+    // arrFila.forEach((fila) => console.log(fila.src));
 
-      // arrFila.forEach((fila) => console.log(fila.src));
-
-      fetch("../api/reportes/icono-reporte/", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-          idChild: sessionStorage.getItem("idChild"),
-          dailyReportReady: "1",
-        }),
+    fetch("../api/reportes/icono-reporte/", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        idChild: sessionStorage.getItem("idChild"),
+        dailyReportReady: "1",
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-        })
-        .then((data) => {
-          console.log(data);
-        });
-    }
+      .then((data) => {
+        console.log(data);
+      });
   }
+}
 
-  // let found = allDataId.forEach((child) => child.dataset.idChild == sessionStorage.getItem('idChild') ? child. );
+// let found = allDataId.forEach((child) => child.dataset.idChild == sessionStorage.getItem('idChild') ? child. );

@@ -10,16 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = json_decode(file_get_contents('php://input'), true);
 
 
-    if (isset($json['idRemitente'])&& isset($json['idDestinatario']) && isset($json['idChild']) && isset($json['msgText'])) {
+    if (isset($json['idRemitente'])&& isset($json['idDestinatario']) && isset($json['idChild']) && isset($json['msgText']) && isset($json['respondido'])) {
 
     
         $idRemitente = $json['idRemitente'];
         $idChild = $json['idChild'];
         $idDestinatario = $json['idDestinatario'];
         $msgText = $json['msgText'];
+        $respondido = $json['respondido'];
   
         
-        $sql = "INSERT INTO chat (idChild,idRemitente,idDestinatario,msgText,created_on) VALUES ('$idChild','$idRemitente','$idDestinatario', '$msgText', CURTIME())";
+        $sql = "INSERT INTO chat (idChild,idRemitente,idDestinatario,msgText,created_on,respondido) VALUES ('$idChild','$idRemitente','$idDestinatario', '$msgText', CURTIME(),'$respondido')";
         try {
             $con->query($sql);
             $idmsg = $con->insert_id;
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $sql = "SELECT * FROM chat where 1 ";
 
-    if (isset($_GET['idRemitente']) || isset($_GET['idChild']) ||isset($_GET['msgText'])|| isset($_GET['created_on']) || isset($_GET['idDestinatario']) ||isset($_GET['notificacionFecha']) ){
+    if (isset($_GET['idRemitente']) || isset($_GET['idChild']) ||isset($_GET['msgText'])|| isset($_GET['created_on']) || isset($_GET['idDestinatario']) ||isset($_GET['notificacionFecha'])|| isset($_GET['respondido']) ){
 
         if (isset($_GET['idRemitente'])) {
             $idRemitente = $_GET['idRemitente'];
@@ -70,6 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         }
 
+        if (isset($_GET['respondido'])) {
+            $respondido = $_GET['respondido'];
+            $sql .= " AND respondido='$respondido' ";
+
+        }
+
         if (isset($_GET['notificacionFecha'])) {
             $notificacionFecha = $_GET['notificacionFecha']. ' 00:00:00';
             $finfecha = $_GET['notificacionFecha'] . ' 23:59:59';
@@ -77,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         }
 
+       
     
     } elseif (count($_GET) > 0) {
         header("HTTP/1.1 400 Bad Request");
@@ -96,6 +104,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     exit;
 }
 
-header("HTTP/1.1 400 Bad Request");
+// header("HTTP/1.1 400 Bad Request");
 
 
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+
+    $json = json_decode(file_get_contents('php://input'), true);
+
+    if (isset($_GET['idRemitente']) ){
+
+
+    
+        if (isset($json['idRemitente'])) {
+            $idRemitente = $json['idRemitente'];
+            $sql = "UPDATE chat set respondido = 1 WHERE idRemitente= '$idRemitente' AND created_on = (SELECT MAX(created_on) FROM chat WHERE idRemitente='$idRemitente')";
+        }
+
+      
+
+        try {
+
+            // print_r($sql);
+            $con->query($sql);
+   
+            header("HTTP/1.1 200 OK");
+            header("Content-Type: application/json");
+
+
+            // header("Authorization: $token");
+
+            // echo json_encode($idreporte);
+            echo json_encode([
+                'success' => true,
+                'msg' =>  "Mensaje respondido actualizado"
+            ]);
+            
+        } catch (mysqli_sql_exception $e) {
+            header("HTTP/1.1 400 Bad Request");
+         
+        }
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+       echo "error";
+    }
+    exit;
+} 

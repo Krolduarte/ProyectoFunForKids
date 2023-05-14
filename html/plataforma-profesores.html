@@ -13,6 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
       rel="stylesheet"
     />
+    
     <title>Reporte Diario</title>
   </head>
   <body>
@@ -21,6 +22,8 @@
         <div class="headbar">
           <div class="home"> <a href="../html/plataforma-profesores-opciones.html">Volver</a></div>
           <div class="logo">
+            <img src="../img/plataforma-profesores/logoCubos.png" alt="logo" class="logoCubos"/>
+            <!-- <div id="tituloFun4kids">Fun 4 Kids</div> -->
             <img
               src="../img/formulario-registro/logo-white.png"
               alt=""
@@ -40,6 +43,7 @@
             ></a> 
           </div>
           <div class="idMonitor">Hola, </div>
+          <div class="dutyDescription">Estás en : </div>
         </div>
       </header>
       <!-- fin headbar -->
@@ -70,13 +74,20 @@
             />
             </div>
             <div class="buscador">
-              <span></span>
-              <input
+           
+              <!-- <input
                 type="text"
                 name="buscadorGenero"
                 id="buscadorGenero"
                 placeholder="Filtrar por Genero"
-            />
+            /> -->
+            <select id="buscadorGenero" name="buscadorGenero">
+              <option value="todos">--Filtrar por Género--</option>           
+              <option value="mujer">Niñas</option>
+              <option value="hombre">Niños</option>
+             
+
+            </select>
             </div>
   
         

@@ -140,7 +140,12 @@ body {
 input {
   border-radius: 2.5px;
   height: 27px;
+  /* text-transform: uppercase; */
 }
+/* input#usuario, input#email,input#pwd,input#pwd-repeat,input.btnRegister {
+  text-transform: none !important;
+} */
+
 
 label {
   font-size: 14px;
@@ -568,4 +573,11 @@ input {
   left:200px;
   top:-35px;
   
+}
+
+#cboxUnTutor{
+  display: flex;
+  align-items: center;
+  margin-left:30px;
+
 }

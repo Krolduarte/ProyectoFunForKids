@@ -6,12 +6,6 @@ let idUser = sessionStorage.getItem("IdUsuario");
 // gesionar cerrar session
 document.querySelector("#cerrarSesion").addEventListener("click", CerrarSesionTutores);
 
-// function CerrarSesionTutores() {
-//   sessionStorage.removeItem("usuario");
-//   sessionStorage.removeItem("IdUsuario");
-//   sessionStorage.removeItem("idChild");
-//   sessionStorage.removeItem("token");
-// }
 
 //Gestión de fecha para el reporte
 const meses = [
@@ -62,7 +56,14 @@ if (idUser && token) {
 // ***************************************************************
 document.querySelector(
   ".areaFecha"
-).innerHTML = `<img class="arrows" src="../img/reporte-diario/left-arrow.png" id="btnPreviousDate" alt="leftarrow">
+).innerHTML = `<div id="divCalendario">
+<img class="calendario" src="../img/reporte-diario/calendar.png" id="calendar" alt="calendario">
+
+<input type="date" id="fechaExacta" name="fechaExacta"    min="2020-01-01">
+</div>
+
+
+<img class="arrows" src="../img/reporte-diario/left-arrow.png" id="btnPreviousDate" alt="leftarrow">
        <span class="chosenDate">${now} </span>    
   <img src="../img/reporte-diario/right-arrow(2).png" alt="rightarrow" class="arrows" id="btnNextDate" >`;
 
@@ -427,4 +428,19 @@ function checkDiaperUpdates(fechaEscogida) {
         }
       });
     });
+}
+
+
+// ******************************************
+//       GESTIÓN DE BUSCADOR POR FECHA
+// ******************************************
+
+document.querySelector('#fechaExacta').addEventListener('change', filtrarPorFechaExacta);
+
+function filtrarPorFechaExacta(){
+  cargarFicha();
+  let fechaEscogida = document.querySelector('#fechaExacta').value; 
+
+  checkLogUpdates(fechaEscogida);
+  checkDiaperUpdates(fechaEscogida)
 }

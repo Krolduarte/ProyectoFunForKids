@@ -9,6 +9,7 @@ let mensajes = 'http://localhost/proyectofinalciclo/html/mensajes.html';
 
 if(window.location == urlPerfil){
     document.querySelector('.pestanaPerfil').classList.add("yellow");
+ 
 }
 
 if(window.location == urlReporte){
@@ -16,5 +17,10 @@ if(window.location == urlReporte){
 }
 
 if(window.location == mensajes){
-    document.querySelector('.pestanaMensajes').classList.add("yellow");
+    document.querySelector('.pestanaMensajes').classList.add("yellow"); 
+
 }
+
+
+
+

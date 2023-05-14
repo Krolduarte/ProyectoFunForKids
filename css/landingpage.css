@@ -20,6 +20,15 @@ body {
 .logo {
   width: 249px;
   height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+img.imglogo{
+  width: 200px;
+  height: 30px;
 }
 
 .infobox {
@@ -569,6 +578,6 @@ footer > p {
   }
 
   .imglogo {
-    height: 30px;
+    height: 20px;
   }
 }

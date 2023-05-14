@@ -549,10 +549,11 @@ visibility: hidden;
 
 .areaFecha{
   width: 100%;
-  height:45px;
+  height:55px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap:15px;
 }
 
@@ -561,3 +562,59 @@ visibility: hidden;
   height: 35px;
   
 }
+
+.green{
+  background-color: green;
+}
+
+.newmsg{
+  display: none;
+  width: 20px;
+  height: 20px;
+  padding:5px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right:10px;
+}
+
+#divCalendario{
+  position: absolute;
+  display: flex;
+  background-color: rgb(238, 217, 217);
+  border-radius: 5px;
+  width: 290px;
+  height:50px;
+  justify-content: center;
+  align-items: center;
+  left:100px;
+}
+.calendario{
+
+  width:50px;
+ /* right:70px; */
+ cursor: pointer;
+
+}
+
+.calendariobusqueda{
+
+
+  width:170px;
+ /* right:140px; */
+}
+
+input#fechaExacta{
+  border: 1px solid white;border-radius: 8px;;
+  padding:2px;
+  margin-left: 8px;
+  visibility: visible !important;
+  width:120px;
+  height:20px;
+
+}
+

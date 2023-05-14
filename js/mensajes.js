@@ -6,6 +6,21 @@ let tutor1 = sessionStorage.getItem("nombreTutor1");
 let tutor2 = sessionStorage.getItem("nombreTutor2");
 let idChild = sessionStorage.getItem("idChild");
 
+
+const meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 // gesionar cerrar session
 document.querySelector("#cerrarSesion").addEventListener("click", CerrarSesionTutores);
 
@@ -17,7 +32,24 @@ document.querySelector("#cerrarSesion").addEventListener("click", CerrarSesionTu
 // }
 if (idUser && token) {
   loadInfoBaby();
+   
 }
+
+function scrolled(){
+  let scroll = document.querySelector('.msger');
+  scroll.scrollTop = scroll.scrollHeight;
+  console.log("scrolleado");
+}
+  
+
+
+
+
+
+
+
+
+
 
 const msgerForm = document.querySelector(".msger-inputarea");
 const msgerInput = document.querySelector(".msger-input");
@@ -63,17 +95,63 @@ msgerForm.addEventListener("submit", (event) => {
       idRemitente: idUser,
       idDestinatario: "admin",
       msgText: msgText,
+      respondido: 0,
+      
     }),
   })
     .then((response) => {
       return response.json();
+
+
+
+
     })
     .then((data) => {
       console.log(data);
+
+//Buscar último mensaje a ese Id y ponerle respondido:
+fetch(`../api/updatechat/?idRemitente=admin&idChild=${idChild}`, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+  .then((data) => {
+    console.log(data);
+    let idmsg =  parseInt(data[0]["idmsg"]);
+    console.log(idmsg);
+
+    let msg = {
+      idmsg : parseInt(data[0]["idmsg"])
+    }
+    //Metodo put
+
+    fetch(`../api/updatechat/?idmsg=${idmsg}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(msg),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  });
+
     });
 });
 
-function appendMessage(name, img, side, text) {
+function appendMessage(name, img, side, text,date) {
   //   Simple solution for small apps
   const msgHTML = `
     <div class="msg ${side}-msg">
@@ -82,7 +160,7 @@ function appendMessage(name, img, side, text) {
       <div class="msg-bubble">
         <div class="msg-info">
           <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${formatDate(new Date())}</div>
+          <div class="msg-info-time"><abbr id="fechamsg" title="${date}">${date.substring(date.length - 5)}</abbr></div>
         </div>
 
         <div class="msg-text">${text}</div>
@@ -92,33 +170,9 @@ function appendMessage(name, img, side, text) {
 
   msgerChat.insertAdjacentHTML("beforeend", msgHTML);
   msgerChat.scrollTop += 500;
+  scrolled();
 }
 
-// function botResponse() {
-//   const r = random(0, ADMIN_MSG.length - 1);
-//   const msgText = ADMIN_MSG[r];
-//   const delay = msgText.split(" ").length * 100;
-
-//   setTimeout(() => {
-//     appendMessage(ADMIN, ADMIN_IMG, "left", msgText);
-//   }, delay);
-// }
-
-// // Utils
-// function get(selector, root = document) {
-//   return root.querySelector(selector);
-// }
-
-function formatDate(date) {
-  const h = "0" + date.getHours();
-  const m = "0" + date.getMinutes();
-
-  return `${h.slice(-2)}:${m.slice(-2)}`;
-}
-
-// function random(min, max) {
-//   return Math.floor(Math.random() * (max - min) + min);
-// }
 
 // ******************************************************
 //        CARGAR MENSAJES ENVIADOS Y RECIBIDOS
@@ -135,13 +189,22 @@ fetch(`http://localhost/proyectofinalciclo/api/chat/?idChild=${idChild}`, {
   })
   .then((data) => {
     data.forEach((dato) => {
-
+      var fecha=new Date(dato.created_on);
+      // var formatDate=fecha.toLocaleString();
+      let formatDate = 
+    fecha.getDate() +
+    " de " +
+    meses[fecha.getMonth()] +
+    " de " +
+    fecha.getFullYear() + "    " + 
+    fecha.getHours() + ':' + fecha.getMinutes();
+   
    
       if (dato.idRemitente == "admin") {
-        appendMessage(ADMIN, ADMIN_IMG, "left", dato.msgText);
+        appendMessage(ADMIN, ADMIN_IMG, "left", dato.msgText,formatDate);
       }
       if (dato.idRemitente  == idUser) {
-        appendMessage(tutorNames, PERSON_IMG, "right", dato.msgText);
+        appendMessage(tutorNames, PERSON_IMG, "right", dato.msgText, formatDate);
       }
     });
   });
