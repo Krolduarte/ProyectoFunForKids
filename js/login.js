@@ -16,6 +16,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
     },
     body: JSON.stringify({
       usuario: document.querySelector("#username").value,
@@ -42,6 +43,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
           },
         })
           .then((response) => {
@@ -57,6 +59,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json;charset=utf-8",
+                  "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
                 },
               }
             )
@@ -65,7 +68,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
               })
               .then((data) => {
                 if (data.length == 1) {
-                  window.location.href = "../html/perfil.html";
+                  window.location.href = "../html/portal-tutores.html";
                 } else {
                   window.location.href = "../html/matricula.html";
                 }

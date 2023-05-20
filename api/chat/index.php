@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = json_decode(file_get_contents('php://input'), true);
 
 
-    if (isset($json['idRemitente'])&& isset($json['idDestinatario']) && isset($json['idChild']) && isset($json['msgText']) && isset($json['respondido'])) {
+    if (isset($json['idRemitente'])&& isset($json['idDestinatario']) && isset($json['idChild']) && isset($json['msgText']) && isset($json['respondido']) && isset($json['leido'])) {
 
     
         $idRemitente = $json['idRemitente'];
@@ -18,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $idDestinatario = $json['idDestinatario'];
         $msgText = $json['msgText'];
         $respondido = $json['respondido'];
+        $leido = $json['leido'];
   
         
-        $sql = "INSERT INTO chat (idChild,idRemitente,idDestinatario,msgText,created_on,respondido) VALUES ('$idChild','$idRemitente','$idDestinatario', '$msgText', CURTIME(),'$respondido')";
+        $sql = "INSERT INTO chat (idChild,idRemitente,idDestinatario,msgText,created_on,respondido,leido) VALUES ('$idChild','$idRemitente','$idDestinatario', '$msgText', CURTIME(),'$respondido','$leido' )";
         try {
             $con->query($sql);
             $idmsg = $con->insert_id;

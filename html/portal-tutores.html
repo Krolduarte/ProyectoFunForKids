@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/portal-tutores.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cabin+Sketch&display=swap"
+      rel="stylesheet"
+    />
+    <title>Portal de Tutores</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="headbar">
+          <div class="logo">
+            
+            <img src="../img/plataforma-profesores/logoCubos.png" alt="logo" class="logoCubos"/>
+            
+            <img
+              src="../img/formulario-registro/logo-white.png"
+              alt=""
+              class="imglogo"
+            />
+          </div>
+          <div>
+            <a id="cerrarSesion" href="../html/index.html"
+              ><lord-icon
+                src="https://cdn.lordicon.com/moscwhoj.json"
+                trigger="hover"
+                colors="primary:#121331,secondary:#eee966"
+                style="width: 80px; height: 80px"
+              >
+              </lord-icon
+            ></a>
+          </div>
+        </div>
+
+        <div class="imagenydatos">
+          <!-- foto de niño/niña -->
+          <div class="fotoBebe"></div>
+          <div class="datos">
+            <p class="nombreBebe"></p>
+            <p class="edadBebe"></p>
+          </div>
+        </div>
+
+        <div class="opciones">
+          <button class="btnPestanas pestanaPerfil yellow">
+           Perfil
+          </button>
+          <button class="btnPestanas pestanaReporte">
+          Reporte Diario
+          </button>
+          <button class="btnPestanas pestanaMensajes">
+          Mensajes <span id="nuevoMsg" class="nuevoMensaje">1</span>
+          </button>
+        </div>
+      </header>
+    </div>
+
+    <div class="mainContainer">
+      <div class="seccionesPerfil">
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Info</div>
+            </div>
+          </div>
+
+          <div class="colInfoPerfil">
+            <div class="nombreBebePerfil tituloLabel">Nombre:</div>
+            <div class="apellidosBebePerfil tituloLabel">Apellidos:</div>
+            <div class="genero tituloLabel">Género:</div>
+            <div class="fechaNac tituloLabel">Fecha de Nacimiento:</div>
+            <div class="lugar tituloLabel">Lugar de Nacimiento:</div>
+          </div>
+
+          <!-- fin ColInfoPerfil -->
+        </section>
+        <hr />
+
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Medicamentos</div>
+            </div>
+          </div>
+          <div class="colInfoPerfil">
+            <div class="isTakingMed tituloLabel">Toma medicamento:</div>
+            <div class="medicamentoTomado tituloLabel">Toma:</div>
+            <div class="isAllergicToMed tituloLabel">
+              Es alérgico a algún medicamento:
+            </div>
+            <div class="medicamentoAlergia tituloLabel">Alergico a:</div>
+          </div>
+        </section>
+        <hr />
+
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Alimentación</div>
+            </div>
+          </div>
+          <div class="colInfoPerfil">
+            <div class="hasFoodAllergy tituloLabel">
+              Es alérgico a algún alimento:
+            </div>
+            <div class="alergenos tituloLabel">Alergenos:</div>
+            <div class="alergias tituloLabel">Orígen de Alergias:</div>
+          </div>
+        </section>
+        <hr />
+
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Discapacidad</div>
+            </div>
+          </div>
+          <div class="colInfoPerfil">
+            <div class="disability"></div>
+          </div>
+        </section>
+        <hr />
+
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Tutores</div>
+            </div>
+          </div>
+          <div class="colInfoTutores">
+            <div class="primerTutor">
+              <div class="tutorNombreCompleto tituloLabel">Nombre:</div>
+              <div class="relacionTutor tituloLabel">Relación:</div>
+              <div class="direccionTutor tituloLabel">Dirección:</div>
+              <div class="telefonoTutor tituloLabel">Teléfono:</div>
+            </div>
+
+            <div class="segundoTutor">
+              <div class="tutorNombreCompleto2 tituloLabel">Nombre:</div>
+              <div class="relacionTutor2 tituloLabel">Relación:</div>
+              <div class="direccionTutor2 tituloLabel">Dirección:</div>
+              <div class="telefonoTutor2 tituloLabel">Teléfono:</div>
+            </div>
+          </div>
+        </section>
+        <hr />
+
+        <section class="perfilSection">
+          <div class="colTitulo">
+            <div class="tituloBox">
+              <div>Autorizados</div>
+            </div>
+          </div>
+          <div class="colInfoPerfil">
+            <div class="autorizadoNombreCompleto tituloLabel">Nombre:</div>
+
+            <div class="autorizadoRelacion tituloLabel">Relación:</div>
+          </div>
+        </section>
+      </div>
+
+      <div class="seccionesReporteDiario hidden">
+        <div class="areaFecha"></div>
+        <!-- fin headbar -->
+        <section class="gris">
+          <div class="colIcono">
+            <div class="icono diaper">
+              <img src="../img/reporte-diario/diaper.png" alt="" />
+            </div>
+          </div>
+
+          <div class="colInfoGrid diaperGrid"></div>
+        </section>
+
+        <section class="white">
+          <div class="colIcono">
+            <div class="icono apple">
+              <img src="../img/reporte-diario/apple.png" alt="" />
+            </div>
+          </div>
+          <div class="colInfoGrid foodGrid"></div>
+        </section>
+
+        <section class="gris">
+          <div class="colIcono">
+            <div class="icono siesta">
+              <img src="../img/reporte-diario/siesta.png" alt="" />
+            </div>
+          </div>
+
+          <div class="colInfoGrid siestaGrid"></div>
+        </section>
+      </div>
+
+      <div class="seccionChat hidden">
+        <section class="msger">
+          <header class="msger-header">
+            <div class="msger-header-title">
+              <i class="fas fa-comment-alt"></i> Fun For Kids Chat
+            </div>
+            <div class="msger-header-options">
+              <span><i class="fas fa-cog"></i></span>
+            </div>
+          </header>
+
+          <main class="msger-chat">
+            <div class="msg left-msg">
+              <div
+                class="msg-img"
+                style="background-image: url(../img/mensajes/admin.png)"
+              ></div>
+
+              <div class="msg-bubble">
+                <div class="msg-info">
+                  <div class="msg-info-name">Fun For Kids</div>
+                  <div class="msg-info-time"></div>
+                </div>
+
+                <div class="msg-text">Bienvenido a fun for kids! 😄</div>
+              </div>
+            </div>
+          </main>
+
+          <form class="msger-inputarea">
+            <input
+              type="text"
+              class="msger-input"
+              placeholder="Escribe tu mensaje..."
+            />
+            <button type="submit" class="msger-send-btn">Enviar</button>
+          </form>
+        </section>
+      </div>
+
+
+      <div class="contenedor-toast" id="contenedor-toast"></div>
+
+
+    </div>
+
+
+
+
+
+    <script src="../js/portal-tutores.js" type="module"></script>
+    <script src="../js/pestanas.js" type="module"></script>
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+  </body>
+</html>

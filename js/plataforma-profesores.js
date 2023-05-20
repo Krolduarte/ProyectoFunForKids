@@ -4,13 +4,16 @@ import {
   cambiarColorSiEscogido,
   CerrarSesionMonitores,
   cargarPlantillaRporteDiario,
-} from "../js/funciones.js";
+} from "./funciones.js";
 
 // Gestion de cerrar session
 document
   .querySelector("#cerrarSesion")
   .addEventListener("click", CerrarSesionMonitores);
 
+// ******************************************************************
+//                      Gestión de fechas
+// ******************************************************************
 const meses = [
   "Enero",
   "Febrero",
@@ -58,43 +61,293 @@ let day = date.getDate();
 let today = year + "-" + month + "-" + day;
 
 //##########################################################################
-//     INCLUIR ID DE MONITOR EN EL HEADBAR
+//                 INCLUIR ID DE MONITOR EN EL HEADBAR
 // ##########################################################################
 let idMonitor = sessionStorage.getItem("monitor");
 document.querySelector(".idMonitor").innerHTML += idMonitor;
 
 //saber si el profesor esta en duty de recepcion o de sala
 let duty = sessionStorage.getItem("duty");
-if (duty == "recepcion") {
-  duty = "Recepción";
-}
 document.querySelector(".dutyDescription").innerHTML += duty.toUpperCase();
+
+//Colores del headbar depende del duty
+if (duty == "recepcion") {
+    document.querySelector(".headbar").style.backgroundColor = "#4c6daa";
+  }else{
+      document.querySelector(".headbar").style.backgroundColor = "#f3b90f";
+  }
+
+ // *******************************Eventos de las pestañas de cada bebé ******************************
+
+ document
+ .querySelector(".pestanaPerfil")
+ .addEventListener("click", loadBabyProfile);
+
+
+function loadBabyProfile(e) {
+    e.preventDefault();
+    document
+      .querySelector(".pestanaMensajes")
+      .classList.remove("selectedOption");
+    document
+      .querySelector(".pestanaReporte")
+      .classList.remove("selectedOption");
+    document
+      .querySelector(".pestanaPerfil")
+      .classList.add("selectedOption");
+
+ 
+    document.querySelector(".grisDiaper").classList.add("hidden");
+    document.querySelector(".white").classList.add("hidden");
+    document.querySelector(".grisSiesta").classList.add("hidden");
+    document.querySelector(".profileBaby").style.display = "flex";
+    document.querySelector(".mensajesBaby").style.display = "none";
+  }
+
+  document
+  .querySelector(".pestanaReporte")
+  .addEventListener("click", clearPestana);
+
+  function clearPestana() {
+    document
+      .querySelector(".pestanaReporte")
+      .classList.add("selectedOption");
+    document
+      .querySelector(".pestanaMensajes")
+      .classList.remove("selectedOption");
+    document
+      .querySelector(".pestanaPerfil")
+      .classList.remove("selectedOption");
+
+    document.querySelector(".grisDiaper").classList.remove("hidden");
+    document.querySelector(".white").classList.remove("hidden");
+    document.querySelector(".grisSiesta").classList.remove("hidden");
+    document.querySelector(".profileBaby").style.display = "none";
+    document.querySelector(".mensajesBaby").style.display = "none";
+  }
+
+  document
+  .querySelector(".pestanaMensajes")
+  .addEventListener("click", mostrarPestanaChat);
+
+  function mostrarPestanaChat() {
+    document.querySelector(".pestanaMensajes").classList.add("selectedOption");
+    document.querySelector(".pestanaReporte").classList.remove("selectedOption");
+    document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
+  
+    document.querySelector(".grisDiaper").classList.add("hidden");
+    document.querySelector(".white").classList.add("hidden");
+    document.querySelector(".grisSiesta").classList.add("hidden");
+  
+    document.querySelector(".profileBaby").style.display = "none";
+    document.querySelector(".mensajesBaby").style.display = "flex";
+    scrollChatWindow();
+  }
+
+
+
+ 
+//   ***************************************************************************
+//                     FUNCIÓN QUE REVISA SI HAY MENSAJES NUEVOS
+//   **************************************************************************
+window.setInterval(function () {
+  updateOnComingMessages();
+
+  console.log("Comprobando si hay mensajes nuevos");
+}, 5000);
+
+//   ***************************************************************************
+//        CUANDO LA PÁGINA CARGA SE ACTUALIZA LA CANTIDAD DE NIÑOS EN SALA   -llamadas a API
+//   **************************************************************************
+
+window.addEventListener("load", checKAmountBabies);
+
+//Hace llamadas a la API dependiendo de la sala y retorna la cantidad de niños
+function checKAmountBabies() {
+  getKidsPerRoom(``, "#total");
+  getKidsPerRoom(`?sala=1`, "#salaUno");
+  getKidsPerRoom(`?sala=2`, "#salaDos");
+  getKidsPerRoom(`?sala=3`, "#salaTres");
+  getKidsRegistered();
+}
+
+function getKidsPerRoom(sala = "", nombreId) {
+  let url = `http://localhost/proyectofinalciclo/api/children/roster/${sala}`;
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      document.querySelector(nombreId).innerHTML = data[0]["count"];
+    });
+}
+
+function getKidsRegistered() {
+  let url = `http://localhost/proyectofinalciclo/api/children/cantidad-registrados`;
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      document.querySelector("#totalregistrados").innerHTML = data[0]["count"];
+    });
+}
+
 // ##########################################################################
-//     GESTION DE ACTUALIZACION DE ROSTER : CANTIDAD DE NIÑOS POR SALA
+//     GESTION DE ACTUALIZACION DE CANTIDAD DE NIÑOS POR SALA
 // ##########################################################################
 
-window.addEventListener("load", checkRoster);
-window.addEventListener("load", updateOnComingMessages);
-
+//definiendo las diferentes salas
 let registrados = document.querySelector(".registrados");
 let childrenListDiv = document.querySelector(".childrenList");
 let sala1 = document.querySelector(".sala1");
 let sala2 = document.querySelector(".sala2");
 let sala3 = document.querySelector(".sala3");
-let todos = document.querySelector(".checkedin");
+let totalBebesEnSala = document.querySelector(".checkedin");
 let fetchRegistrados = false;
 
-todos.addEventListener("click", mostrarTodos);
-sala1.addEventListener("click", mostrarSala1);
-sala2.addEventListener("click", mostrarSala2);
-sala3.addEventListener("click", mostrarSala3);
-registrados.addEventListener("click", fetchRegistered);
+//añadiendo evento para que muestre los niños dependiendo de la sala
+totalBebesEnSala.addEventListener("click", mostrartotalBebesEnSala);
+sala1.addEventListener("click", mostrarBebesSala1);
+sala2.addEventListener("click", mostrarBebesSala2);
+sala3.addEventListener("click", mostrarBebesSala3);
+registrados.addEventListener("click", mostrarBebesRegistrados);
 
-RenderPage();
+function mostrartotalBebesEnSala() {
+  fetchRegistrados = false;
+  totalBebesEnSala.classList.add("chosenBox");
+  if (
+    sala1.classList.contains("chosenBox") ||
+    sala2.classList.contains("chosenBox") ||
+    registrados.classList.contains("chosenBox")
+  ) {
+    sala1.classList.remove("chosenBox");
+    sala2.classList.remove("chosenBox");
+    registrados.classList.remove("chosenBox");
+  }
+  childrenListDiv.classList.remove("greyBg");
+  childrenListDiv.classList.remove("sala3Color");
+  childrenListDiv.classList.remove("sala2Color");
+  childrenListDiv.classList.remove("sala1Color");
+  childrenListDiv.classList.add("greyBg");
+  clearList();
+  let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
+  fetchKids(url);
+  getKidsPerRoom(``, "#total");
+}
+
+function mostrarBebesSala1() {
+  fetchRegistrados = false;
+  sala1.classList.add("chosenBox");
+  if (
+    sala2.classList.contains("chosenBox") ||
+    sala3.classList.contains("chosenBox") ||
+    totalBebesEnSala.classList.contains("chosenBox") ||
+    registrados.classList.contains("chosenBox")
+  ) {
+    sala2.classList.remove("chosenBox");
+    sala3.classList.remove("chosenBox");
+    totalBebesEnSala.classList.remove("chosenBox");
+    registrados.classList.remove("chosenBox");
+  }
+  childrenListDiv.classList.remove("greyBg");
+  childrenListDiv.classList.remove("sala3Color");
+  childrenListDiv.classList.remove("sala2Color");
+  childrenListDiv.classList.add("sala1Color");
+  clearList();
+  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=1?checkedIn=1`;
+
+  fetchKids(url);
+  getKidsPerRoom(`?sala=1`, "#salaUno");
+}
+function mostrarBebesSala2() {
+  fetchRegistrados = false;
+  sala2.classList.add("chosenBox");
+  if (
+    sala1.classList.contains("chosenBox") ||
+    sala3.classList.contains("chosenBox") ||
+    totalBebesEnSala.classList.contains("chosenBox") ||
+    registrados.classList.contains("chosenBox")
+  ) {
+    sala1.classList.remove("chosenBox");
+    sala3.classList.remove("chosenBox");
+    totalBebesEnSala.classList.remove("chosenBox");
+    registrados.classList.remove("chosenBox");
+  }
+
+  childrenListDiv.classList.remove("greyBg");
+  childrenListDiv.classList.remove("sala3Color");
+  childrenListDiv.classList.remove("sala1Color");
+  childrenListDiv.classList.add("sala2Color");
+  clearList();
+  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=2?checkedIn=1`;
+  fetchKids(url);
+  getKidsPerRoom(`?sala=2`, "#salaDos");
+}
+
+function mostrarBebesSala3() {
+  fetchRegistrados = false;
+  sala3.classList.add("chosenBox");
+  if (
+    sala1.classList.contains("chosenBox") ||
+    sala2.classList.contains("chosenBox") ||
+    totalBebesEnSala.classList.contains("chosenBox") ||
+    registrados.classList.contains("chosenBox")
+  ) {
+    sala1.classList.remove("chosenBox");
+    sala2.classList.remove("chosenBox");
+    totalBebesEnSala.classList.remove("chosenBox");
+    registrados.classList.remove("chosenBox");
+  }
+
+  childrenListDiv.classList.remove("greyBg");
+  childrenListDiv.classList.remove("sala1Color");
+  childrenListDiv.classList.remove("sala2Color");
+  childrenListDiv.classList.add("sala3Color");
+  clearList();
+  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=3?checkedIn=1`;
+  fetchKids(url);
+  getKidsPerRoom(`?sala=3`, "#salaTres");
+}
+
+function mostrarBebesRegistrados() {
+  fetchRegistrados = true;
+  registrados.classList.add("chosenBox");
+  if (
+    sala1.classList.contains("chosenBox") ||
+    sala2.classList.contains("chosenBox") ||
+    totalBebesEnSala.classList.contains("chosenBox")
+  ) {
+    sala1.classList.remove("chosenBox");
+    sala2.classList.remove("chosenBox");
+    totalBebesEnSala.classList.remove("chosenBox");
+  }
+  clearList();
+  childrenListDiv.classList.remove("greyBg");
+  childrenListDiv.classList.remove("sala1Color");
+  childrenListDiv.classList.remove("sala2Color");
+  childrenListDiv.classList.add("salaRegisteredColor");
+
+  let url = `http://localhost/proyectofinalciclo/api/children/childrenlist/`;
+  fetchKids(url);
+}
+
+// ##########################################################################
+//                     GESTION DE FILTROS
+// ##########################################################################
 
 document.querySelector("#buscadorNombre").addEventListener("keyup", filtrar);
 document.querySelector("#buscadorApellido").addEventListener("keyup", filtrar);
-
 document.querySelector("#buscadorGenero").addEventListener("change", filtrar);
 
 function filtrar() {
@@ -152,7 +405,7 @@ function filtrar() {
     }
   }
 
-  if (todos.classList.contains("chosenBox")) {
+  if (totalBebesEnSala.classList.contains("chosenBox")) {
     url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1&`;
     if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
       if (generoBabyInput != "todos") {
@@ -184,64 +437,47 @@ function filtrar() {
   clearList();
 }
 
-// mostrarFicha();
-window.setTimeout(function () {
-  updateOnComingMessages();
-  console.log("reloading");
-}, 2000);
-
-//Actualizar conteo cada 5 segundos
-
-// window.setInterval(function () {
-//   checkRoster();
-//   actualizarFechaYHora();
-// }, 5000);
-
 //función para que no se repitan la lista de niños al cambiar de sala.
 function clearList() {
   document.querySelector(".childrenList").innerHTML = "";
 }
+// ##########################################################################
+//                     GESTION DE DUTY: RECEPCIÓN O SALA
+// ##########################################################################
 
-// Depende de si entra en sala o en recepcion la pestaña abierta por defecto será diferente
-function RenderPage() {
-  todos.classList.add("chosenBox");
-  clearList();
+//Al cargar la página depende del duty se carga total registrados o total ( en sala)
 
-  if (duty == "recepcion") {
-    fetchRegistrados = true;
-    let url = `http://localhost/proyectofinalciclo/api/children/childrenlist`;
-    document.querySelector(".registrados").classList.add("chosenBox");
-    document
-      .querySelector(".childrenList")
-      .classList.add("salaRegisteredColor");
+if (sessionStorage.getItem("duty") == "recepcion") {
+  console.log(duty);
+  fetchRegistrados = true;
+  let url = `http://localhost/proyectofinalciclo/api/children/childrenlist`;
+  document.querySelector(".registrados").classList.add("chosenBox");
+  document.querySelector(".checkedin").classList.remove("chosenBox");
+  document.querySelector(".childrenList").classList.add("salaRegisteredColor");
 
-    fetchKids(url);
-  } else {
-    let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
-    fetchKids(url);
-    fetchRoster(``, "#total");
-    fetchRoster(`?sala=1`, "#salaUno");
-    fetchRoster(`?sala=2`, "#salaDos");
-    fetchRoster(`?sala=3`, "#salaTres");
-  }
+  fetchKids(url);
+} else {
+  totalBebesEnSala.classList.add("chosenBox");
+  // clearList();
+  let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
+  fetchKids(url);
+  getKidsPerRoom(``, "#total");
+  getKidsPerRoom(`?sala=1`, "#salaUno");
+  getKidsPerRoom(`?sala=2`, "#salaDos");
+  getKidsPerRoom(`?sala=3`, "#salaTres");
 }
 
-function checkRoster() {
-  fetchRoster(``, "#total");
-  fetchRoster(`?sala=1`, "#salaUno");
-  fetchRoster(`?sala=2`, "#salaDos");
-  fetchRoster(`?sala=3`, "#salaTres");
-  fetchRosterRegistrados();
-}
+//   **********************************************************************
+//          GESTIÓN DE ACTUALIZACIÓN AL RECIBIR O ENVIAR MENSAJES DE CHAT
+//   *********************************************************************
+
+let divConIconoEmail = document.createElement("div");
+divConIconoEmail.innerHTML = "";
 
 function updateOnComingMessages() {
   let allDataId = document.querySelectorAll("[data-idChild]");
-  let elementonuevo = document.createElement('div');
-  elementonuevo.innerHTML= `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>` ;
-
 
   fetch(
-    // `http://localhost/proyectofinalciclo/api/chat/?notificacionFecha=${today}&respondido=0`,
     `http://localhost/proyectofinalciclo/api/updatechat/?idDestinatario=admin&respondido=0`,
     {
       method: "GET",
@@ -254,181 +490,219 @@ function updateOnComingMessages() {
       return response.json();
     })
     .then((data) => {
-    
-      data.forEach((dato) => {
-        allDataId.forEach((child) => {
-        if(child.dataset.idchild === dato.idChild ){
-         child.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`
-        }
+      if (data) {
+        data.forEach((dato) => {
+          allDataId.forEach((child) => {
          
-            //  child.parentElement.append(elementonuevo)
-            // // child.dataset.idchild === dato.idChild
-           
-            // // ? child.parentElement.append(elementonuevo)
-            // // : console.log("No hay mensajes nuevos");
+            if (child.dataset.idchild === dato.idChild) {
+              // scrollChatWindow();
+              console.log("Hay un mensaje nuevo sin responder");
+
+              // child.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`;
+              divConIconoEmail.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`;
+              child.append(divConIconoEmail);
+              if (dato.leido == 0) {
+                cargarMensajes();
+             
+                agregarToast({
+                  tipo: "exito",
+                  titulo: "Info",
+                  descripcion: "Tienes un mensaje nuevo!",
+                });
+                scrollChatWindow();
+                let msg = {
+                  idmsg: dato.idmsg,
+                };
+                fetch(`../api/updatemsg/?idmsg=${dato.idmsg}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                  },
+                  body: JSON.stringify(msg),
+                })
+                  .then((response) => {
+                    if (response.ok) {
+                      return response.json();
+                    }
+                  })
+                  .then((data) => {
+                    console.log(data);
+                    scrollChatWindow();
+                  });
+              }
+            }
           });
-        
-      
+        });
+      } else {
+        console.log("no hay msgs");
+      }
     });
-
-  });
 }
 
-function mostrarTodos() {
-  fetchRegistrados = false;
-  todos.classList.add("chosenBox");
-  if (
-    sala1.classList.contains("chosenBox") ||
-    sala2.classList.contains("chosenBox") ||
-    registrados.classList.contains("chosenBox")
-  ) {
-    sala1.classList.remove("chosenBox");
-    sala2.classList.remove("chosenBox");
-    registrados.classList.remove("chosenBox");
-  }
-  childrenListDiv.classList.remove("greyBg");
-  childrenListDiv.classList.remove("sala3Color");
-  childrenListDiv.classList.remove("sala2Color");
-  childrenListDiv.classList.remove("sala1Color");
-  childrenListDiv.classList.add("greyBg");
-  clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
-  fetchKids(url);
-  fetchRoster(``, "#total");
-}
+// ##########################################################################
+//     GESTION DE FILA CON INFO DE CADA BEBE EN LA COLUMNA DERECHA   -PARA CARGAR PERFIL                                      !!!! revisar
+// ##########################################################################
 
-function mostrarSala1() {
-  fetchRegistrados = false;
-  sala1.classList.add("chosenBox");
-  if (
-    sala2.classList.contains("chosenBox") ||
-    sala3.classList.contains("chosenBox") ||
-    todos.classList.contains("chosenBox") ||
-    registrados.classList.contains("chosenBox")
-  ) {
-    sala2.classList.remove("chosenBox");
-    sala3.classList.remove("chosenBox");
-    todos.classList.remove("chosenBox");
-    registrados.classList.remove("chosenBox");
-  }
-  childrenListDiv.classList.remove("greyBg");
-  childrenListDiv.classList.remove("sala3Color");
-  childrenListDiv.classList.remove("sala2Color");
-  childrenListDiv.classList.add("sala1Color");
-  clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=1?checkedIn=1`;
+document.querySelector(".childrenList").addEventListener("click", (e) => {
+  let idChildChosen = e.target.closest("div.rowChild").dataset.bebe;
+  cargarPerfil(idChildChosen);
 
-  fetchKids(url);
-  fetchRoster(`?sala=1`, "#salaUno");
-}
-function mostrarSala2() {
-  fetchRegistrados = false;
-  sala2.classList.add("chosenBox");
-  if (
-    sala1.classList.contains("chosenBox") ||
-    sala3.classList.contains("chosenBox") ||
-    todos.classList.contains("chosenBox") ||
-    registrados.classList.contains("chosenBox")
-  ) {
-    sala1.classList.remove("chosenBox");
-    sala3.classList.remove("chosenBox");
-    todos.classList.remove("chosenBox");
-    registrados.classList.remove("chosenBox");
-  }
+});
 
-  childrenListDiv.classList.remove("greyBg");
-  childrenListDiv.classList.remove("sala3Color");
-  childrenListDiv.classList.remove("sala1Color");
-  childrenListDiv.classList.add("sala2Color");
-  clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=2?checkedIn=1`;
-  fetchKids(url);
-  fetchRoster(`?sala=2`, "#salaDos");
-}
-
-function mostrarSala3() {
-  fetchRegistrados = false;
-  sala3.classList.add("chosenBox");
-  if (
-    sala1.classList.contains("chosenBox") ||
-    sala2.classList.contains("chosenBox") ||
-    todos.classList.contains("chosenBox") ||
-    registrados.classList.contains("chosenBox")
-  ) {
-    sala1.classList.remove("chosenBox");
-    sala2.classList.remove("chosenBox");
-    todos.classList.remove("chosenBox");
-    registrados.classList.remove("chosenBox");
-  }
-
-  childrenListDiv.classList.remove("greyBg");
-  childrenListDiv.classList.remove("sala1Color");
-  childrenListDiv.classList.remove("sala2Color");
-  childrenListDiv.classList.add("sala3Color");
-  clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=3?checkedIn=1`;
-  fetchKids(url);
-  fetchRoster(`?sala=3`, "#salaTres");
-}
-
-function fetchRoster(sala = "", nombreId) {
-  let url = `http://localhost/proyectofinalciclo/api/children/roster/${sala}`;
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  })
+// ***************************************************************
+//    CARGA INFORMACIÓN DEL PERFIL DE CADA NIÑO
+// **************************************************************
+function cargarPerfil(idChildChosen) {
+  fetch(
+    `http://localhost/proyectofinalciclo/api/children/info-completa/?idChild=${idChildChosen}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }
+  )
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      document.querySelector(nombreId).innerHTML = data[0]["count"];
+      data.forEach((element) => {
+        // *****************************AÑADIR PESTAÑA PERFIL*************************
+        document.querySelector(".profileBaby").innerHTML = `
+        <section class="perfilSection">
+            <div class="colTitulo">
+            <div class="tituloBox">
+                <div>Info</div>
+            </div>
+            </div>
+  
+            <div class="colInfoPerfil">
+            <div class="nombreBebePerfil tituloLabel">Nombre: <span>${
+              element["nombreBebe"]
+            }</span> </div>
+            <div class="apellidosBebePerfil tituloLabel">Apellidos:  <span>${
+              element["apellido1Bebe"]
+            }  ${element["apellido2Bebe"]}</span></div>
+            <div class="genero tituloLabel">Género:  <span>${
+              element["genero"]
+            }</span></div>
+            <div class="fechaNac tituloLabel">Fecha de Nacimiento:  <span>${
+              element["FechaNacimiento"]
+            }</span></div>
+            <div class="lugar tituloLabel">Lugar de Nacimiento:  <span>${
+              element["LugarNacimiento"]
+            }</span></div>
+            </div>
+
+        </section>
+        <hr>
+  
+        <section class="perfilSection">
+            <div class="colTitulo">
+            <div class="tituloBox">
+                <div>Medicamentos</div>
+            </div>
+            </div>
+            <div class="colInfoPerfil">
+            <div class="isTakingMed tituloLabel">Toma medicamento:  <span>${
+              element["isTakingMed"] == 0 ? "No" : "Si"
+            }</span></div>
+            <div class="medicamentoTomado tituloLabel">Toma:  <span>${
+              element["medicamentoTomado"]
+            }</span></div>
+            <div class="isAllergicToMed tituloLabel">
+                Es alérgico a algún medicamento:  <span>${
+                  element["isAllergicToMed"] == 0 ? "No" : "Si"
+                }</span>
+            </div>
+            <div class="medicamentoAlergia tituloLabel">Alergico a:  <span>${
+              element["medicamentoAlergia"]
+            }</span></div>
+            </div>
+        </section>
+        <hr>
+  
+        <section class="perfilSection">
+            <div class="colTitulo">
+            <div class="tituloBox">
+                <div>Alimentación</div>
+            </div>
+            </div>
+            <div class="colInfoPerfil">
+            <div class="hasFoodAllergy tituloLabel">
+                Es alérgico a algún alimento: <span>${
+                  element["hasFoodAllergy"] == 0 ? "No" : "Si"
+                }</span>
+            </div>
+            <div class="alergenos tituloLabel">Alergenos:<span>${
+              element["alergeno"]
+            }</span></div>
+            <div class="alergias tituloLabel">Orígen de Alergias:<span>${
+              element["alergias"]
+            }</span></div>
+            </div>
+         </section>
+        <hr>
+  
+        <section class="perfilSection">
+            <div class="colTitulo">
+            <div class="tituloBox">
+                <div>Discapacidad</div>
+            </div>
+            </div>
+            <div class="colInfoPerfil">
+            <div class="disability"><span>${
+              element["hasDisability"] == 0 ? "No" : "Si"
+            }</span>&nbsp;&nbsp;&nbsp;<span>${
+          element["discapacidad"]
+        }</&nbsp;span></div>
+            </div>
+        </section>
+        <hr>
+  
+        <section class="perfilSection">
+            <div class="colTitulo">
+                <div class="tituloBox">
+                    <div>Tutores</div>
+                </div>
+            </div>
+            <div class="colInfoTutores">
+                <div class="primerTutor">
+                    <div class="tutorNombreCompleto tituloLabel">Nombre:<span>${
+                      element["nombreCompletoTutor1"]
+                    }</span></div>           
+                </div>           
+                <div class="segundoTutor">
+                    <div class="tutorNombreCompleto2 tituloLabel">Nombre:<span>${
+                      element["nombreCompletoTutor2"]
+                    }</span></div>            
+                </div>
+            </div>
+        </section>
+        <hr>
+  
+        <section class="perfilSection">
+            <div class="colTitulo">
+                <div class="tituloBox">
+                    <div>Autorizados</div>
+                </div>
+            </div>
+            <div class="colInfoPerfil">
+                <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
+                  element["Autorizado1"]
+                }</div>
+                <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
+                  element["Autorizado2"]
+                }</div>
+            </div>
+        </section>`;
+      });
     });
 }
 
-function fetchRosterRegistrados() {
-  let url = `http://localhost/proyectofinalciclo/api/children/cantidad-registrados`;
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      document.querySelector("#totalregistrados").innerHTML = data[0]["count"];
-    });
-}
-
-function fetchRegistered() {
-  fetchRegistrados = true;
-  registrados.classList.add("chosenBox");
-  if (
-    sala1.classList.contains("chosenBox") ||
-    sala2.classList.contains("chosenBox") ||
-    todos.classList.contains("chosenBox")
-  ) {
-    sala1.classList.remove("chosenBox");
-    sala2.classList.remove("chosenBox");
-    todos.classList.remove("chosenBox");
-  }
-  clearList();
-  childrenListDiv.classList.remove("greyBg");
-  childrenListDiv.classList.remove("sala1Color");
-  childrenListDiv.classList.remove("sala2Color");
-  childrenListDiv.classList.add("salaRegisteredColor");
-
-  let url = `http://localhost/proyectofinalciclo/api/children/childrenlist/`;
-  fetchKids(url);
-  updateOnComingMessages();
-}
-
-// ##########################################################################
-//     GESTION DE FILA CON INFO DE CADA BEBE EN LA COLUMNA DERECHA
-// ##########################################################################
+// ***************************************************************
+//    FETCH KIDS HACE LLAMADAS A API CON INFO DE BEBES DEPENDIENDO DE LA URL
+// **************************************************************
 
 function fetchKids(url) {
   fetch(url, {
@@ -450,101 +724,132 @@ function fetchKids(url) {
         // ##########################################################################
         //    AÑADIENDO EVENT LISTENER INDIVIDUAL QUE PERMITE MOSTRAR LA FICHA EN LA COLUMNA DERECHA
         // ##########################################################################
-        if (duty == "sala") {
-          div.addEventListener("click", mostrarFicha);
-          div.addEventListener("click", cargarMensajes);
-        }
 
-        div.innerHTML = FetchDependingOnDuty();
+        div.addEventListener("click", mostrarFicha);
+        div.addEventListener("click", cargarMensajes);
+        let bebeApellido2 = bebe["apellido2Bebe"].substring(0, 1) + ".";
+      
+        // let horaIngreso =  bebe["horaIngreso"].substring(10, 16).toString();
+        div.innerHTML = 
+        `<div class="imagenydatos">
+        <div class="fotoBebe "><img src="../uploads/${
+          bebe["foto"]
+        }" alt=""></div>
+        <div class="datos">
+          <p class="nombreBebe">${bebe["nombreBebe"]} ${
+        bebe["apellido1Bebe"]
+      } ${bebeApellido2}</p>
+          <p class="edadBebe">${calcularEdadBebe(
+            bebe["fechaNacimiento"]
+          )}</p>
+          <span>${agregarHoraEnRegistro(bebe["horaIngreso"])}</span>
+        </div>
+      </div>
+      <div class="iconosInfoDetailed">
+      ${checkMed()}
+      ${checkAllergy()}
+      ${checkDisability()}
+      </div>    
+      <div class="msgIcon "data-idChild="${bebe["idChild"]}">   
+      ${checkFetchOrigin(bebe["checkedIn"])}
+        </div>
+        </div>`;
+   
+        function agregarHoraEnRegistro(bebeinfo){
+
+        if(bebeinfo){
+            return "Ingreso" + bebeinfo.substring(10, 16).toString()
+        }else{
+return "";
+        }
+        }
+        // FetchDependingOnDuty();
 
         // ##########################################################################
         //     GESTION DE BOTONES QUE INDICAN SI EL BEBE TIENE ALERGIAS O TOMA MEDICAMENTOS O TIENE E.E
         // ##########################################################################
-        function FetchDependingOnDuty() {
-          if (duty == "sala") {
-            let bebeApellido2 = bebe["apellido2Bebe"].substring(0, 1) + ".";
-            // **************Si el duty es Sala que muestre los siguientes Datos*********
-            return `<div class="imagenydatos">
-            <div class="fotoBebe "><img src="../uploads/${
-              bebe["foto"]
-            }" alt=""></div>
-            <div class="datos">
-              <p class="nombreBebe">${bebe["nombreBebe"]} ${
-              bebe["apellido1Bebe"]
-            } ${bebeApellido2}</p>
-              <p class="edadBebe">
-              ${calcularEdadBebe(bebe["fechaNacimiento"])}
-              </p>
-              <span>Ingreso:${bebe["horaIngreso"].substring(10, 16)}</span>
-              
+        // function FetchDependingOnDuty() {
+        //   if (duty == "sala") {
+          
 
-            </div>
-          </div>
-          <div class="iconosInfoDetailed">
-          ${checkMed()}
-          ${checkAllergy()}
-          ${checkDisability()}
-
-          </div>
-          <div class="msgIcon "data-idChild="${bebe["idChild"]}">
-          ${checkReportReady()}
-     
-            </div>`;
-          } else {
-            // **************Si el duty es Recepcion que muestre los siguientes Datos*********
-            return `<div class="imagenydatos">
-            <div class="fotoBebe "><img src="../uploads/${
-              bebe["foto"]
-            }" alt=""></div>
-            <div class="datos">
-              <p class="nombreBebe">${bebe["nombreBebe"]} ${
-              bebe["apellido1Bebe"]
-            }</p>
-           
-
-              <p class="edadBebe">
-              ${calcularEdadBebe(bebe["fechaNacimiento"])}
-              </p>
-
-            </div>
-          </div>
-          <div class="iconosInfoDetailed">
-          ${checkMed()}
-          ${checkAllergy()}
-          ${checkDisability()}
-
-          </div>
-          <div class="msgIcon" "data-idChild="${bebe["idChild"]}">
-       
-    
-
-          <p class="nombreBebe"></p>
-
-          ${checkFetchOrigin(bebe["checkedIn"])}
-            </div>`;
-          }
-        }
+        //     // **************Si el duty es Sala que muestre los siguientes Datos*********
+        //     return `<div class="imagenydatos">
+        //       <div class="fotoBebe "><img src="../uploads/${
+        //         bebe["foto"]
+        //       }" alt=""></div>
+        //       <div class="datos">
+        //         <p class="nombreBebe">${bebe["nombreBebe"]} ${
+        //       bebe["apellido1Bebe"]
+        //     } ${bebeApellido2}</p>
+        //         <p class="edadBebe">${calcularEdadBebe(
+        //           bebe["fechaNacimiento"]
+        //         )}</p>
+        //         <span>Ingreso:${bebe["horaIngreso"].substring(10, 16)}</span>
+        //       </div>
+        //     </div>
+        //     <div class="iconosInfoDetailed">
+        //     ${checkMed()}
+        //     ${checkAllergy()}
+        //     ${checkDisability()}
+        //     </div>    
+        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">   
+        //       </div>`;
+        //   } else {
+        //     // **************Si el duty es Recepcion que muestre los siguientes Datos*********
+        //     let bebeApellido2 = bebe["apellido2Bebe"].substring(0, 1) + ".";
+        //     return `<div class="imagenydatos">
+        //     <div class="fotoBebe "><img src="../uploads/${
+        //       bebe["foto"]
+        //     }" alt=""></div>
+        //     <div class="datos">
+        //       <p class="nombreBebe">${bebe["nombreBebe"]} ${
+        //     bebe["apellido1Bebe"]
+        //   } ${bebeApellido2}</p>
+        //       <p class="edadBebe">${calcularEdadBebe(
+        //         bebe["fechaNacimiento"]
+        //       )}</p>
+        //       <span>Ingreso:${bebe["horaIngreso"].substring(10, 16)}</span>
+        //     </div>
+        //   </div>
+        //   <div class="iconosInfoDetailed">
+        //   ${checkMed()}
+        //   ${checkAllergy()}
+        //   ${checkDisability()}
+        //     </div>
+        //     <div class="msgdiv" "data-bebe="${bebe["idChild"]}"></div>
+        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">   
+          
+        //     ${checkFetchOrigin(bebe["checkedIn"])}
+        //       </div>`;
+        //   }
+        // }
 
         function checkFetchOrigin(checkedin) {
-          if (fetchRegistrados) {
-            if (checkedin == 1) {
-              //Agrega un tono gris a cada perfil para indicar que estan checked in
-              div.classList.add("greyBg");
 
-              return `<pEn Sala</p>`;
-            } else {
-              return `<div class="entradaTotal" data-id="${bebe["idChild"]}" data-method="checkin">Entrada</div>`;
+            if(sessionStorage.getItem('duty')== 'recepcion'){
+
+                if (fetchRegistrados) {
+                    if (checkedin == 1) {
+                      //Agrega un tono gris a cada perfil para indicar que estan checked in
+                      div.classList.add("greyBg");
+        
+                      return `<p></p>`;
+                    } else {
+                      return `<div class="entradaTotal" data-id="${bebe["idChild"]}" data-method="checkin">Entrada</div>`;
+                    }
+                  } else {
+                    return ` <p class="nombreBebe">
+                     </p>
+                     <span class="salaActual ${bgColorDependingOnSala(bebe["sala"])}">
+                      ${bebe["sala"]}
+                     </span><span class="salida" data-method="checkout" data-id="${
+                       bebe["idChild"]
+                     }" >Salida</span>`;
+                  }
+            }else{
+                return ``;
             }
-          } else {
-            //Si el bebé ya esta en sala le aparece la hora de entrada y  la salida
-            return ` <p class="nombreBebe">
-           </p>
-           <span class="salaActual ${bgColorDependingOnSala(bebe["sala"])}">
-           SALA: ${bebe["sala"]}
-           </span><span class="salida" data-method="checkout" data-id="${
-             bebe["idChild"]
-           }" >Salida</span>`;
-          }
+         
         }
 
         function bgColorDependingOnSala(sala) {
@@ -566,23 +871,23 @@ function fetchKids(url) {
 
         function checkMed() {
           if (bebe["isTakingMed"] == 1) {
-            return `<div class="iconInfo takingMeds">Medicamentos</div>`;
+            return `<div class="iconInfo takingMeds">M</div>`;
           } else {
             return "";
           }
         }
 
-        function checkReportReady() {
-          if (bebe["dailyReportReady"] == 1) {
-            return `<img src="../img/plataforma-profesores/petition.png" alt="imagen_reporte_completo>`;
-          } else {
-            return "";
-          }
-        }
+        // function checkReportReady() {
+        //   if (bebe["dailyReportReady"] == 1) {
+        //     return `<img src="../img/plataforma-profesores/petition.png" alt="imagen_reporte_completo>`;
+        //   } else {
+        //     return "";
+        //   }
+        // }
 
         function checkAllergy() {
           if (bebe["hasFoodAllergy"] == 1 || bebe["isAllergicToMed"] == 1) {
-            return `<div class="iconInfo alergic">Alergias</div>`;
+            return `<div class="iconInfo alergic">A</div>`;
           } else {
             return "";
           }
@@ -590,37 +895,22 @@ function fetchKids(url) {
 
         function checkDisability() {
           if (bebe["hasDisability"] == 1) {
-            return `<div class="iconInfo specialNeeds">E.E</div>`;
+            return `<div class="iconInfo specialNeeds">E</div>`;
           } else {
             return "";
           }
         }
 
-        function clearPestana() {
-          document
-            .querySelector(".pestanaReporte")
-            .classList.add("selectedOption");
-          document
-            .querySelector(".pestanaMensajes")
-            .classList.remove("selectedOption");
-          document
-            .querySelector(".pestanaPerfil")
-            .classList.remove("selectedOption");
-
-          document.querySelector(".grisDiaper").classList.remove("hidden");
-          document.querySelector(".white").classList.remove("hidden");
-          document.querySelector(".grisSiesta").classList.remove("hidden");
-          document.querySelector(".profileBaby").style.display = "none";
-          document.querySelector(".mensajesBaby").style.display = "none";
-        }
+        
 
         // ##########################################################################
         //     RECARGA DE REPORTE DIARIO DEPENDIENDO DEL ID DE CADA NIÑO/NIÑA
         // ##########################################################################
 
         function mostrarFicha() {
-          updateOnComingMessages();
-
+          document
+            .querySelector(".filtrosProfesores")
+            .classList.add("reporteAbierto");
           document
             .querySelector(".pestanaReporte")
             .classList.add("selectedOption");
@@ -632,18 +922,17 @@ function fetchKids(url) {
             .classList.remove("selectedOption");
 
           clearPestana();
-          // sessionStorage.removeItem("idUsuario");
+
           sessionStorage.setItem("idChild", bebe["idChild"]);
           sessionStorage.setItem("idUsuario", bebe["idUsuario"]);
           sessionStorage.setItem("nombreBebe", bebe["nombreBebe"]);
           sessionStorage.setItem("apellido1Bebe", bebe["apellido1Bebe"]);
           let idChildSession = sessionStorage.getItem("idChild");
-          let idUsuario = sessionStorage.getItem("idUsuario");
+   
 
           // al escoger la ficha del niño se pone la listadebebes al 50%
-          document.querySelector(".listabebes").classList.add(".div50");
+          document.querySelector(".listabebes").classList.add("div50");
           document.querySelector(".secciones").style.display = "unset";
-
           document.querySelector(".secciones").classList.add("showDiv");
 
           // *************************************************
@@ -667,16 +956,16 @@ function fetchKids(url) {
             bebe["apellido2Bebe"]
           }`;
 
-          // **función que carga la plantilla con la información de deposiciones, alimentacion y siestas
+          // **función que carga la plantilla con la información de deposiciones, alimentacion y siestas (importada de funciones.js)
           cargarPlantillaRporteDiario();
 
           document
             .querySelector(".saveChanges")
             .addEventListener("click", saveChanges);
 
-          document
-            .querySelector(".reportReady")
-            .addEventListener("click", showReportReadyicon);
+          // document
+          //   .querySelector(".reportReady")
+          //   .addEventListener("click", showReportReadyicon);
 
           // ##########################################################################
           //     AÑADIENDO EVENTO CLICK A AGREGAR MÁS PARA HACER FECTH A DEPOSICIONES
@@ -685,8 +974,6 @@ function fetchKids(url) {
           document
             .querySelector(".iconoMas")
             .addEventListener("click", agregarConsistencia);
-
-          // agregar consistencia
 
           // ##########################################################################
           //     AÑADIENDO EVENT LISTENERS ONCHANGE PARA  QUE AL ESCOGER LAS OPCIONES SE GUARDE EL VALOR
@@ -782,9 +1069,8 @@ function fetchKids(url) {
               }
             });
           }
-
+          //Hace el fetch a la tabla deposiciones con el número de cambio de pañal y deposiciones:
           function agregarConsistencia() {
-            //Hace el fetch a la tabla deposiciones:
             fetch("../api/reportes/deposiciones/", {
               method: "POST",
               headers: {
@@ -802,6 +1088,12 @@ function fetchKids(url) {
               })
               .then((data) => {
                 console.log(data);
+                agregarToast({
+                  tipo: "info",
+                  titulo: "Info",
+                  descripcion: "Información de deposición actualizada!",
+                  autoCierre: true,
+                });
                 document.querySelector("#liquida").checked = false;
                 document
                   .querySelector("#liquida")
@@ -814,198 +1106,19 @@ function fetchKids(url) {
                 document
                   .querySelector("#dura")
                   .nextElementSibling.classList.remove("selectedOption");
+              })
+              .catch((error) => {
+                agregarToast({
+                  tipo: "warning",
+                  titulo: "Info",
+                  descripcion: "No fué posible actualizar la deposición!",
+                  autoCierre: true,
+                });
               });
             // fin de fetch a deposiciones
           }
 
-          // *******************************Eventos de las pestañas: ******************************
-
-          document
-            .querySelector(".pestanaPerfil")
-            .addEventListener("click", loadBabyProfile);
-
-          document
-            .querySelector(".pestanaReporte")
-            .addEventListener("click", clearPestana);
-
-          document
-            .querySelector(".pestanaMensajes")
-            .addEventListener("click", mostrarFichaMensajes);
-
-          // ********************************cargar Perfil*****************************************
-          function loadBabyProfile(e) {
-            document
-              .querySelector(".pestanaMensajes")
-              .classList.remove("selectedOption");
-            document
-              .querySelector(".pestanaReporte")
-              .classList.remove("selectedOption");
-            document
-              .querySelector(".pestanaPerfil")
-              .classList.add("selectedOption");
-
-            e.preventDefault();
-            document.querySelector(".grisDiaper").classList.add("hidden");
-            document.querySelector(".white").classList.add("hidden");
-            document.querySelector(".grisSiesta").classList.add("hidden");
-            document.querySelector(".profileBaby").style.display = "flex";
-            document.querySelector(".mensajesBaby").style.display = "none";
-
-            fetch(
-              `http://localhost/proyectofinalciclo/api/children/info-completa/?idChild=${idChildSession}`,
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json;charset=utf-8",
-                },
-              }
-            )
-              .then((response) => {
-                return response.json();
-              })
-              .then((data) => {
-                data.forEach((element) => {
-                  document.querySelector(
-                    ".profileBaby"
-                  ).innerHTML = `<section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Info</div>
-            </div>
-          </div>
-          
-          <div class="colInfoPerfil">
-            <div class="nombreBebePerfil tituloLabel">Nombre: <span>${
-              element["nombreBebe"]
-            }</span> </div>
-            <div class="apellidosBebePerfil tituloLabel">Apellidos:  <span>${
-              element["apellido1Bebe"]
-            }  ${element["apellido2Bebe"]}</span></div>
-            <div class="genero tituloLabel">Género:  <span>${
-              element["genero"]
-            }</span></div>
-            <div class="fechaNac tituloLabel">Fecha de Nacimiento:  <span>${
-              element["FechaNacimiento"]
-            }</span></div>
-            <div class="lugar tituloLabel">Lugar de Nacimiento:  <span>${
-              element["LugarNacimiento"]
-            }</span></div>
-          </div>
-          
-          <!-- fin ColInfoPerfil -->
-          </section>
-          <hr />
-          
-          <section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Medicamentos</div>
-            </div>
-          </div>
-          <div class="colInfoPerfil">
-            <div class="isTakingMed tituloLabel">Toma medicamento:  <span>${
-              element["isTakingMed"] == 0 ? "No" : "Si"
-            }</span></div>
-            <div class="medicamentoTomado tituloLabel">Toma:  <span>${
-              element["medicamentoTomado"]
-            }</span></div>
-            <div class="isAllergicToMed tituloLabel">
-              Es alérgico a algún medicamento:  <span>${
-                element["isAllergicToMed"] == 0 ? "No" : "Si"
-              }</span>
-            </div>
-            <div class="medicamentoAlergia tituloLabel">Alergico a:  <span>${
-              element["medicamentoAlergia"]
-            }</span></div>
-          </div>
-          </section>
-          <hr />
-          
-          <section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Alimentación</div>
-            </div>
-          </div>
-          <div class="colInfoPerfil">
-            <div class="hasFoodAllergy tituloLabel">
-              Es alérgico a algún alimento: <span>${
-                element["hasFoodAllergy"] == 0 ? "No" : "Si"
-              }</span>
-            </div>
-            <div class="alergenos tituloLabel">Alergenos:<span>${
-              element["alergeno"]
-            }</span></div>
-            <div class="alergias tituloLabel">Orígen de Alergias:<span>${
-              element["alergias"]
-            }</span></div>
-          </div>
-          </section>
-          <hr />
-          
-          <section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Discapacidad</div>
-            </div>
-          </div>
-          <div class="colInfoPerfil">
-            <div class="disability"><span>${
-              element["hasDisability"] == 0 ? "No" : "Si"
-            }</span>&nbsp;&nbsp;&nbsp;<span>${
-                    element["discapacidad"]
-                  }</&nbsp;span></div>
-          </div>
-          </section>
-          <hr />
-          
-          <section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Tutores</div>
-            </div>
-          </div>
-          <div class="colInfoTutores">
-            <div class="primerTutor">
-              <div class="tutorNombreCompleto tituloLabel">Nombre:<span>${
-                element["nombreCompletoTutor1"]
-              }</span></div>
-             
-            </div>
-          
-            <div class="segundoTutor">
-              <div class="tutorNombreCompleto2 tituloLabel">Nombre:<span>${
-                element["nombreCompletoTutor2"]
-              }</span></div>
-             
-            </div>
-          </div>
-          </section>
-          <hr />
-          
-          <section class="perfilSection">
-          <div class="colTitulo">
-            <div class="tituloBox">
-              <div>Autorizados</div>
-            </div>
-          </div>
-          <div class="colInfoPerfil">
-            <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
-              element["Autorizado1"]
-            }</div>
-            <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
-              element["Autorizado2"]
-            }</div>
-          
-           
-          </div>
-          </section>`;
-                });
-              });
-          }
-
-          // **final carga perfil****
-
+         
           //             Cargar actualizaciones de la ficha
           // ***************************************************************
 
@@ -1135,6 +1248,13 @@ function fetchKids(url) {
                       .querySelector("#noventa")
                       .nextElementSibling.classList.add("selectedOption");
                     break;
+
+                    case "120":
+                    document.querySelector("#cientoveinte").checked = true;
+                    document
+                      .querySelector("#cientoveinte")
+                      .nextElementSibling.classList.add("selectedOption");
+                    break;
                 }
 
                 //  ****************************Llamada a Api con reporte de deposiciones para fecha actual***************************
@@ -1210,7 +1330,7 @@ function fetchKids(url) {
               });
             });
 
-          //UPDATE CHANGES
+          //Actualizar cambios en el reporte de los bebés
 
           function updateChanges() {
             let idreporte = `${
@@ -1243,7 +1363,7 @@ function fetchKids(url) {
 
           // fin de fetch reporte diario
 
-          // *********************
+ 
 
           function saveChanges() {
             // **********************Revisar si hay un reporte activo****************
@@ -1271,26 +1391,46 @@ function fetchKids(url) {
                 return response.json();
               })
               .then((data) => {
+                agregarToast({
+                  tipo: "info",
+                  titulo: "Info",
+                  descripcion: `Cambios para  ${bebe["nombreBebe"]} han sido guardados!`,
+                  autoCierre: true,
+                });
                 console.log(data);
 
                 //fetch a deposiciones
               })
               .catch((error) => {
                 updateChanges();
+                agregarToast({
+                  tipo: "info",
+                  titulo: "Info",
+                  descripcion: `Cambios para  ${bebe["nombreBebe"]} han sido actualizados!`,
+                  autoCierre: true,
+                });
               });
             // fin de fetch
           }
         }
 
-        // fin de mostrarFicha
+       
         document.querySelector(".childrenList").append(div);
         div.classList.add("rowChild");
-      });
+      }); // fin de mostrarFicha
 
-      // Final de forEach de cada bebe
+    
 
+      //Función que impide que se muestre null de no haber tutor2 o autorizado 2
+      function ifNullDoNotShow(info) {
+        if (info == null) {
+          return "&nbsp;";
+        } else {
+          return info + "- ";
+        }
+      }
       // ***********************************************************
-      //                    GESION DE MODALBOX
+      //          GESTION DE MODALBOX PARA ENTRADAS Y SALIDAS
       // ***********************************************************
       let entradas = document.querySelectorAll(".entradaTotal");
       let salidas = document.querySelectorAll(".salida");
@@ -1305,6 +1445,7 @@ function fetchKids(url) {
             //Dibujar modal Check in
             let contenedorModal = document.createElement("div");
             contenedorModal.classList.add("contenedorModal");
+
             let url = `http://localhost/proyectofinalciclo/api/children/info-completa/?idChild=${elemento.dataset.id}`;
             fetch(url, {
               method: "GET",
@@ -1318,34 +1459,44 @@ function fetchKids(url) {
               .then((data) => {
                 console.log(data);
                 contenedorModal.innerHTML = `<div class="modalSignIn" id="modalSignIn">
-              <div class="closeIcon">
-                <img class="cerrar" src="../img/plataforma-profesores/close.png" alt="" />
-              </div>
-              <div class="tituloModal">Entrada</div>
-              <div class="fotoBebe"><img src="../uploads/${data[0].foto}" alt=""></div>
-              <div class="nombreBebe">${data[0].nombreCompletoBebe}</div>
-           
-              <select id="salaEscogida" name="sala">
-                <option value="0">Seleccione una sala</option>
-                <option value="1">Sala 1</option>
-                <option value="2">Sala 2</option>
-                <option value="3">Sala 3</option>
-
-              </select>
-              <span>Escoger entre Tutor o Autorizado</span>
-              <select id="tutor" name="tutor">
-                <option value="0">Tutor</option>
-                <option value="${data[0].idTutor1}">${data[0].nombreCompletoTutor1}</option>
-                <option value="${data[0].idTutor2}">${data[0].nombreCompletoTutor2}</option>
-               
-              </select>
-              <select id="autorizado" name="autorizado">
-                <option value="0">Autorizado</option> 
-                <option value="${data[0].idAutorizado1}">${data[0].Autorizado1}</option>
-              <option value="${data[0].idAutorizado2}">${data[0].Autorizado2}</option>
-              </select>
-              <button class="btnModal">Entrada</button>
-            </div>`;
+                <div class="closeIcon">
+                  <img class="cerrar" src="../img/plataforma-profesores/close.png" alt="" />
+                </div>
+                <div class="tituloModal">Entrada</div>
+                <div class="fotoBebe"><img src="../uploads/${
+                  data[0].foto
+                }" alt=""></div>
+                <div class="nombreBebe">${data[0].nombreCompletoBebe}</div>
+             
+                <select id="salaEscogida" name="sala">
+                  <option value="0">Seleccione una sala</option>
+                  <option value="1">Sala 1</option>
+                  <option value="2">Sala 2</option>
+                  <option value="3">Sala 3</option>
+  
+                </select>
+                <span>Escoger entre Tutor o Autorizado</span>
+                <select id="tutor" name="tutor">
+                  <option value="0">Tutor</option>
+                  <option value="${data[0].idTutor1}">${ifNullDoNotShow(
+                  data[0].nombreCompletoTutor1
+                )} ${data[0].relacion}</option>
+                  <option value="${data[0].idTutor2}">${ifNullDoNotShow(
+                  data[0].nombreCompletoTutor2
+                )} ${ifNullDoNotShow(data[0].relacionTutor2)}</option>
+                 
+                </select>
+                <select id="autorizado" name="autorizado">
+                  <option value="0">Autorizado</option> 
+                  <option value="${data[0].idAutorizado1}">${ifNullDoNotShow(
+                  data[0].Autorizado1
+                )} ${ifNullDoNotShow(data[0].relacionAutorizado1)} </option>
+                <option value="${data[0].idAutorizado2}">${ifNullDoNotShow(
+                  data[0].Autorizado2
+                )} ${ifNullDoNotShow(data[0].relacionAutorizado2)}</option>
+                </select>
+                <button class="btnModal">Entrada</button>
+              </div>`;
                 //Gestion de boton para cerrar ModLal:
                 document
                   .querySelector(".cerrar")
@@ -1483,94 +1634,66 @@ function fetchKids(url) {
         });
       });
     });
-
-  // updateOnComingMessages();
 }
-
-// *********removido*********
-{
-  /*   <p class="horaEntrada">Entrada: ${bebe["horaIngreso"].substring(10,16)} </p> */
-}
-
+//fin de fetchkidsURL
 // ***********************************************************
 //         GESTION DE CLOSE BUTTON AL LADO DE LAS PESTAÑAS
 // ***********************************************************
 
-// if (window.location == "http://localhost/proyectofinalciclo/html/plataforma-profesores.html"){
-//   document.querySelector('.headbar').style.backgroundColor="#f3b90f";
-// }
-
-if (duty == "recepcion") {
-  document.querySelector(".headbar").style.backgroundColor = "#4c6daa";
-}
-
-if (duty == "sala") {
   document
     .querySelector(".closebtnSala")
     .addEventListener("click", cerrarFicha);
 
   function cerrarFicha() {
+    document
+      .querySelector(".filtrosProfesores")
+      .classList.remove("reporteAbierto");
     document.querySelector(".secciones").style.display = "none";
-    document.querySelector(".listabebes").classList.remove(".div50");
+    document.querySelector(".listabebes").classList.remove("div50");
+
+    let listaBebesDiv = document.querySelectorAll(".listaBebes");
+          listaBebesDiv.forEach((baby) => {
+            baby.classList.remove("chosen");
+           
+          });
   }
-  document.querySelector(".headbar").style.backgroundColor = "#f3b90f";
-}
-// if (window.location == "http://localhost/proyectofinalciclo/html/recepcion-check.html"){
+ 
 
-// }
 // ********************************cargar Mensajes*****************************************
-
-function mostrarFichaMensajes() {
-  document.querySelector(".pestanaMensajes").classList.add("selectedOption");
-  document.querySelector(".pestanaReporte").classList.remove("selectedOption");
-  document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
-
-  document.querySelector(".grisDiaper").classList.add("hidden");
-  document.querySelector(".white").classList.add("hidden");
-  document.querySelector(".grisSiesta").classList.add("hidden");
-
-  document.querySelector(".profileBaby").style.display = "none";
-  document.querySelector(".mensajesBaby").style.display = "flex";
-
-  // document.querySelector(".grisDiaper").classList.add("hidden");
-  // document.querySelector(".white").classList.add("hidden");
-  // document.querySelector(".grisSiesta").classList.add("hidden");
-  // document.querySelector(".profileBaby").classList.add("hidden");
-  // document.querySelector(".profileBaby").classList.add("hidden");
-  // document.querySelector(".mensajesBaby").classList.remove("hidden");
+function scrollChatWindow() {
+  let scroll = document.querySelector(".msger");
+  scroll.scrollTop = scroll.scrollHeight;
 }
+
+
 
 function cargarMensajes() {
-  // document.querySelector(".grisDiaper").classList.remove("hidden");
-  // document.querySelector(".white").classList.remove("hidden");
-  // document.querySelector(".grisSiesta").classList.remove("hidden");
-  // document.querySelector(".mensajesBaby").classList.add("hidden");
 
-  let idUsuario = sessionStorage.getItem("idUsuario");
 
-  document.querySelector(".mensajesBaby").innerHTML = `<section class="msger">
-  <header class="msger-header">
-    <div class="msger-header-title">
-      <i class="fas fa-comment-alt"></i> Fun For Kids Chat
-    </div>
-    <div class="msger-header-options">
-      <span><i class="fas fa-cog"></i></span>
-    </div>
-  </header>
-
-  <main class="msger-chat">
-   
-         
-        </div>
+  document.querySelector(".mensajesBaby").innerHTML = `
+  <section class="msger">
+    <header class="msger-header">
+      <div class="msger-header-title">
+        <i class="fas fa-comment-alt"></i> Fun For Kids Chat
       </div>
-    </div>      
-  </main>
-
-  <form class="msger-inputarea">
-    <input type="text" class="msger-input" placeholder="Escribe tu mensaje...">
-    <button type="submit" class="msger-send-btn">Send</button>
-  </form>
-</section>`;
+      <div class="msger-header-options">
+        <span><i class="fas fa-cog"></i></span>
+      </div>
+    </header>
+  
+    <main class="msger-chat">
+     
+           
+          </div>
+        </div>
+      </div>      
+    </main>
+  
+    <form class="msger-inputarea">
+      <input type="text" class="msger-input" placeholder="Escribe tu mensaje...">
+      <button type="submit" class="msger-send-btn">Enviar</button>
+    </form>
+  </section>`;
 
   const msgerForm = document.querySelector(".msger-inputarea");
   const msgerInput = document.querySelector(".msger-input");
@@ -1581,19 +1704,29 @@ function cargarMensajes() {
   // Icons made by Freepik from www.flaticon.com
   const ADMIN_IMG = "../img/mensajes/admin.png";
   const PERSON_IMG = "../img/mensajes/parent.png";
-  const ADMIN = "FUN FOR KIDS";
+  const ADMIN = "Fun For Kids";
   let tutor1 = "tutor1";
   let tutor2 = "tutor2";
-  let tutorNames = "";
-  if (!tutor2) {
-    tutorNames = tutor1;
-  } else {
-    tutorNames = tutor1 + "/" + tutor2;
-  }
 
   // ******************************************************
   //         CAPTURAR EVENTO AL ENVIAR EL MENSAJE
   // *****************************************************
+  function formatDate(date) {
+    var fecha = new Date(date);
+    // var formatDate=fecha.toLocaleString();
+    let formatDate =
+      fecha.getDate() +
+      " de " +
+      meses[fecha.getMonth()] +
+      " de " +
+      fecha.getFullYear() +
+      "    " +
+      fecha.getHours() +
+      ":" +
+      fecha.getMinutes();
+
+    return formatDate;
+  }
 
   msgerForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -1601,7 +1734,14 @@ function cargarMensajes() {
     const msgText = msgerInput.value;
     if (!msgText) return;
 
-    appendMessage(tutorNames, PERSON_IMG, "right", msgText);
+    let fechaActual = Date.now();
+    appendMessage(
+      sessionStorage.getItem("monitor"),
+      PERSON_IMG,
+      "right",
+      msgText,
+      formatDate(fechaActual)
+    );
     msgerInput.value = "";
 
     // Haciendo fetch con el mensaje a la tabla chat
@@ -1615,9 +1755,10 @@ function cargarMensajes() {
       body: JSON.stringify({
         idChild: sessionStorage.getItem("idChild"),
         idRemitente: "admin",
-        idDestinatario: idUsuario,
+        idDestinatario: sessionStorage.getItem("idUsuario"),
         msgText: msgText,
-        respondido: 0
+        respondido: 0,
+        leido: 0,
       }),
     })
       .then((response) => {
@@ -1627,12 +1768,17 @@ function cargarMensajes() {
         console.log(data);
 
         //Buscar último mensaje a ese Id y ponerle respondido:
-        fetch(`../api/updatechat/?idRemitente=${idUsuario}&idChild=${sessionStorage.getItem("idChild")}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+        fetch(
+          `../api/updatechat/?idRemitente=${sessionStorage.getItem("idUsuario")}&idChild=${sessionStorage.getItem(
+            "idChild"
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
           .then((response) => {
             if (response.ok) {
               return response.json();
@@ -1640,12 +1786,13 @@ function cargarMensajes() {
           })
           .then((data) => {
             console.log(data);
-            let idmsg =  parseInt(data[0]["idmsg"]);
+            divConIconoEmail.innerHTML = "";
+            let idmsg = parseInt(data[0]["idmsg"]);
             console.log(idmsg);
 
             let msg = {
-              idmsg : parseInt(data[0]["idmsg"])
-            }
+              idmsg: parseInt(data[0]["idmsg"]),
+            };
             //Metodo put
 
             fetch(`../api/updatechat/?idmsg=${idmsg}`, {
@@ -1670,49 +1817,23 @@ function cargarMensajes() {
   function appendMessage(name, img, side, text, date) {
     //   Simple solution for small apps
     const msgHTML = `
-    <div class="msg ${side}-msg">
-      <div class="msg-img" style="background-image: url(${img})"></div>
-
-      <div class="msg-bubble">
-        <div class="msg-info">
-          <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${date}</div>
+      <div class="msg ${side}-msg">
+        <div class="msg-img" style="background-image: url(${img})"></div>
+  
+        <div class="msg-bubble">
+          <div class="msg-info">
+            <div class="msg-info-name">${name}</div>
+            <div class="msg-info-time">${date}</div>
+          </div>
+  
+          <div class="msg-text">${text}</div>
         </div>
-
-        <div class="msg-text">${text}</div>
       </div>
-    </div>
-  `;
+    `;
 
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     msgerChat.scrollTop += 500;
   }
-
-  // function botResponse() {
-  //   const r = random(0, ADMIN_MSG.length - 1);
-  //   const msgText = ADMIN_MSG[r];
-  //   const delay = msgText.split(" ").length * 100;
-
-  //   setTimeout(() => {
-  //     appendMessage(ADMIN, ADMIN_IMG, "left", msgText);
-  //   }, delay);
-  // }
-
-  // // Utils
-  // function get(selector, root = document) {
-  //   return root.querySelector(selector);
-  // }
-
-  // function formatDate(date) {
-  //   const h = "0" + date.getHours();
-  //   const m = "0" + date.getMinutes();
-
-  //   return `${h.slice(-2)}:${m.slice(-2)}`;
-  // }
-
-  // function random(min, max) {
-  //   return Math.floor(Math.random() * (max - min) + min);
-  // }
 
   // ******************************************************
   //        CARGAR MENSAJES ENVIADOS Y RECIBIDOS
@@ -1735,10 +1856,22 @@ function cargarMensajes() {
     .then((data) => {
       data.forEach((dato) => {
         if (dato.idRemitente == "admin") {
-          appendMessage(ADMIN, ADMIN_IMG, "right", dato.msgText, dato.created_on);
+          appendMessage(
+            ADMIN,
+            ADMIN_IMG,
+            "right",
+            dato.msgText,
+            formatDate(dato.created_on)
+          );
         }
-        if (dato.idRemitente == idUsuario) {
-          appendMessage(tutorNames, PERSON_IMG, "left", dato.msgText,dato.created_on);
+        if (dato.idRemitente == sessionStorage.getItem("idUsuario")) {
+          appendMessage(
+            "Tutores",
+            PERSON_IMG,
+            "left",
+            dato.msgText,
+            formatDate(dato.created_on)
+          );
         }
       });
     });
@@ -1746,57 +1879,143 @@ function cargarMensajes() {
 
 //REPORT READY CHANGES
 
-let agregado = false;
-function showReportReadyicon() {
-  if (!agregado) {
-    let msgIcons = document.querySelectorAll("[data-idChild]");
+// let agregado = false;
+// function showReportReadyicon() {
+//   if (!agregado) {
+//     let msgIcons = document.querySelectorAll("[data-idChild]");
 
-    msgIcons.forEach((row) => {
-      if (row.dataset.idchild == sessionStorage.getItem("idChild")) {
-        var arrFila = Array.prototype.slice.call(row.children);
+//     msgIcons.forEach((row) => {
+//       if (row.dataset.idchild == sessionStorage.getItem("idChild")) {
+//         var arrFila = Array.prototype.slice.call(row.children);
 
-        let img = document.createElement("img");
-        row.append(img);
-        img.src = "../img/plataforma-profesores/petition.png";
-        agregado = true;
-      }
-    });
+//         let img = document.createElement("img");
+//         row.append(img);
+//         img.src = "../img/plataforma-profesores/petition.png";
+//         agregado = true;
+//       }
+//     });
 
-    // arrFila.forEach((fila) => {
-    //   if (
-    //     fila.src ===
-    //     "http://localhost/proyectofinalciclo/img/plataforma-profesores/petition.png"
-    //   ) {
-    //     console.log("ya hay un reporte");
+//     fetch("../api/reportes/icono-reporte/", {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json;charset=utf-8",
+//       },
+//       body: JSON.stringify({
+//         idChild: sessionStorage.getItem("idChild"),
+//         dailyReportReady: "1",
+//       }),
+//     })
+//       .then((response) => {
+//         if (response.ok) {
+//           return response.json();
+//         }
+//       })
+//       .then((data) => {
+//         console.log(data);
+//       });
+//   }
+// }
 
-    //   } else {
-    //     row.append(img);
-    //     agregado = true;
-    //
-    //   }
-    // });
 
-    // arrFila.forEach((fila) => console.log(fila.src));
+// ******************************************************
+//       GESTION DE NOTIFICACIONES TIPO TOAST
+// *****************************************************
+const contenedorToast = document.getElementById("contenedor-toast");
 
-    fetch("../api/reportes/icono-reporte/", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify({
-        idChild: sessionStorage.getItem("idChild"),
-        dailyReportReady: "1",
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-      });
+// Event listener para detectar click en los toasts
+contenedorToast.addEventListener("click", (e) => {
+  const toastId = e.target.closest("div.toast").id;
+
+  if (e.target.closest("button.btn-cerrar")) {
+    cerrarToast(toastId);
   }
-}
+});
 
-// let found = allDataId.forEach((child) => child.dataset.idChild == sessionStorage.getItem('idChild') ? child. );
+// Función para cerrar el toast
+const cerrarToast = (id) => {
+  document.getElementById(id)?.classList.add("cerrando");
+};
+
+// Función para agregar la clase de cerrando al toast.
+const agregarToast = ({ tipo, titulo, descripcion, autoCierre }) => {
+  // Crear el nuevo toast
+  const nuevoToast = document.createElement("div");
+
+  // Agregar clases correspondientes
+  nuevoToast.classList.add("toast");
+  nuevoToast.classList.add(tipo);
+  if (autoCierre) nuevoToast.classList.add("autoCierre");
+
+  // Agregar id del toast
+  const numeroAlAzar = Math.floor(Math.random() * 100);
+  const fecha = Date.now();
+  const toastId = fecha + numeroAlAzar;
+  nuevoToast.id = toastId;
+
+  // Iconos
+  const iconos = {
+    exito: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                      <path
+                          d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"
+                      />
+                  </svg>`,
+    error: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                  <path
+                                      d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                                  />
+                              </svg>`,
+    info: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                  <path
+                                      d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                                  />
+                              </svg>`,
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                  <path
+                                      d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                                  />
+                              </svg>`,
+  };
+
+  // Plantilla del toast
+  const toast = `
+          <div class="contenido">
+              <div class="icono">
+                  ${iconos[tipo]}
+              </div>
+              <div class="texto">
+                  <p class="titulo">${titulo}</p>
+                  <p class="descripcion">${descripcion}</p>
+              </div>
+          </div>
+          <button class="btn-cerrar">
+              <div class="icono">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                      <path
+                          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                      />
+                  </svg>
+              </div>
+          </button>
+      `;
+
+  // Agregar la plantilla al nuevo toast
+  nuevoToast.innerHTML = toast;
+
+  // Agregamos el nuevo toast al contenedor
+  contenedorToast.appendChild(nuevoToast);
+
+  // Función para menajera el cierre del toast
+  const handleAnimacionCierre = (e) => {
+    if (e.animationName === "cierre") {
+      nuevoToast.removeEventListener("animationend", handleAnimacionCierre);
+      nuevoToast.remove();
+    }
+  };
+
+  if (autoCierre) {
+    setTimeout(() => cerrarToast(toastId), 2000);
+  }
+
+  // Agregamos event listener para detectar cuando termine la animación
+  nuevoToast.addEventListener("animationend", handleAnimacionCierre);
+};

@@ -7,7 +7,7 @@ $con = new Conexion();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-    $sql = "SELECT * FROM children WHERE 1  ";
+    $sql = "SELECT * FROM children inner join matricula where matricula.idChild = children.idChild  ";
     // $sql = "SELECT * FROM children inner join checkedin where checkedin.idChild=children.idChild and checkedin.horaSalida is null ";
     if (isset($_GET['idChild'])) {
         $idChild = $_GET['idChild'];

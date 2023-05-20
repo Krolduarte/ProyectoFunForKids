@@ -9,29 +9,17 @@ $con = new Conexion();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
-    // $sql = "SELECT *, max(created_on),respondido FROM chat WHERE 1 ";
-
-
     $sql = "CREATE TEMPORARY TABLE Latest SELECT idRemitente, MAX(created_on) AS latestDate FROM chat GROUP BY idRemitente";
 
     $sql2 = "SELECT * FROM chat INNER JOIN Latest ON Latest.latestDate = chat.created_on AND Latest.idRemitente = chat.idRemitente  ";
 
-    // $sql = "SELECT idmsg,idRemitente, MAX(created_on) AS latestDate FROM chat  GROUP BY idRemitente"; 
 
-    // if (
-    //     isset($_GET['idRemitente']) ||
-    //     isset($_GE_GET['idDestinatario']) ||
-    //     isset($_GET['msgText']) ||
-    //     isset($_GET['idChild']) ||
-    //     isset($_GET['created_on']) ||
-    //     isset($_GET['respondido'])
-
-    // ) {
     if (
         isset($_GET['idRemitente']) ||
         isset($_GET['idChild'])  ||
         isset($_GET['idDestinatario']) ||
-        isset($_GET['respondido'])
+        isset($_GET['respondido']) ||
+        isset($_GET['leido'])
     ) {
 
 
@@ -55,14 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $sql2 .= " AND respondido= '$respondido' ";
         }
 
-        //     if (isset($_GET['msgText'])) {
-        //         $msgText = $_GET['msgText'];
-        //         $sql .= " AND msgText= '$msgText' ";
-        //     }
-        //     if (isset($_GET['created_on'])) {
-        //         $created_on = $_GET['created_on'];
-        //         $sql .= " AND created_on= '$created_on' ";
-        //     }
+        if (isset($_GET['leido'])) {
+            $leido = $_GET['leido'];
+            $sql2 .= " AND leido= '$leido' ";
+        }
+
+       
 
 
 

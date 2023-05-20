@@ -16,7 +16,7 @@ document.querySelector('.sala').addEventListener('click', GetSalaDuty);
 
 
 function GetRecepcionDuty(){
-    window.location.href = "../html/recepcion-check.html";
+    window.location.href = "../html/plataforma-profesores.html";
     sessionStorage.setItem('duty', 'recepcion');
 }
 
