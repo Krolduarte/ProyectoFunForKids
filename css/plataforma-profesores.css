@@ -110,6 +110,7 @@ header {
 .sala2 > h1,
 .sala3 > h1 {
   line-height: 0;
+  font-size:25px;
 }
 
 .checkedin > span,
@@ -128,7 +129,7 @@ header {
   box-sizing: content-box;
   width: 20%;
   background-color: #eee0e0;
-  height: 100px;
+  height: 90px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -169,6 +170,23 @@ header {
   text-align: center;
   background-color: #4c6daa;
   color: white;
+  font-size: 25px;
+  padding: 0px;
+  line-height: 25px;
+}
+
+.registrados h1{
+  color: white;
+  font-size: 25px;
+  padding: 0px;
+  line-height: 25px;
+}
+
+.registrados span{
+  margin-top: -15px;
+color:white;
+font-weight: 700;
+font-size: 25px;
 }
 
 .headbar {
@@ -224,6 +242,10 @@ header {
  
 }
 
+.imglogo{
+
+width: 50%;
+}
 img.logoCubos{
 
  width: 70px;

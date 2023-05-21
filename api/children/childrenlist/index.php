@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // $sql = "SELECT * FROM children inner join checkedin where checkedin.idChild=children.idChild and checkedin.horaSalida is null ";
     if (isset($_GET['idChild'])) {
         $idChild = $_GET['idChild'];
-        $sql .= " AND idChild='$idChild'";
+        $sql .= " AND children.idChild='$idChild'";
 
     } elseif (isset($_GET['nombreBebe']) || isset($_GET['apellido1Bebe'])) {
         if (isset($_GET['nombreBebe'])) {

@@ -16,7 +16,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
     },
     body: JSON.stringify({
       usuario: document.querySelector("#username").value,
@@ -43,7 +43,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
           },
         })
           .then((response) => {
@@ -51,7 +51,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
           })
           .then((data) => {
             let idUsuario = data[0].idUsuario;
-          
+
             sessionStorage.setItem("IdUsuario", data[0]["idUsuario"]);
             fetch(
               `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${data[0]["idUsuario"]}`,
@@ -59,7 +59,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json;charset=utf-8",
-                  "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                  "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
                 },
               }
             )
@@ -69,6 +69,10 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
               .then((data) => {
                 if (data.length == 1) {
                   window.location.href = "../html/portal-tutores.html";
+                  sessionStorage.setItem("notificacionDesayuno", 'false');
+                  sessionStorage.setItem("notificacionMerienda", 'false');
+                  sessionStorage.setItem("notificacionComida", 'false');
+                  sessionStorage.setItem("notificacionSiesta", 'false');
                 } else {
                   window.location.href = "../html/matricula.html";
                 }

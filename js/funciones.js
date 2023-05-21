@@ -243,12 +243,20 @@ export { cambiarColorSiEscogido };
 
 function CerrarSesionTutores() {
   sessionStorage.removeItem("usuario");
+  sessionStorage.removeItem("idUsuario");
   sessionStorage.removeItem("IdUsuario");
   sessionStorage.removeItem("idChild");
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("nombreTutor1");
   sessionStorage.removeItem("nombreTutor2");
   sessionStorage.removeItem("leido");
+  sessionStorage.removeItem("apellido1Bebe");
+  sessionStorage.removeItem("nombreBebe");
+  sessionStorage.removeItem("notificacionComida");
+  sessionStorage.removeItem("notificacionDesayuno");
+  sessionStorage.removeItem("notificacionMerienda");
+  sessionStorage.removeItem("notificacionSiesta");
+  sessionStorage.removeItem("edicionMatricula");
 }
 
 export { CerrarSesionTutores };

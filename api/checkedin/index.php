@@ -177,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode([
                 'success' => true,
                 'id' => $id,
-                'msg' => "Checkin realizado exitosamente"
+                'msg' => "Ingreso realizado exitosamente"
             ]);
             // echo json_encode($con->insert_id);
         } catch (mysqli_sql_exception $e) {

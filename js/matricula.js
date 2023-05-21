@@ -24,7 +24,7 @@ function CerrarSesion() {
 //        GESTIONAR INGRESO A PÁGINA DE MATRICULA O REPORTE
 // ###############################################
 
-window.addEventListener("load", checkifRegistered);
+checkifRegistered();
 
 function checkifRegistered() {
   let url = `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem(
@@ -41,8 +41,16 @@ function checkifRegistered() {
     })
     .then((data) => {
       if (data.length > 0) {
-        if (data[0].idMatricula > 0) {
+        if (
+          data[0].idMatricula > 0 &&
+          sessionStorage.getItem("edicionMatricula") == "false"
+        ) {
           window.location.href = "../html/reporte-diario.html";
+        }
+
+        if (sessionStorage.getItem("edicionMatricula") == "true") {
+          document.querySelector('#tituloAEditar').textContent = " Edición de datos personales de Matrícula:"
+          completarCamposMatrícula();
         }
       } else {
         if (data === undefined || data.length === 0)
@@ -52,17 +60,79 @@ function checkifRegistered() {
     .catch((error) => console.error(error));
 }
 
+function completarCamposMatrícula() {
+  let url = `../api/info-matricula-completa/?idChild=${sessionStorage.getItem(
+    "idChild"
+  )}`;
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+
+      // **************************Información de bebé*****************************
+
+      document.querySelector("#nombreBebe").value = data[0].nombreBebe;
+      document.querySelector("#apellido1Bebe").value = data[0].apellido1Bebe;
+      document.querySelector("#apellido2Bebe").value = data[0].apellido2Bebe;
+      document.querySelector("#fechaNacimiento").value =
+        data[0].fechaNacimiento;
+      validBirthday = true;
+      document.querySelector("#lugarNacimiento").value =
+        data[0].lugarNacimiento;
+      document.querySelector(
+        ".fotoBebe"
+      ).style.backgroundImage = `url('../uploads/${data[0].foto}'`;
+      let radioButtonsGeneros = document.querySelectorAll(
+        'input[name="genero"]'
+      );
+
+      if (data[0].genero == "hombre") {
+        radioButtonsGeneros[0].checked = true;
+      } else {
+        radioButtonsGeneros[1].checked = true;
+      }
+
+      // **************************Información de Tutores*****************************
+
+      document.querySelector("#relacion1").value = data[0].relacion;
+      document.querySelector("#dni1").value = data[0].dni;
+      document.querySelector("#telefono1").value = data[0].direccion;
+      document.querySelector("#direccion1").value = data[0].telefono;
+      dniValido1 = true;
+
+      // **************************Información de Autorizados*****************************
+      document.querySelector("#nombreAutorizado1").value =
+        data[0].nombreAutorizado;
+      document.querySelector("#apellidosAutorizado1").value =
+        data[0].apellidosAutorizado;
+
+      document.querySelector("#relacionAutorizado1").value =
+        data[0].relacionAutorizado1;
+      document.querySelector("#relacionAutorizado1").value =
+        data[0].relacionAutorizado1;
+      document.querySelector("#dniAutorizado1").value =
+        data[0].relacionAutorizado1;
+    })
+    .catch((error) => console.error(error));
+
+  // console.log(document.querySelector("#nombreBebe").value );
+  // console.log(document.querySelector("#apellido1Bebe").value);
+  // console.log(document.querySelector("#apellido2Bebe").value );
+  // // document.querySelector("#genero").value = data[0].genero;
+  // console.log(document.querySelector("#fechaNacimiento").value );
+  // console.log(document.querySelector("#lugarNacimiento").value );
+}
 let primeraParteValida = false;
 let segundaParteValida = false;
 let terceraParteValida = false;
 let cuartaParteValida = false;
-// let matriculaRealizada = false;
-
-// if (matriculaRealizada){
-//   window.location.href = "../html/reporte-diario.html";
-// }else{
-//   window.location.href = "../html/matricula.html";
-// }
 
 // ###############################################
 //      PRIMERA PARTE DE LA MATRÍCULA : BEBÉ
@@ -107,6 +177,7 @@ fechaNacimiento.addEventListener("change", revisarFecha);
 fechaNacimiento.addEventListener("focus", removeErrorMsg);
 
 function revisarFecha() {
+  validBirthday = false;
   if (!checkBabyDate(fechaNacimiento, 5)) {
     fechaNacimiento.classList.add("border-red");
     infoBebe.innerHTML = "Fecha no válida";
@@ -121,8 +192,18 @@ function revisarFecha() {
 // ###############################################
 //        VERIFICAR SI GENERO HA SIDO ESCOGIDO
 // ###############################################
-
 let radioButtonsGeneros = document.querySelectorAll('input[name="genero"]');
+let  valorButton = document.querySelector('input[name="genero"]:checked');
+if(valorButton){
+  genero = document.querySelector('input[name="genero"]:checked').value;
+}
+if (sessionStorage.getItem("edicionMatricula") == "true") {
+
+  if (document.querySelector('input[name="genero"]:checked')) {
+    validGender = true;
+    genero = document.querySelector('input[name="genero"]:checked').value;
+  }
+}
 
 for (let radioButton of radioButtonsGeneros) {
   radioButton.addEventListener("change", function (e) {
@@ -164,7 +245,7 @@ function subirFoto(e) {
   formData.append("text", nombreFoto);
 
   fetch(endpoint, {
-    method: "POST",
+    method: method,
     body: formData,
   })
     .then((response) => {
@@ -197,8 +278,8 @@ function permitirSiguiente(e) {
     nombreBebe.value != "" &&
     apellido1Bebe.value != "" &&
     apellido2Bebe.value != "" &&
-    lugarNacimiento.value != "" &&
-    inpFile.files.length > 0
+    lugarNacimiento.value != ""
+    // inpFile.files.length > 0
   ) {
     console.log("PARTE 1 -BEBÉ- válida");
     // console.log(nombreBebe.value);
@@ -226,6 +307,7 @@ function permitirSiguiente(e) {
 
     // console.log(validBirthday);
     // console.log(validGender);
+    // console.log(document.querySelector('input[name="genero"]:checked').value)
     // console.log(nombreBebe.value != "");
     // console.log(apellido1Bebe.value != "");
     // console.log(apellido2Bebe.value != "");
@@ -647,6 +729,7 @@ camposTutor.forEach((campo) => {
 fechaNacimientoTutor1.addEventListener("blur", revisarFechaTutor);
 
 function revisarFechaTutor() {
+  validBirthdayTutor1 = false;
   if (!checkDate(fechaNacimientoTutor1, 18) || fechaNacimientoTutor1 == "") {
     fechaNacimientoTutor1.classList.add("border-red");
     infoTutor.innerHTML = "<p>Fecha no válida</p>";
@@ -682,8 +765,7 @@ let hiddenDivs = document.querySelectorAll(".hidden5");
 //agregar tutor
 document.querySelector("#agregarTutor").addEventListener("click", agregarTutor);
 function agregarTutor() {
-  document
-  .querySelector("#cboxUnTutor").checked =false;
+  document.querySelector("#cboxUnTutor").checked = false;
   nombreTutor2.value = "";
   apellidosTutor2.value = "";
   relacion2.value = "";
@@ -691,7 +773,7 @@ function agregarTutor() {
   telefono2.value = "";
   direccion2.value = "";
   fechaNacimientoTutor2.value = "";
-    dni2.value = " ";
+  dni2.value = " ";
 
   for (let div of hiddenDivs) {
     div.classList.remove("hidden5");
@@ -723,7 +805,6 @@ function anularSegundoTutor() {
     fechaNacimientoTutor2.value = "2001-01-01";
     dni2.value = "00000000A ";
   } else {
-   
     segundoTutor = true;
     validBirthdayTutor2 = false;
     dniValido2 = false;
@@ -923,27 +1004,27 @@ function checkifTutorComplete() {
     }
   } else {
     console.log("PARTE 3-TUTORES NO válida");
-    // console.log(dniValido1);
-    // console.log(validBirthdayTutor1);
-    // console.log(nombreTutor1.value);
-    // console.log(apellidosTutor1.value);
-    // console.log(relacion1.value);
-    // console.log(lugarNacimientoTutor1.value);
-    // console.log(fechaNacimientoTutor1.value);
-    // console.log(dni1.value);
-    // console.log(direccion1.value);
-    // console.log(telefono1.value);
-    // console.log("******");
-    // console.log(dniValido2);
-    // console.log(validBirthdayTutor2);
-    // console.log(nombreTutor2.value);
-    // console.log(apellidosTutor2.value);
-    // console.log(relacion2.value);
-    // console.log(lugarNacimientoTutor2.value);
-    // console.log(fechaNacimientoTutor2.value);
-    // console.log(dni2.value);
-    // console.log(direccion2.value);
-    // console.log(telefono2.value);
+    console.log(dniValido1);
+    console.log(validBirthdayTutor1);
+    console.log(nombreTutor1.value);
+    console.log(apellidosTutor1.value);
+    console.log(relacion1.value);
+    console.log(lugarNacimientoTutor1.value);
+    console.log(fechaNacimientoTutor1.value);
+    console.log(dni1.value);
+    console.log(direccion1.value);
+    console.log(telefono1.value);
+    console.log("******");
+    console.log(dniValido2);
+    console.log(validBirthdayTutor2);
+    console.log(nombreTutor2.value);
+    console.log(apellidosTutor2.value);
+    console.log(relacion2.value);
+    console.log(lugarNacimientoTutor2.value);
+    console.log(fechaNacimientoTutor2.value);
+    console.log(dni2.value);
+    console.log(direccion2.value);
+    console.log(telefono2.value);
   }
 }
 
@@ -1206,6 +1287,16 @@ function checkifAuthorizedPersonComplete(e) {
 //   .querySelector("#enviarform")
 //   .addEventListener("click", enviarMatricula);
 
+// *************************************************
+//        En caso que sea edicion de matricula
+//*************************************************
+let method = "";
+if (sessionStorage.getItem("edicionMatricula") == 'true') {
+  method = "PUT";
+} else {
+  method = "POST";
+}
+
 function enviarMatricula() {
   if (
     primeraParteValida &&
@@ -1233,32 +1324,39 @@ function enviarMatricula() {
     // ****************************************************
     // FETCH PARA ENVIAR INFO DE BEBE
     // ****************************************************
+    let body = {};
+    body = {
+      idChild: idChild,
+      nombreBebe: nombreBebe.value,
+      apellido1Bebe: apellido1Bebe.value,
+      apellido2Bebe: apellido2Bebe.value,
+      genero: genero,
+      fechaNacimiento: fechaNacimiento.value,
+      lugarNacimiento: lugarNacimiento.value,
+      isTakingMed: isTakingMed,
+      medicamentoTomado: medicamentoTomado.value,
+      isAllergicToMed: isAllergicToMed,
+      medicamentoAlergia: medicamentoAlergia.value,
+      hasFoodAllergy: hasFoodAllergy,
+      alergeno: alergeno.value,
+      alergias: alergias,
+      hasDisability: hasDisability,
+      discapacidad: discapacidad.value,
+    };
+
+    if (inpFile.files[0]) {
+      body.foto = `${nombreFoto}${inpFile.files[0].name}`;
+    }else{
+      body.foto = `1684344642263parent.png`;
+    }
 
     fetch("http://localhost/proyectofinalciclo/api/matricula/children/", {
-      method: "POST",
+      method: method,
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
 
-      body: JSON.stringify({
-        idChild: idChild,
-        nombreBebe: nombreBebe.value,
-        apellido1Bebe: apellido1Bebe.value,
-        apellido2Bebe: apellido2Bebe.value,
-        genero: genero,
-        fechaNacimiento: fechaNacimiento.value,
-        lugarNacimiento: lugarNacimiento.value,
-        isTakingMed: isTakingMed,
-        medicamentoTomado: medicamentoTomado.value,
-        isAllergicToMed: isAllergicToMed,
-        medicamentoAlergia: medicamentoAlergia.value,
-        hasFoodAllergy: hasFoodAllergy,
-        alergeno: alergeno.value,
-        alergias: alergias,
-        hasDisability: hasDisability,
-        discapacidad: discapacidad.value,
-        foto: `${nombreFoto}${inpFile.files[0].name}`,
-      }),
+      body: JSON.stringify(body),
     })
       .then((response) => {
         switch (response.status) {
@@ -1286,7 +1384,7 @@ function enviarMatricula() {
 
         // FETCH PARA TUTOR1
         fetch("http://localhost/proyectofinalciclo/api/matricula/tutors/", {
-          method: "POST",
+          method: method,
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -1328,7 +1426,7 @@ function enviarMatricula() {
               fetch(
                 "http://localhost/proyectofinalciclo/api/matricula/tutors/",
                 {
-                  method: "POST",
+                  method: method,
                   headers: {
                     "Content-Type": "application/json;charset=utf-8",
                   },
@@ -1364,7 +1462,6 @@ function enviarMatricula() {
                 .then((data) => {
                   console.log(data);
                   // clearForm();
-                  
                 });
             }
 
@@ -1372,7 +1469,7 @@ function enviarMatricula() {
               fetch(
                 "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
                 {
-                  method: "POST",
+                  method: method,
                   headers: {
                     "Content-Type": "application/json;charset=utf-8",
                   },
@@ -1403,7 +1500,6 @@ function enviarMatricula() {
                 .then((data) => {
                   console.log(data);
                   // clearForm();
-                
                 });
             }
 
@@ -1413,7 +1509,7 @@ function enviarMatricula() {
               fetch(
                 "http://localhost/proyectofinalciclo/api/matricula/pickuplist/",
                 {
-                  method: "POST",
+                  method: method,
                   headers: {
                     "Content-Type": "application/json;charset=utf-8",
                   },
@@ -1475,7 +1571,7 @@ function enviarMatricula() {
             fetch(
               "http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/",
               {
-                method: "POST",
+                method: method,
                 headers: {
                   "Content-Type": "application/json;charset=utf-8",
                 },
@@ -1495,7 +1591,11 @@ function enviarMatricula() {
 
                     break;
                   case 400:
-                    agregarToast({ tipo: 'warning', titulo: 'Info', descripcion: 'Hubo un fallo en la matrícula!' });
+                    agregarToast({
+                      tipo: "warning",
+                      titulo: "Info",
+                      descripcion: "Hubo un fallo en la matrícula!",
+                    });
                     break;
                 }
                 return response.json();
@@ -1504,7 +1604,11 @@ function enviarMatricula() {
                 console.log(data);
                 // clearForm();
 
-                agregarToast({ tipo: 'exito', titulo: 'Info', descripcion: 'Matrícula realizada  correctamente!' });
+                agregarToast({
+                  tipo: "exito",
+                  titulo: "Info",
+                  descripcion: "Matrícula realizada  correctamente!",
+                });
                 setTimeout(() => {
                   window.location.href = "../html/portal-tutores.html";
                   // clearForm();
@@ -1538,11 +1642,10 @@ function volver3(e) {
 //   window.location.href = "../html/matricula.html";
 // }
 
-
 // ******************************************************
 //       GESTION DE NOTIFICACIONES TIPO TOAST
 // *****************************************************
-const contenedorToast = document.getElementById('contenedor-toast');
+const contenedorToast = document.getElementById("contenedor-toast");
 
 // contenedorBotones.addEventListener('click', (e) => {
 // 	e.preventDefault();
@@ -1564,61 +1667,61 @@ const contenedorToast = document.getElementById('contenedor-toast');
 // });
 
 // Event listener para detectar click en los toasts
-contenedorToast.addEventListener('click', (e) => {
-	const toastId = e.target.closest('div.toast').id;
+contenedorToast.addEventListener("click", (e) => {
+  const toastId = e.target.closest("div.toast").id;
 
-	if (e.target.closest('button.btn-cerrar')) {
-		cerrarToast(toastId);
-	}
+  if (e.target.closest("button.btn-cerrar")) {
+    cerrarToast(toastId);
+  }
 });
 
 // Función para cerrar el toast
 const cerrarToast = (id) => {
-	document.getElementById(id)?.classList.add('cerrando');
+  document.getElementById(id)?.classList.add("cerrando");
 };
 
 // Función para agregar la clase de cerrando al toast.
 const agregarToast = ({ tipo, titulo, descripcion, autoCierre }) => {
-	// Crear el nuevo toast
-	const nuevoToast = document.createElement('div');
+  // Crear el nuevo toast
+  const nuevoToast = document.createElement("div");
 
-	// Agregar clases correspondientes
-	nuevoToast.classList.add('toast');
-	nuevoToast.classList.add(tipo);
-	if (autoCierre) nuevoToast.classList.add('autoCierre');
+  // Agregar clases correspondientes
+  nuevoToast.classList.add("toast");
+  nuevoToast.classList.add(tipo);
+  if (autoCierre) nuevoToast.classList.add("autoCierre");
 
-	// Agregar id del toast
-	const numeroAlAzar = Math.floor(Math.random() * 100);
-	const fecha = Date.now();
-	const toastId = fecha + numeroAlAzar;
-	nuevoToast.id = toastId;
+  // Agregar id del toast
+  const numeroAlAzar = Math.floor(Math.random() * 100);
+  const fecha = Date.now();
+  const toastId = fecha + numeroAlAzar;
+  nuevoToast.id = toastId;
 
-	// Iconos
-	const iconos = {
-		exito: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+  // Iconos
+  const iconos = {
+    exito: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 					<path
 						d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"
 					/>
 				</svg>`,
-		error: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    error: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 								<path
 									d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
 								/>
 							</svg>`,
-		info: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    info: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 								<path
 									d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
 								/>
 							</svg>`,
-		warning: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 								<path
 									d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
 								/>
 							</svg>`,
-	};
+  };
 
-	// Plantilla del toast
-	const toast = `
+  // Plantilla del toast
+  const toast = `
 		<div class="contenido">
 			<div class="icono">
 				${iconos[tipo]}
@@ -1639,24 +1742,24 @@ const agregarToast = ({ tipo, titulo, descripcion, autoCierre }) => {
 		</button>
 	`;
 
-	// Agregar la plantilla al nuevo toast
-	nuevoToast.innerHTML = toast;
+  // Agregar la plantilla al nuevo toast
+  nuevoToast.innerHTML = toast;
 
-	// Agregamos el nuevo toast al contenedor
-	contenedorToast.appendChild(nuevoToast);
+  // Agregamos el nuevo toast al contenedor
+  contenedorToast.appendChild(nuevoToast);
 
-	// Función para menajera el cierre del toast
-	const handleAnimacionCierre = (e) => {
-		if (e.animationName === 'cierre') {
-			nuevoToast.removeEventListener('animationend', handleAnimacionCierre);
-			nuevoToast.remove();
-		}
-	};
+  // Función para menajera el cierre del toast
+  const handleAnimacionCierre = (e) => {
+    if (e.animationName === "cierre") {
+      nuevoToast.removeEventListener("animationend", handleAnimacionCierre);
+      nuevoToast.remove();
+    }
+  };
 
-	if (autoCierre) {
-		setTimeout(() => cerrarToast(toastId), 5000);
-	}
+  if (autoCierre) {
+    setTimeout(() => cerrarToast(toastId), 5000);
+  }
 
-	// Agregamos event listener para detectar cuando termine la animación
-	nuevoToast.addEventListener('animationend', handleAnimacionCierre);
+  // Agregamos event listener para detectar cuando termine la animación
+  nuevoToast.addEventListener("animationend", handleAnimacionCierre);
 };

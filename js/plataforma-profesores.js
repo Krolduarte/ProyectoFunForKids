@@ -4,6 +4,7 @@ import {
   cambiarColorSiEscogido,
   CerrarSesionMonitores,
   cargarPlantillaRporteDiario,
+  addRedBorderIfEmpty,
 } from "./funciones.js";
 
 // Gestion de cerrar session
@@ -72,81 +73,64 @@ document.querySelector(".dutyDescription").innerHTML += duty.toUpperCase();
 
 //Colores del headbar depende del duty
 if (duty == "recepcion") {
-    document.querySelector(".headbar").style.backgroundColor = "#4c6daa";
-  }else{
-      document.querySelector(".headbar").style.backgroundColor = "#f3b90f";
-  }
+  document.querySelector(".headbar").style.backgroundColor = "#4c6daa";
+} else {
+  document.querySelector(".headbar").style.backgroundColor = "#f3b90f";
+}
 
- // *******************************Eventos de las pestañas de cada bebé ******************************
+// *******************************Eventos de las pestañas de cada bebé ******************************
 
- document
- .querySelector(".pestanaPerfil")
- .addEventListener("click", loadBabyProfile);
-
+document
+  .querySelector(".pestanaPerfil")
+  .addEventListener("click", loadBabyProfile);
 
 function loadBabyProfile(e) {
-    e.preventDefault();
-    document
-      .querySelector(".pestanaMensajes")
-      .classList.remove("selectedOption");
-    document
-      .querySelector(".pestanaReporte")
-      .classList.remove("selectedOption");
-    document
-      .querySelector(".pestanaPerfil")
-      .classList.add("selectedOption");
+  e.preventDefault();
+  document.querySelector(".pestanaMensajes").classList.remove("selectedOption");
+  document.querySelector(".pestanaReporte").classList.remove("selectedOption");
+  document.querySelector(".pestanaPerfil").classList.add("selectedOption");
 
- 
-    document.querySelector(".grisDiaper").classList.add("hidden");
-    document.querySelector(".white").classList.add("hidden");
-    document.querySelector(".grisSiesta").classList.add("hidden");
-    document.querySelector(".profileBaby").style.display = "flex";
-    document.querySelector(".mensajesBaby").style.display = "none";
-  }
+  document.querySelector(".grisDiaper").classList.add("hidden");
+  document.querySelector(".white").classList.add("hidden");
+  document.querySelector(".grisSiesta").classList.add("hidden");
+  document.querySelector(".profileBaby").style.display = "flex";
+  document.querySelector(".mensajesBaby").style.display = "none";
+}
 
-  document
+document
   .querySelector(".pestanaReporte")
   .addEventListener("click", clearPestana);
 
-  function clearPestana() {
-    document
-      .querySelector(".pestanaReporte")
-      .classList.add("selectedOption");
-    document
-      .querySelector(".pestanaMensajes")
-      .classList.remove("selectedOption");
-    document
-      .querySelector(".pestanaPerfil")
-      .classList.remove("selectedOption");
+function clearPestana() {
+  document.querySelector(".pestanaReporte").classList.add("selectedOption");
+  document.querySelector(".pestanaMensajes").classList.remove("selectedOption");
+  document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
 
-    document.querySelector(".grisDiaper").classList.remove("hidden");
-    document.querySelector(".white").classList.remove("hidden");
-    document.querySelector(".grisSiesta").classList.remove("hidden");
-    document.querySelector(".profileBaby").style.display = "none";
-    document.querySelector(".mensajesBaby").style.display = "none";
-  }
+  document.querySelector(".grisDiaper").classList.remove("hidden");
+  document.querySelector(".white").classList.remove("hidden");
+  document.querySelector(".grisSiesta").classList.remove("hidden");
+  document.querySelector(".profileBaby").style.display = "none";
+  document.querySelector(".mensajesBaby").style.display = "none";
+}
 
-  document
+document
   .querySelector(".pestanaMensajes")
   .addEventListener("click", mostrarPestanaChat);
 
-  function mostrarPestanaChat() {
-    document.querySelector(".pestanaMensajes").classList.add("selectedOption");
-    document.querySelector(".pestanaReporte").classList.remove("selectedOption");
-    document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
-  
-    document.querySelector(".grisDiaper").classList.add("hidden");
-    document.querySelector(".white").classList.add("hidden");
-    document.querySelector(".grisSiesta").classList.add("hidden");
-  
-    document.querySelector(".profileBaby").style.display = "none";
-    document.querySelector(".mensajesBaby").style.display = "flex";
-    scrollChatWindow();
-  }
+function mostrarPestanaChat() {
+  document.querySelector(".pestanaMensajes").classList.add("selectedOption");
+  document.querySelector(".pestanaReporte").classList.remove("selectedOption");
+  document.querySelector(".pestanaPerfil").classList.remove("selectedOption");
 
+  document.querySelector(".grisDiaper").classList.add("hidden");
+  document.querySelector(".white").classList.add("hidden");
+  document.querySelector(".grisSiesta").classList.add("hidden");
 
+  document.querySelector(".profileBaby").style.display = "none";
+  document.querySelector(".mensajesBaby").style.display = "flex";
+  scrollChatWindow();
+}
 
- 
 //   ***************************************************************************
 //                     FUNCIÓN QUE REVISA SI HAY MENSAJES NUEVOS
 //   **************************************************************************
@@ -493,7 +477,6 @@ function updateOnComingMessages() {
       if (data) {
         data.forEach((dato) => {
           allDataId.forEach((child) => {
-         
             if (child.dataset.idchild === dato.idChild) {
               // scrollChatWindow();
               console.log("Hay un mensaje nuevo sin responder");
@@ -503,7 +486,7 @@ function updateOnComingMessages() {
               child.append(divConIconoEmail);
               if (dato.leido == 0) {
                 cargarMensajes();
-             
+
                 agregarToast({
                   tipo: "exito",
                   titulo: "Info",
@@ -546,7 +529,6 @@ function updateOnComingMessages() {
 document.querySelector(".childrenList").addEventListener("click", (e) => {
   let idChildChosen = e.target.closest("div.rowChild").dataset.bebe;
   cargarPerfil(idChildChosen);
-
 });
 
 // ***************************************************************
@@ -728,20 +710,17 @@ function fetchKids(url) {
         div.addEventListener("click", mostrarFicha);
         div.addEventListener("click", cargarMensajes);
         let bebeApellido2 = bebe["apellido2Bebe"].substring(0, 1) + ".";
-      
+
         // let horaIngreso =  bebe["horaIngreso"].substring(10, 16).toString();
-        div.innerHTML = 
-        `<div class="imagenydatos">
+        div.innerHTML = `<div class="imagenydatos">
         <div class="fotoBebe "><img src="../uploads/${
           bebe["foto"]
         }" alt=""></div>
         <div class="datos">
           <p class="nombreBebe">${bebe["nombreBebe"]} ${
-        bebe["apellido1Bebe"]
-      } ${bebeApellido2}</p>
-          <p class="edadBebe">${calcularEdadBebe(
-            bebe["fechaNacimiento"]
-          )}</p>
+          bebe["apellido1Bebe"]
+        } ${bebeApellido2}</p>
+          <p class="edadBebe">${calcularEdadBebe(bebe["fechaNacimiento"])}</p>
           <span>${agregarHoraEnRegistro(bebe["horaIngreso"])}</span>
         </div>
       </div>
@@ -754,14 +733,13 @@ function fetchKids(url) {
       ${checkFetchOrigin(bebe["checkedIn"])}
         </div>
         </div>`;
-   
-        function agregarHoraEnRegistro(bebeinfo){
 
-        if(bebeinfo){
-            return "Ingreso" + bebeinfo.substring(10, 16).toString()
-        }else{
-return "";
-        }
+        function agregarHoraEnRegistro(bebeinfo) {
+          if (bebeinfo) {
+            return "Ingreso" + bebeinfo.substring(10, 16).toString();
+          } else {
+            return "";
+          }
         }
         // FetchDependingOnDuty();
 
@@ -770,7 +748,6 @@ return "";
         // ##########################################################################
         // function FetchDependingOnDuty() {
         //   if (duty == "sala") {
-          
 
         //     // **************Si el duty es Sala que muestre los siguientes Datos*********
         //     return `<div class="imagenydatos">
@@ -791,8 +768,8 @@ return "";
         //     ${checkMed()}
         //     ${checkAllergy()}
         //     ${checkDisability()}
-        //     </div>    
-        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">   
+        //     </div>
+        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">
         //       </div>`;
         //   } else {
         //     // **************Si el duty es Recepcion que muestre los siguientes Datos*********
@@ -817,39 +794,38 @@ return "";
         //   ${checkDisability()}
         //     </div>
         //     <div class="msgdiv" "data-bebe="${bebe["idChild"]}"></div>
-        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">   
-          
+        //     <div class="msgIcon "data-idChild="${bebe["idChild"]}">
+
         //     ${checkFetchOrigin(bebe["checkedIn"])}
         //       </div>`;
         //   }
         // }
 
         function checkFetchOrigin(checkedin) {
+          if (sessionStorage.getItem("duty") == "recepcion") {
+            if (fetchRegistrados) {
+              if (checkedin == 1) {
+                //Agrega un tono gris a cada perfil para indicar que estan checked in
+                div.classList.add("greyBg");
 
-            if(sessionStorage.getItem('duty')== 'recepcion'){
-
-                if (fetchRegistrados) {
-                    if (checkedin == 1) {
-                      //Agrega un tono gris a cada perfil para indicar que estan checked in
-                      div.classList.add("greyBg");
-        
-                      return `<p></p>`;
-                    } else {
-                      return `<div class="entradaTotal" data-id="${bebe["idChild"]}" data-method="checkin">Entrada</div>`;
-                    }
-                  } else {
-                    return ` <p class="nombreBebe">
+                return `<p></p>`;
+              } else {
+                return `<div class="entradaTotal" data-id="${bebe["idChild"]}" data-method="checkin">Entrada</div>`;
+              }
+            } else {
+              return ` <p class="nombreBebe">
                      </p>
-                     <span class="salaActual ${bgColorDependingOnSala(bebe["sala"])}">
+                     <span class="salaActual ${bgColorDependingOnSala(
+                       bebe["sala"]
+                     )}">
                       ${bebe["sala"]}
                      </span><span class="salida" data-method="checkout" data-id="${
                        bebe["idChild"]
                      }" >Salida</span>`;
-                  }
-            }else{
-                return ``;
             }
-         
+          } else {
+            return ``;
+          }
         }
 
         function bgColorDependingOnSala(sala) {
@@ -901,8 +877,6 @@ return "";
           }
         }
 
-        
-
         // ##########################################################################
         //     RECARGA DE REPORTE DIARIO DEPENDIENDO DEL ID DE CADA NIÑO/NIÑA
         // ##########################################################################
@@ -928,7 +902,6 @@ return "";
           sessionStorage.setItem("nombreBebe", bebe["nombreBebe"]);
           sessionStorage.setItem("apellido1Bebe", bebe["apellido1Bebe"]);
           let idChildSession = sessionStorage.getItem("idChild");
-   
 
           // al escoger la ficha del niño se pone la listadebebes al 50%
           document.querySelector(".listabebes").classList.add("div50");
@@ -1118,7 +1091,6 @@ return "";
             // fin de fetch a deposiciones
           }
 
-         
           //             Cargar actualizaciones de la ficha
           // ***************************************************************
 
@@ -1249,7 +1221,7 @@ return "";
                       .nextElementSibling.classList.add("selectedOption");
                     break;
 
-                    case "120":
+                  case "120":
                     document.querySelector("#cientoveinte").checked = true;
                     document
                       .querySelector("#cientoveinte")
@@ -1363,8 +1335,6 @@ return "";
 
           // fin de fetch reporte diario
 
- 
-
           function saveChanges() {
             // **********************Revisar si hay un reporte activo****************
 
@@ -1414,12 +1384,9 @@ return "";
           }
         }
 
-       
         document.querySelector(".childrenList").append(div);
         div.classList.add("rowChild");
       }); // fin de mostrarFicha
-
-    
 
       //Función que impide que se muestre null de no haber tutor2 o autorizado 2
       function ifNullDoNotShow(info) {
@@ -1475,7 +1442,7 @@ return "";
                   <option value="3">Sala 3</option>
   
                 </select>
-                <span>Escoger entre Tutor o Autorizado</span>
+                <span class="tituloEscogerTutor">Escoger entre Tutor o Autorizado</span>
                 <select id="tutor" name="tutor">
                   <option value="0">Tutor</option>
                   <option value="${data[0].idTutor1}">${ifNullDoNotShow(
@@ -1545,12 +1512,83 @@ return "";
                   }
                 });
 
-                // select option[value="0"]').attr("selected", true);
+                //Funciones para gestionar que el ingreso o la salida se hagan de manera correcta
+                let tutorInput = document.querySelector("#tutor");
+                let autorizadoInput = document.querySelector("#autorizado");
+
+                tutorInput.addEventListener("input", cambiarTituloColorNegro);
+                autorizadoInput.addEventListener(
+                  "input",
+                  cambiarTituloColorNegro
+                );
+                let tutorInputChecked = false;
+                let autorizadoInputChecked = false;
+
+                const tutorInputs = document.querySelectorAll("#tutor");
+                tutorInputs.forEach((box) => {
+                  box.addEventListener("change", function handleClick(e) {
+                  
+                    box.setAttribute("style", "background-color: #f3b90f;");
+
+                    document.querySelector(".tituloEscogerTutor").textContent =
+                      "Escoja Tutores O Autorizados";
+
+                    autorizadosInputs[0].value = 0;
+                    autorizadoInput.style.backgroundColor = "white";
+                    autorizadoInputChecked = true;
+
+                 
+                  });
+                });
+
+
+                const autorizadosInputs =
+                  document.querySelectorAll("#autorizado");
+                autorizadosInputs.forEach((box) => {
+                  box.addEventListener("change", function handleClick(e) {         
+                    box.setAttribute("style", "background-color: #f3b90f;");
+                    document.querySelector(".tituloEscogerTutor").textContent =
+                      "Escoja Tutores O Autorizados";
+            
+                    tutorInputs[0].value = 0;
+                    autorizadoInputChecked = true;
+                    tutorInput.style.backgroundColor = "white";
+                    
+
+                
+                  });
+                });
+
+             
+
+                function cambiarTituloColorNegro() {
+                  document.querySelector(".tituloEscogerTutor").style.color =
+                    "black";
+                }
+
+                if (tutorInput.value == 0 && autorizadoInput.value == 0) {
+                  document.querySelector(".tituloEscogerTutor").style.color =
+                    "green";
+                }
+
+                if (tutorInput.checked && autorizadoInput.checked) {
+                  document.querySelector(".tituloEscogerTutor").style.color =
+                    "red";
+                }
 
                 function checkIn() {
+                  console.log(tutorInputChecked);
+                  console.log(autorizadoInputChecked);
                   console.log(tutorEscogido.value);
                   console.log(autorizadoEscogido.value);
 
+                  if(salaEscogida.value == 0){
+                    document.querySelector(".tituloEscogerTutor").textContent =
+                    "Debe escoger una sala";
+                  }else{
+                    document.querySelector(".tituloEscogerTutor").textContent =
+                      "Escoja Tutores O Autorizados";
+                  }
                   let urlOperacion = "";
                   let body = {};
                   let method = "";
@@ -1583,44 +1621,60 @@ return "";
                     };
                   }
 
-                  fetch(urlOperacion, {
-                    method: method,
-                    headers: {
-                      "Content-Type": "application/json;charset=utf-8",
-                    },
-                    body: JSON.stringify(body),
-                  })
-                    .then((response) => {
-                      return response.json();
+                  // if (tutorInputChecked && autorizadoInputChecked) {
+                  if (
+                   (document.querySelector("#tutor").value != 0 ||
+                    document.querySelector("#autorizado").value != 0) &&
+                    (tutorInputChecked || autorizadoInputChecked) &&
+                    !(tutorInputChecked && autorizadoInputChecked) && salaEscogida.value != 0
+                  ) {
+                    fetch(urlOperacion, {
+                      method: method,
+                      headers: {
+                        "Content-Type": "application/json;charset=utf-8",
+                      },
+                      body: JSON.stringify(body),
                     })
-                    .then((data) => {
-                      console.log(data);
-
-                      //  ********************************************
-                      //  FETCH PARA MODIFICAR EL ESTADO CHECKED-IN EN TABLA CHILDREN
-                      //  *******************************************
-                      fetch("../api/children/childrenlist/", {
-                        method: "PUT",
-                        headers: {
-                          "Content-Type": "application/json;charset=utf-8",
-                        },
-                        body: JSON.stringify({
-                          idChild: elemento.dataset.id,
-                          checkedIn: valorCheckedin,
-                        }),
+                      .then((response) => {
+                        return response.json();
                       })
-                        .then((response) => {
-                          if (response.ok) {
-                            return response.json();
-                          }
-                        })
-                        .then((data) => {
-                          window.location.reload();
-                          console.log(data);
+                      .then((data) => {
+                        agregarToast({
+                          tipo: "exito",
+                          titulo: "Info",
+                          descripcion: data.msg,
+                          autoCierre: true,
                         });
-                    });
 
-                  cerrarModal();
+                        //  ********************************************
+                        //  FETCH PARA MODIFICAR EL ESTADO CHECKED-IN EN TABLA CHILDREN
+                        //  *******************************************
+                        fetch("../api/children/childrenlist/", {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json;charset=utf-8",
+                          },
+                          body: JSON.stringify({
+                            idChild: elemento.dataset.id,
+                            checkedIn: valorCheckedin,
+                          }),
+                        })
+                          .then((response) => {
+                            if (response.ok) {
+                              return response.json();
+                            }
+                          })
+                          .then((data) => {
+                            //actualizar el número de bebés en sala
+                            mostrartotalBebesEnSala();
+                            checKAmountBabies();
+                          });
+                      });
+                    cerrarModal();
+                  } else {
+                    document.querySelector(".tituloEscogerTutor").style.color =
+                      "red";
+                  }
                 }
               });
 
@@ -1640,24 +1694,20 @@ return "";
 //         GESTION DE CLOSE BUTTON AL LADO DE LAS PESTAÑAS
 // ***********************************************************
 
+document.querySelector(".closebtnSala").addEventListener("click", cerrarFicha);
+
+function cerrarFicha() {
   document
-    .querySelector(".closebtnSala")
-    .addEventListener("click", cerrarFicha);
+    .querySelector(".filtrosProfesores")
+    .classList.remove("reporteAbierto");
+  document.querySelector(".secciones").style.display = "none";
+  document.querySelector(".listabebes").classList.remove("div50");
 
-  function cerrarFicha() {
-    document
-      .querySelector(".filtrosProfesores")
-      .classList.remove("reporteAbierto");
-    document.querySelector(".secciones").style.display = "none";
-    document.querySelector(".listabebes").classList.remove("div50");
-
-    let listaBebesDiv = document.querySelectorAll(".listaBebes");
-          listaBebesDiv.forEach((baby) => {
-            baby.classList.remove("chosen");
-           
-          });
-  }
- 
+  let listaBebesDiv = document.querySelectorAll(".listaBebes");
+  listaBebesDiv.forEach((baby) => {
+    baby.classList.remove("chosen");
+  });
+}
 
 // ********************************cargar Mensajes*****************************************
 function scrollChatWindow() {
@@ -1665,11 +1715,7 @@ function scrollChatWindow() {
   scroll.scrollTop = scroll.scrollHeight;
 }
 
-
-
 function cargarMensajes() {
-
-
   document.querySelector(".mensajesBaby").innerHTML = `
   <section class="msger">
     <header class="msger-header">
@@ -1769,9 +1815,9 @@ function cargarMensajes() {
 
         //Buscar último mensaje a ese Id y ponerle respondido:
         fetch(
-          `../api/updatechat/?idRemitente=${sessionStorage.getItem("idUsuario")}&idChild=${sessionStorage.getItem(
-            "idChild"
-          )}`,
+          `../api/updatechat/?idRemitente=${sessionStorage.getItem(
+            "idUsuario"
+          )}&idChild=${sessionStorage.getItem("idChild")}`,
           {
             method: "GET",
             headers: {
@@ -1915,7 +1961,6 @@ function cargarMensajes() {
 //       });
 //   }
 // }
-
 
 // ******************************************************
 //       GESTION DE NOTIFICACIONES TIPO TOAST

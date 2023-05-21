@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         // echo json_encode($idreporte);
         echo json_encode([
             'success' => true,
-            'msg' =>  "Checkout realizado exitosamente"
+            'msg' =>  "Salida realizada exitosamente"
         ]);
     } catch (mysqli_sql_exception $e) {
         header("HTTP/1.1 400 Bad Request");

@@ -4,21 +4,17 @@ let token = sessionStorage.getItem("token");
 let tutor1 = sessionStorage.getItem("nombreTutor1");
 let tutor2 = sessionStorage.getItem("nombreTutor2");
 let idChild = sessionStorage.getItem("idChild");
-
-//recargar página cada 10 segundos
-// setInterval("document.location.reload()", 30000);
-// window.addEventListener('load', scrollToTheEnd);
-
-//recargar página
-// window.setTimeout(function () {
-//   updateOnComingMessages();
-//   scrollToTheEnd();
-//   console.log("Comprobando si hay mensajes nuevos");
-// }, 2000);
+let nombreBebe = sessionStorage.getItem("nombreBebe");
 
 window.setInterval(function () {
   updateOnComingMessages();
-  cargarMensajesEnviadosYRecibidos;
+  cargarMensajesEnviadosYRecibidos();
+  if(today == document.querySelector('.chosenDate').attributes[0].value ){
+    checkLogUpdates(today);
+  }
+
+
+
   console.log("Comprobando si hay mensajes nuevos");
 }, 5000);
 
@@ -235,7 +231,9 @@ fetch(
           return response.json();
         })
         .then((data) => {
+       let nombreBebe = element["nombreBebe"];
           sessionStorage.setItem("idChild", idChild);
+          sessionStorage.setItem("nombreBebe", nombreBebe);
           data.forEach((element) => {
             console.log(element);
             if (element.isTakingMed == 0) {
@@ -350,7 +348,7 @@ document.querySelector(".areaFecha").innerHTML = `<div id="divCalendario">
 
 <div class="fechaExactaFlechas">
 <img class="arrows" src="../img/reporte-diario/left-arrow.png" id="btnPreviousDate" alt="leftarrow">
-       <span class="chosenDate">${now} </span>    
+       <span dataset-id="${today}" class="chosenDate">${now} </span>    
   <img src="../img/reporte-diario/right-arrow(2).png" alt="rightarrow" class="arrows" id="btnNextDate" >
 </div>
 `;
@@ -524,6 +522,31 @@ function getIdChild() {
     });
 }
 
+
+
+
+let notificacionMerienda = sessionStorage.getItem('notificacionMerienda');
+let notificacionComida = sessionStorage.getItem('notificacionComida');
+let notificacionSiesta = sessionStorage.getItem('notificacionSiesta');
+
+// function alertarDependeDeActualizacion(tipoNotificacion,tipodato,msg){
+//   if(!tipoNotificacion){
+//     if(tipodato= ""){
+//       agregarToast({
+//         tipo: "info",
+//         titulo: "Actualización",
+//         descripcion:  msg,
+//         autoCierre: true,
+//       });
+//       tipoNotificacion = true;
+     
+//      }
+//    }
+// }
+
+
+
+
 function checkLogUpdates(fechaEscogida) {
   let idChild = sessionStorage.getItem("idChild");
   let url = `../api/reportes/reportediario/?idChild=${idChild}&fechayhora=${fechaEscogida}`;
@@ -538,6 +561,65 @@ function checkLogUpdates(fechaEscogida) {
     })
     .then((data) => {
       data.forEach((dato) => {
+        
+  
+   if(sessionStorage.getItem('notificacionDesayuno') == 'false'){
+    if(dato.desayuno != ""){
+      agregarToast({
+        tipo: "info",
+        titulo: "Actualización",
+        descripcion:  "Su bebé ha desayunado!",
+        autoCierre: true,
+      });
+     
+      sessionStorage.setItem("notificacionDesayuno", 'true');
+     }
+   }
+
+ 
+   if(sessionStorage.getItem('notificacionMerienda')== 'false'){
+    if(dato.merienda != ""){
+      agregarToast({
+        tipo: "info",
+        titulo: "Actualización",
+        descripcion:  "Su bebé ha merendado!",
+        autoCierre: true,
+      });
+      sessionStorage.setItem("notificacionMerienda", 'true');
+    
+     }
+   }
+
+   if(sessionStorage.getItem('notificacionComida')== 'false'){
+    if(dato.comida != ""){
+      agregarToast({
+        tipo: "info",
+        titulo: "Actualización",
+        descripcion:  "Su bebé ha comido!",
+        autoCierre: true,
+      });
+      sessionStorage.setItem("notificacionComida", 'true');
+    
+     }
+   }
+
+   
+   if(sessionStorage.getItem('notificacionSiesta')== 'false'){
+    if(dato.siesta != ""){
+      agregarToast({
+        tipo: "info",
+        titulo: "Actualización",
+        descripcion:  "Su bebé ha tomado una siesta!",
+        autoCierre: true,
+      });
+      sessionStorage.setItem("notificacionSiesta", 'true');
+    
+     }
+   }
+
+
+
+      
         switch (dato["desayuno"]) {
           case "poco":
             document.querySelector("#pocodesayuno").checked = true;
@@ -727,6 +809,7 @@ document
   .addEventListener("change", filtrarPorFechaExacta);
 
 function filtrarPorFechaExacta() {
+  
   cargarFicha();
   let fechaEscogida = document.querySelector("#fechaExacta").value;
 
@@ -738,7 +821,7 @@ function filtrarPorFechaExacta() {
 //                            GESTIÓN DE CHAT
 // ***********************************************************************
 let divMsgNew = document.createElement("div");
-divMsgNew.classList.add("visiblemsg");
+ divMsgNew.classList.add("visiblemsg");
 
 function updateOnComingMessages() {
   fetch(
@@ -760,7 +843,7 @@ function updateOnComingMessages() {
           cargarMensajesEnviadosYRecibidos();
 
           document.querySelector(".pestanaMensajes").append(divMsgNew);
-          divMsgNew.textContent = "1";
+          divMsgNew.innerHTML = `<img src='../img/mensajes/mail.png'></img>`;
 
           if (dato.leido == 0) {
             agregarToast({
@@ -1109,3 +1192,12 @@ const agregarToast = ({ tipo, titulo, descripcion, autoCierre }) => {
   // Agregamos event listener para detectar cuando termine la animación
   nuevoToast.addEventListener("animationend", handleAnimacionCierre);
 };
+
+// ****************************************************************
+//           GESTIÓN DE EDICIÓN DE INFO DE MATRÍCULA
+// ****************************************************************
+
+document.querySelector('#btnEditProfile').addEventListener('click', () => {
+  sessionStorage.setItem('edicionMatricula', 'true')
+})
+

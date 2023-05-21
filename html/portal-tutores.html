@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/portal-tutores.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,9 +19,12 @@
       <header>
         <div class="headbar">
           <div class="logo">
-            
-            <img src="../img/plataforma-profesores/logoCubos.png" alt="logo" class="logoCubos"/>
-            
+            <img
+              src="../img/plataforma-profesores/logoCubos.png"
+              alt="logo"
+              class="logoCubos"
+            />
+
             <img
               src="../img/formulario-registro/logo-white.png"
               alt=""
@@ -50,14 +54,10 @@
         </div>
 
         <div class="opciones">
-          <button class="btnPestanas pestanaPerfil yellow">
-           Perfil
-          </button>
-          <button class="btnPestanas pestanaReporte">
-          Reporte Diario
-          </button>
+          <button class="btnPestanas pestanaPerfil yellow">Perfil</button>
+          <button class="btnPestanas pestanaReporte">Reporte Diario</button>
           <button class="btnPestanas pestanaMensajes">
-          Mensajes <span id="nuevoMsg" class="nuevoMensaje">1</span>
+          Chat <span id="nuevoMsg" class="nuevoMensaje"></span>
           </button>
         </div>
       </header>
@@ -66,6 +66,7 @@
     <div class="mainContainer">
       <div class="seccionesPerfil">
         <section class="perfilSection">
+          <a href="../html/matricula.html" id="btnEditProfile">Editar Perfil</a>
           <div class="colTitulo">
             <div class="tituloBox">
               <div>Info</div>
@@ -137,17 +138,17 @@
           </div>
           <div class="colInfoTutores">
             <div class="primerTutor">
-              <div class="tutorNombreCompleto tituloLabel">Nombre:</div>
-              <div class="relacionTutor tituloLabel">Relación:</div>
-              <div class="direccionTutor tituloLabel">Dirección:</div>
-              <div class="telefonoTutor tituloLabel">Teléfono:</div>
+              <div class="tutorNombreCompleto tituloLabel"></div>
+              <div class="relacionTutor tituloLabel"></div>
+              <div class="direccionTutor tituloLabel"></div>
+              <div class="telefonoTutor tituloLabel"></div>
             </div>
 
             <div class="segundoTutor">
-              <div class="tutorNombreCompleto2 tituloLabel">Nombre:</div>
-              <div class="relacionTutor2 tituloLabel">Relación:</div>
-              <div class="direccionTutor2 tituloLabel">Dirección:</div>
-              <div class="telefonoTutor2 tituloLabel">Teléfono:</div>
+              <div class="tutorNombreCompleto2 tituloLabel"></div>
+              <div class="relacionTutor2 tituloLabel"></div>
+              <div class="direccionTutor2 tituloLabel"></div>
+              <div class="telefonoTutor2 tituloLabel"></div>
             </div>
           </div>
         </section>
@@ -160,9 +161,9 @@
             </div>
           </div>
           <div class="colInfoPerfil">
-            <div class="autorizadoNombreCompleto tituloLabel">Nombre:</div>
+            <div class="autorizadoNombreCompleto tituloLabel"></div>
 
-            <div class="autorizadoRelacion tituloLabel">Relación:</div>
+            <div class="autorizadoRelacion tituloLabel"></div>
           </div>
         </section>
       </div>
@@ -240,15 +241,8 @@
         </section>
       </div>
 
-
       <div class="contenedor-toast" id="contenedor-toast"></div>
-
-
     </div>
-
-
-
-
 
     <script src="../js/portal-tutores.js" type="module"></script>
     <script src="../js/pestanas.js" type="module"></script>
