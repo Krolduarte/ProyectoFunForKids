@@ -562,6 +562,7 @@ input {
 }
 
 #cancelAdd{
+
   position:relative;
   padding:8px;
   background-color: red;

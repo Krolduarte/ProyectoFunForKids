@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
         $sql = "SELECT children.*, children.nombreBebe,children.apellido1Bebe,children.apellido2Bebe, 
-    tutors.nombreTutor,tutors.apellidosTutor, tutors.direccion,children.FechaNacimiento,children.genero, children.isTakingMed, children.medicamentoTomado, children.isAllergicToMed, children.medicamentoAlergia, children.hasFoodAllergy, children.alergeno, children.alergias, children.hasDisability, children.discapacidad,children.nombreBebe, children.apellido1Bebe, children.apellido2Bebe,children.LugarNacimiento,matricula.idUsuario,tutors.relacion,tutors.telefono,tutors.dni,
+    tutors.nombreTutor,tutors.apellidosTutor, tutors.direccion,children.FechaNacimiento,children.genero, children.isTakingMed, children.medicamentoTomado, children.isAllergicToMed, children.medicamentoAlergia, children.hasFoodAllergy, children.alergeno, children.alergias, children.hasDisability, children.discapacidad,children.nombreBebe, children.apellido1Bebe, children.apellido2Bebe,children.LugarNacimiento,matricula.idUsuario,tutors.relacion,tutors.telefono,tutors.dni,matricula.idMatricula,
     (select tutors.nombreTutor
     from matricula 
     inner join tutors 
@@ -33,6 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     inner join tutors 
     WHERE tutors.idTutor= matricula.idTutor2 and matricula.idChild='$idChild') as telefonoTutor2,
 
+    (select tutors.dni
+    from matricula 
+    inner join tutors 
+    WHERE tutors.idTutor= matricula.idTutor2 and matricula.idChild='$idChild') as dni2,
+
+    (select tutors.fechaNacimientoTutor
+    from matricula 
+    inner join tutors 
+    WHERE tutors.idTutor= matricula.idTutor2 and matricula.idChild='$idChild') as fechaNacimientoTutor2,
+
+    (select tutors.lugarNacimientoTutor
+    from matricula 
+    inner join tutors 
+    WHERE tutors.idTutor= matricula.idTutor2 and matricula.idChild='$idChild') as lugarNacimientoTutor2,
 
     (select tutors.relacion 
     from matricula 

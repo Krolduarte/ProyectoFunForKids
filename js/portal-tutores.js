@@ -9,8 +9,10 @@ let nombreBebe = sessionStorage.getItem("nombreBebe");
 window.setInterval(function () {
   updateOnComingMessages();
   cargarMensajesEnviadosYRecibidos();
+  checkDiaperUpdates(today);
   if(today == document.querySelector('.chosenDate').attributes[0].value ){
     checkLogUpdates(today);
+    
   }
 
 
@@ -127,7 +129,7 @@ let idChildfromSession = sessionStorage.getItem("idChild");
 // }, 2000);
 
 fetch(
-  `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${idUser}`,
+  `../api/matricula/matriculacompleta/?idUsuario=${idUser}`,
   {
     method: "GET",
     headers: {
@@ -145,7 +147,7 @@ fetch(
       // ****************************************************
 
       fetch(
-        `http://localhost/proyectofinalciclo/api/matricula/tutors/?idTutor=${element.idTutor1}`,
+        `../api/matricula/tutors/?idTutor=${element.idTutor1}`,
         {
           method: "GET",
           headers: {
@@ -167,7 +169,7 @@ fetch(
         });
 
       fetch(
-        `http://localhost/proyectofinalciclo/api/matricula/tutors/?idTutor=${element.idTutor2}`,
+        `../api/matricula/tutors/?idTutor=${element.idTutor2}`,
         {
           method: "GET",
           headers: {
@@ -193,7 +195,7 @@ fetch(
       // ****************************************************
 
       fetch(
-        `http://localhost/proyectofinalciclo/api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
+        `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
         {
           method: "GET",
           headers: {
@@ -219,7 +221,7 @@ fetch(
       console.log(idChild);
 
       fetch(
-        `http://localhost/proyectofinalciclo/api/children/childrenlist/?idChild=${idChild}`,
+        `../api/children/childrenlist/?idChild=${idChild}`,
         {
           method: "GET",
           headers: {
@@ -825,7 +827,7 @@ let divMsgNew = document.createElement("div");
 
 function updateOnComingMessages() {
   fetch(
-    `http://localhost/proyectofinalciclo/api/updatechat/?idRemitente=admin&idChild=${idChildfromSession}&respondido=0`,
+    `../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem("idChild")}&respondido=0`,
     {
       method: "GET",
       headers: {
@@ -838,7 +840,7 @@ function updateOnComingMessages() {
     })
     .then((data) => {
       data.forEach((dato) => {
-        if (idChildfromSession === dato.idChild) {
+        if (sessionStorage.getItem("idChild") === dato.idChild) {
           console.log("Hay un mensaje nuevo sin responder");
           cargarMensajesEnviadosYRecibidos();
 
@@ -893,13 +895,8 @@ const ADMIN_MSG = "Bienvenido a FunForKids!";
 const ADMIN_IMG = "../img/mensajes/admin.png";
 const PERSON_IMG = "../img/mensajes/parent.png";
 const ADMIN = "FUN FOR KIDS";
+const TUTORES = "Tutores";
 
-let tutorNames = "";
-if (!tutor2) {
-  tutorNames = tutor1;
-} else {
-  let tutorNames = tutor1 + "/" + tutor2;
-}
 
 // ******************************************************
 //         CAPTURAR EVENTO AL ENVIAR EL MENSAJE
@@ -914,7 +911,7 @@ msgerForm.addEventListener("submit", (event) => {
   let fechaActual = Date.now();
 
   appendMessage(
-    tutorNames,
+    TUTORES,
     PERSON_IMG,
     "right",
     msgText,
@@ -924,7 +921,7 @@ msgerForm.addEventListener("submit", (event) => {
 
   // Haciendo fetch con el mensaje a la tabla chat
 
-  fetch("http://localhost/proyectofinalciclo/api/chat/", {
+  fetch("../api/chat/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -1011,7 +1008,7 @@ function formatDate(date) {
 // *****************************************************
 
 function cargarMensajesEnviadosYRecibidos() {
-  fetch(`http://localhost/proyectofinalciclo/api/chat/?idChild=${idChild}`, {
+  fetch(`../api/chat/?idChild=${idChild}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -1033,7 +1030,7 @@ function cargarMensajesEnviadosYRecibidos() {
         }
         if (dato.idRemitente == idUser) {
           appendMessage(
-            tutorNames,
+            TUTORES,
             PERSON_IMG,
             "right",
             dato.msgText,

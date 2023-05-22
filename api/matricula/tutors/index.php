@@ -107,6 +107,112 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+
+    $json = json_decode(file_get_contents('php://input'), true);
+
+    if (
+        isset($json['idTutor']) ||
+        isset($json['nombreTutor']) ||
+        isset($json['apellidosTutor'])  ||
+        isset($json['relacion']) ||
+        isset($json['lugarNacimientoTutor']) ||
+        isset($json['fechaNacimientoTutor'])  ||
+        isset($json['dni']) ||
+        isset($json['direccion']) ||
+        isset($json['telefono']) 
+        
+    ) {
 
 
-header("HTTP/1.1 400 Bad Request");
+        $sql = "UPDATE tutors set actualizado = '1' ";
+
+        $idTutor = $json['idTutor'];
+       
+
+        if (isset($json['idTutor'])) {
+            $idTutor = $json['idTutor'];
+           
+                $sql .= ", idTutor='$idTutor'";
+            
+        }
+
+        if (isset($json['nombreTutor'])) {
+            $nombreTutor = $json['nombreTutor'];
+           
+                $sql .= ",nombreTutor='$nombreTutor'";
+            
+        }
+
+        if (isset($json['apellidosTutor'])) {
+            $apellidosTutor = $json['apellidosTutor'];
+           
+                $sql .= ",apellidosTutor='$apellidosTutor'";
+            
+        }
+        if (isset($json['relacion'])) {
+            $relacion = $json['relacion'];
+           
+                $sql .= ", relacion='$relacion'";
+            
+        }
+        if (isset($json['lugarNacimientoTutor'])) {
+            $lugarNacimientoTutor = $json['lugarNacimientoTutor'];
+          
+                $sql .= ", lugarNacimientoTutor='$lugarNacimientoTutor'";
+            
+        }
+        if (isset($json['fechaNacimientoTutor'])) {
+            $fechaNacimientoTutor = $json['fechaNacimientoTutor'];
+           
+                $sql .= ", fechaNacimientoTutor='$fechaNacimientoTutor'";
+            
+        }
+        if (isset($json['dni'])) {
+            $dni = $json['dni'];
+          
+                $sql .= ", dni='$dni'";
+            
+        }
+        if (isset($json['direccion'])) {
+            $direccion = $json['direccion'];
+           
+                $sql .= ", direccion='$direccion'";
+            
+        }
+        if (isset($json['telefono'])) {
+            $telefono = $json['telefono'];
+          
+                $sql .= ", telefono='$telefono'";
+            
+        }
+        
+
+        $sql .= " WHERE idTutor ='$idTutor'";
+
+
+
+        try {
+            // print_r($sql);
+            $con->query($sql);
+            header("HTTP/1.1 200 OK");
+            header("Content-Type: application/json");
+
+
+            // header("Authorization: $token");
+
+            // echo json_encode($idreporte);
+            echo json_encode([
+                'success' => true,
+                'msg' =>  "Información de tutores actualizada"
+            ]);
+        } catch (mysqli_sql_exception $e) {
+            header("HTTP/1.1 400 Bad Request");
+        }
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+    exit;
+} else {
+    header("HTTP/1.1 400 Bad Request");
+}

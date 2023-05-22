@@ -12,7 +12,7 @@ function registrar(e) {
 document.querySelector("#btnEntrar").addEventListener("click", (e) => {
   e.preventDefault();
 
-  fetch("http://localhost/proyectofinalciclo/api/login/tutores/", {
+  fetch("../api/login/tutores/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -35,7 +35,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
     .then((data) => {
       sessionStorage.setItem("token", data["token"]);
       if (data) {
-        let url = `http://localhost/proyectofinalciclo/api/iduser/?usuario=${
+        let url = `../api/iduser/?usuario=${
           document.querySelector("#username").value
         }`;
 
@@ -54,7 +54,7 @@ document.querySelector("#btnEntrar").addEventListener("click", (e) => {
 
             sessionStorage.setItem("IdUsuario", data[0]["idUsuario"]);
             fetch(
-              `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${data[0]["idUsuario"]}`,
+              `../api/matricula/matriculacompleta/?idUsuario=${data[0]["idUsuario"]}`,
               {
                 method: "GET",
                 headers: {

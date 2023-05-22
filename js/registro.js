@@ -76,7 +76,7 @@ usuario.addEventListener("focus", removeErrorMsg);
 function checkUser() {
   if (usuario.value !== "") {
     fetch(
-      `http://localhost/proyectofinalciclo/api/checkuser?usuario=${usuario.value}`,
+      `../api/checkuser?usuario=${usuario.value}`,
       {
         method: "GET",
         headers: {
@@ -290,7 +290,7 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
     validPwd &&
     validBirthday
   ) {
-    fetch("http://localhost/proyectofinalciclo/api/register/", {
+    fetch("../api/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

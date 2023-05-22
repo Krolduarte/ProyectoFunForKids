@@ -18,9 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         isset($json['apellidosAutorizado'])  &&
         isset($json['relacionAutorizado']) &&
         isset($json['dniAutorizado']) 
-       
-        
-        
     ) {
 
 
@@ -91,6 +88,87 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+
+    $json = json_decode(file_get_contents('php://input'), true);
+
+    if (
+        isset($json['idAutorizado']) &&
+        isset($json['nombreAutorizado']) &&
+        isset($json['apellidosAutorizado'])  &&
+        isset($json['relacionAutorizado']) &&
+        isset($json['dniAutorizado']) 
+    ) {
 
 
-header("HTTP/1.1 400 Bad Request");
+        
+
+
+        $sql = "UPDATE pickuplist set actualizado = '1' ";
+
+        $idAutorizado = $json['idAutorizado'];
+       
+
+        if (isset($json['idAutorizado'])) {
+            $idAutorizado = $json['idAutorizado'];
+       
+                $sql .= ", idAutorizado='$idAutorizado'";
+       
+        }
+
+        if (isset($json['nombreAutorizado'])) {
+            $nombreAutorizado = $json['nombreAutorizado'];
+        
+                $sql .= ",nombreAutorizado='$nombreAutorizado'";
+         
+        }
+
+        if (isset($json['apellidosAutorizado'])) {
+            $apellidosAutorizado = $json['apellidosAutorizado'];
+          
+                $sql .= ",apellidosAutorizado='$apellidosAutorizado'";
+            
+        }
+        if (isset($json['relacionAutorizado'])) {
+            $relacionAutorizado = $json['relacionAutorizado'];
+           
+                $sql .= ", relacionAutorizado='$relacionAutorizado'";
+            
+        }
+        if (isset($json['dniAutorizado'])) {
+            $dniAutorizado = $json['dniAutorizado'];
+          
+                $sql .= ", dniAutorizado='$dniAutorizado'";
+            
+        }
+        
+        
+
+        $sql .= " WHERE idAutorizado ='$idAutorizado'";
+
+
+
+        try {
+            // print_r($sql);
+            $con->query($sql);
+            header("HTTP/1.1 200 OK");
+            header("Content-Type: application/json");
+
+
+            // header("Authorization: $token");
+
+            // echo json_encode($idreporte);
+            echo json_encode([
+                'success' => true,
+                'msg' =>  "Información de autorizado actualizada"
+            ]);
+        } catch (mysqli_sql_exception $e) {
+            header("HTTP/1.1 400 Bad Request");
+        }
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+    exit;
+} else {
+    header("HTTP/1.1 400 Bad Request");
+}

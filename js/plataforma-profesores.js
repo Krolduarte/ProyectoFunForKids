@@ -15,6 +15,12 @@ document
 // ******************************************************************
 //                      Gestión de fechas
 // ******************************************************************
+
+function scrollChatWindow() {
+  let scroll = document.querySelector(".msger");
+  scroll.scrollTop = scroll.scrollHeight;
+}
+
 const meses = [
   "Enero",
   "Febrero",
@@ -156,7 +162,7 @@ function checKAmountBabies() {
 }
 
 function getKidsPerRoom(sala = "", nombreId) {
-  let url = `http://localhost/proyectofinalciclo/api/children/roster/${sala}`;
+  let url = `../api/children/roster/${sala}`;
   fetch(url, {
     method: "GET",
     headers: {
@@ -172,7 +178,7 @@ function getKidsPerRoom(sala = "", nombreId) {
 }
 
 function getKidsRegistered() {
-  let url = `http://localhost/proyectofinalciclo/api/children/cantidad-registrados`;
+  let url = `../api/children/cantidad-registrados`;
   fetch(url, {
     method: "GET",
     headers: {
@@ -225,7 +231,7 @@ function mostrartotalBebesEnSala() {
   childrenListDiv.classList.remove("sala1Color");
   childrenListDiv.classList.add("greyBg");
   clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
+  let url = `../api/checkedin/?checkedIn=1`;
   fetchKids(url);
   getKidsPerRoom(``, "#total");
 }
@@ -249,7 +255,7 @@ function mostrarBebesSala1() {
   childrenListDiv.classList.remove("sala2Color");
   childrenListDiv.classList.add("sala1Color");
   clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=1?checkedIn=1`;
+  let url = `../api/checkedin/?sala=1?checkedIn=1`;
 
   fetchKids(url);
   getKidsPerRoom(`?sala=1`, "#salaUno");
@@ -274,7 +280,7 @@ function mostrarBebesSala2() {
   childrenListDiv.classList.remove("sala1Color");
   childrenListDiv.classList.add("sala2Color");
   clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=2?checkedIn=1`;
+  let url = `../api/checkedin/?sala=2?checkedIn=1`;
   fetchKids(url);
   getKidsPerRoom(`?sala=2`, "#salaDos");
 }
@@ -299,7 +305,7 @@ function mostrarBebesSala3() {
   childrenListDiv.classList.remove("sala2Color");
   childrenListDiv.classList.add("sala3Color");
   clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?sala=3?checkedIn=1`;
+  let url = `../api/checkedin/?sala=3?checkedIn=1`;
   fetchKids(url);
   getKidsPerRoom(`?sala=3`, "#salaTres");
 }
@@ -322,7 +328,7 @@ function mostrarBebesRegistrados() {
   childrenListDiv.classList.remove("sala2Color");
   childrenListDiv.classList.add("salaRegisteredColor");
 
-  let url = `http://localhost/proyectofinalciclo/api/children/childrenlist/`;
+  let url = `../api/children/childrenlist/`;
   fetchKids(url);
 }
 
@@ -342,7 +348,7 @@ function filtrar() {
   let url = "";
 
   if (sala1.classList.contains("chosenBox")) {
-    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    url = `../api/checkedin/?`;
     if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
       url += `&sala=1`;
       if (generoBabyInput != "todos") {
@@ -358,7 +364,7 @@ function filtrar() {
   }
 
   if (sala2.classList.contains("chosenBox")) {
-    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    url = `../api/checkedin/?`;
     if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
       if (generoBabyInput != "todos") {
         url += `&genero=${generoBabyInput}`;
@@ -374,7 +380,7 @@ function filtrar() {
   }
 
   if (sala3.classList.contains("chosenBox")) {
-    url = `http://localhost/proyectofinalciclo/api/checkedin/?`;
+    url = `../api/checkedin/?`;
     if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
       url += `&sala=3`;
       if (generoBabyInput != "todos") {
@@ -390,7 +396,7 @@ function filtrar() {
   }
 
   if (totalBebesEnSala.classList.contains("chosenBox")) {
-    url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1&`;
+    url = `../api/checkedin/?checkedIn=1&`;
     if (nombreBabyInput || apellidoBabyInput || generoBabyInput) {
       if (generoBabyInput != "todos") {
         url += `&genero=${generoBabyInput}`;
@@ -405,7 +411,7 @@ function filtrar() {
   }
 
   if (registrados.classList.contains("chosenBox")) {
-    url = `http://localhost/proyectofinalciclo/api/children/childrenlist/?`;
+    url = `../api/children/childrenlist/?`;
     if (generoBabyInput != "todos") {
       url += `&genero=${generoBabyInput}`;
     }
@@ -434,7 +440,7 @@ function clearList() {
 if (sessionStorage.getItem("duty") == "recepcion") {
   console.log(duty);
   fetchRegistrados = true;
-  let url = `http://localhost/proyectofinalciclo/api/children/childrenlist`;
+  let url = `../api/children/childrenlist`;
   document.querySelector(".registrados").classList.add("chosenBox");
   document.querySelector(".checkedin").classList.remove("chosenBox");
   document.querySelector(".childrenList").classList.add("salaRegisteredColor");
@@ -443,7 +449,7 @@ if (sessionStorage.getItem("duty") == "recepcion") {
 } else {
   totalBebesEnSala.classList.add("chosenBox");
   // clearList();
-  let url = `http://localhost/proyectofinalciclo/api/checkedin/?checkedIn=1`;
+  let url = `../api/checkedin/?checkedIn=1`;
   fetchKids(url);
   getKidsPerRoom(``, "#total");
   getKidsPerRoom(`?sala=1`, "#salaUno");
@@ -459,10 +465,11 @@ let divConIconoEmail = document.createElement("div");
 divConIconoEmail.innerHTML = "";
 
 function updateOnComingMessages() {
+  scrollChatWindow();
   let allDataId = document.querySelectorAll("[data-idChild]");
 
   fetch(
-    `http://localhost/proyectofinalciclo/api/updatechat/?idDestinatario=admin&respondido=0`,
+    `../api/updatechat/?idDestinatario=admin&respondido=0`,
     {
       method: "GET",
       headers: {
@@ -480,19 +487,20 @@ function updateOnComingMessages() {
             if (child.dataset.idchild === dato.idChild) {
               // scrollChatWindow();
               console.log("Hay un mensaje nuevo sin responder");
-
+              scrollChatWindow();
               // child.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`;
               divConIconoEmail.innerHTML = `<img class="iconEmail" src="../img/plataforma-profesores/email(1).png" alt="email"/>`;
               child.append(divConIconoEmail);
               if (dato.leido == 0) {
                 cargarMensajes();
-
+              
                 agregarToast({
                   tipo: "exito",
                   titulo: "Info",
                   descripcion: "Tienes un mensaje nuevo!",
                 });
                 scrollChatWindow();
+                
                 let msg = {
                   idmsg: dato.idmsg,
                 };
@@ -536,7 +544,7 @@ document.querySelector(".childrenList").addEventListener("click", (e) => {
 // **************************************************************
 function cargarPerfil(idChildChosen) {
   fetch(
-    `http://localhost/proyectofinalciclo/api/children/info-completa/?idChild=${idChildChosen}`,
+    `../api/children/info-completa/?idChild=${idChildChosen}`,
     {
       method: "GET",
       headers: {
@@ -1413,7 +1421,7 @@ function fetchKids(url) {
             let contenedorModal = document.createElement("div");
             contenedorModal.classList.add("contenedorModal");
 
-            let url = `http://localhost/proyectofinalciclo/api/children/info-completa/?idChild=${elemento.dataset.id}`;
+            let url = `../api/children/info-completa/?idChild=${elemento.dataset.id}`;
             fetch(url, {
               method: "GET",
               headers: {
@@ -1710,12 +1718,11 @@ function cerrarFicha() {
 }
 
 // ********************************cargar Mensajes*****************************************
-function scrollChatWindow() {
-  let scroll = document.querySelector(".msger");
-  scroll.scrollTop = scroll.scrollHeight;
-}
+
 
 function cargarMensajes() {
+
+
   document.querySelector(".mensajesBaby").innerHTML = `
   <section class="msger">
     <header class="msger-header">
@@ -1792,7 +1799,7 @@ function cargarMensajes() {
 
     // Haciendo fetch con el mensaje a la tabla chat
 
-    fetch("http://localhost/proyectofinalciclo/api/chat/", {
+    fetch("../api/chat/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -1886,7 +1893,7 @@ function cargarMensajes() {
   // *****************************************************
 
   fetch(
-    `http://localhost/proyectofinalciclo/api/chat/?idChild=${sessionStorage.getItem(
+    `../api/chat/?idChild=${sessionStorage.getItem(
       "idChild"
     )}`,
     {

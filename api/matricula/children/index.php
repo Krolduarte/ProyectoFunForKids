@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $json = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($json['idChild']) && isset($json['nombreBebe']) && isset($json['apellido1Bebe'])  && isset($json['apellido2Bebe']) && isset($json['genero'])  && isset($json['fechaNacimiento']) && isset($json['lugarNacimiento']) && isset($json['isTakingMed']) && isset($json['isAllergicToMed'])  && isset($json['hasFoodAllergy']) && isset($json['hasDisability']) || isset($json['medicamentoTomado']) || isset($json['medicamentoAlergia']) || isset($json['alergeno']) || isset($json['alergias']) || isset($json['discapacidad'])|| isset($json['foto']) ) {
+    if (isset($json['idChild']) && isset($json['nombreBebe']) && isset($json['apellido1Bebe'])  && isset($json['apellido2Bebe']) && isset($json['genero'])  && isset($json['fechaNacimiento']) && isset($json['lugarNacimiento']) && isset($json['isTakingMed']) && isset($json['isAllergicToMed'])  && isset($json['hasFoodAllergy']) && isset($json['hasDisability']) || isset($json['medicamentoTomado']) || isset($json['medicamentoAlergia']) || isset($json['alergeno']) || isset($json['alergias']) || isset($json['discapacidad']) || isset($json['foto'])) {
 
         $idChild = $json['idChild'];
         $nombreBebe = $json['nombreBebe'];
@@ -17,33 +17,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fechaNacimiento = $json['fechaNacimiento'];
         $lugarNacimiento = $json['lugarNacimiento'];
         $isTakingMed = $json['isTakingMed'];
-        $isAllergicToMed = $json['isAllergicToMed']; 
-        $hasFoodAllergy = $json['hasFoodAllergy'];  
+        $isAllergicToMed = $json['isAllergicToMed'];
+        $hasFoodAllergy = $json['hasFoodAllergy'];
         $hasDisability = $json['hasDisability'];
         $foto = $json['foto'];
-      
-        if (isset($json['medicamentoTomado'])){
+
+        if (isset($json['medicamentoTomado'])) {
             $medicamentoTomado = $json['medicamentoTomado'];
         }
 
-        if (isset($json['medicamentoAlergia'])){
+        if (isset($json['medicamentoAlergia'])) {
             $medicamentoAlergia = $json['medicamentoAlergia'];
         }
 
-        if (isset($json['alergeno'])){
+        if (isset($json['alergeno'])) {
             $alergeno = $json['alergeno'];
         }
-        if (isset($json['alergias'])){
+        if (isset($json['alergias'])) {
             $json['alergias'] = implode(", ", $json['alergias']);
         }
 
-      
-        if (isset($json['discapacidad'])){
+
+        if (isset($json['discapacidad'])) {
             $discapacidad = $json['discapacidad'];
         }
 
-        
-     
+
+
 
         $sql = "INSERT INTO children (idChild,nombreBebe,apellido1Bebe,apellido2Bebe,genero,fechaNacimiento,lugarNacimiento,isTakingMed,medicamentoTomado,isAllergicToMed,medicamentoAlergia,hasFoodAllergy,alergeno,alergias,hasDisability,discapacidad,foto) VALUES ('$idChild','$nombreBebe', '$apellido1Bebe', '$apellido2Bebe', '$genero', '$fechaNacimiento', '$lugarNacimiento', $isTakingMed, '$medicamentoTomado',$isAllergicToMed,'$medicamentoAlergia',$hasFoodAllergy,'$alergeno','{$json['alergias']}',$hasDisability,'$discapacidad','$foto')";
         try {
@@ -63,31 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("HTTP/1.1 400 Bad Request");
     }
     exit;
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     $json = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($json['idChild']) || isset($json['nombreBebe']) || isset($json['apellido1Bebe'])  || isset($json['apellido2Bebe']) || isset($json['genero'])  || isset($json['fechaNacimiento']) && isset($json['lugarNacimiento']) && isset($json['isTakingMed']) && isset($json['isAllergicToMed'])  && isset($json['hasFoodAllergy']) && isset($json['hasDisability']) || isset($json['medicamentoTomado']) || isset($json['medicamentoAlergia']) || isset($json['alergeno']) || isset($json['alergias']) || isset($json['discapacidad'])|| isset($json['foto']) ) {
+    if (isset($json['idChild']) || isset($json['nombreBebe']) || isset($json['apellido1Bebe'])  || isset($json['apellido2Bebe']) || isset($json['genero'])  || isset($json['fechaNacimiento']) && isset($json['lugarNacimiento']) && isset($json['isTakingMed']) && isset($json['isAllergicToMed'])  && isset($json['hasFoodAllergy']) && isset($json['hasDisability']) || isset($json['medicamentoTomado']) || isset($json['medicamentoAlergia']) || isset($json['alergeno']) || isset($json['alergias']) || isset($json['discapacidad']) || isset($json['foto'])) {
 
         $sql = "UPDATE children set dailyReportReady = '0' ";
 
         $idChild = $json['idChild'];
-        // $nombreBebe = $json['nombreBebe'];
-        // $apellido1Bebe = $json['apellido1Bebe'];
-        // $apellido2Bebe = $json['apellido2Bebe'];
-        // $genero = $json['genero'];
-        // $fechaNacimiento = $json['fechaNacimiento'];
-        // $lugarNacimiento = $json['lugarNacimiento'];
-        // $isTakingMed = $json['isTakingMed'];
-        // $isAllergicToMed = $json['isAllergicToMed']; 
-        // $hasFoodAllergy = $json['hasFoodAllergy'];  
-        // $hasDisability = $json['hasDisability'];
-        // $foto = $json['foto'];
-
-       
 
 
         if (isset($json['nombreBebe'])) {
@@ -130,21 +116,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         }
         if (isset($json['isTakingMed'])) {
             $isTakingMed = $json['isTakingMed'];
-            if ($isTakingMed != "") {
-                $sql .= ", isTakingMed='$isTakingMed'";
-            }
+
+            $sql .= ", isTakingMed='$isTakingMed'";
         }
         if (isset($json['isAllergicToMed'])) {
             $isAllergicToMed = $json['isAllergicToMed'];
-            if ($isAllergicToMed != "") {
-                $sql .= ", isAllergicToMed='$isAllergicToMed'";
-            }
+
+            $sql .= ", isAllergicToMed='$isAllergicToMed'";
         }
         if (isset($json['hasFoodAllergy'])) {
             $hasFoodAllergy = $json['hasFoodAllergy'];
-            if ($hasFoodAllergy != "") {
-                $sql .= ", hasFoodAllergy='$hasFoodAllergy'";
-            }
+
+            $sql .= ", hasFoodAllergy='$hasFoodAllergy'";
         }
         if (isset($json['hasDisability'])) {
             $hasDisability = $json['hasDisability'];
@@ -155,42 +138,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
         if (isset($json['discapacidad'])) {
             $discapacidad = $json['discapacidad'];
-            if ($discapacidad != "") {
-                $sql .= ", discapacidad='$discapacidad'";
-            }
+
+            $sql .= ", discapacidad='$discapacidad'";
         }
         if (isset($json['foto'])) {
             $foto = $json['foto'];
-            if ($foto != "") {
-                $sql .= ", foto='$foto'";
-            }
+
+            $sql .= ", foto='$foto'";
         }
 
-        if (isset($json['medicamentoTomado'])){
+        if (isset($json['medicamentoTomado'])) {
             $medicamentoTomado = $json['medicamentoTomado'];
-           
-                $sql .= ", medicamentoTomado='$medicamentoTomado'";
-            
 
+            $sql .= ", medicamentoTomado='$medicamentoTomado'";
         }
 
-        if (isset($json['medicamentoAlergia'])){
+        if (isset($json['medicamentoAlergia'])) {
             $medicamentoAlergia = $json['medicamentoAlergia'];
             $sql .= ", medicamentoAlergia='$medicamentoAlergia'";
         }
 
-        if (isset($json['alergeno'])){
+        if (isset($json['alergeno'])) {
             $alergeno = $json['alergeno'];
             $sql .= ", alergeno='$alergeno'";
         }
-        if (isset($json['alergias'])){
-            
+        if (isset($json['alergias'])) {
+
             $json['alergias'] = implode(", ", $json['alergias']);
             $sql .= ", alergeno='{$json['alergias']}'";
         }
 
 
-       
+
 
         $sql .= " WHERE idChild ='$idChild'";
 
@@ -208,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
             // echo json_encode($idreporte);
             echo json_encode([
                 'success' => true,
-                'msg' =>  "Información de matrícula actualizada"
+                'msg' =>  "Información de BEBÉ actualizada"
             ]);
         } catch (mysqli_sql_exception $e) {
             header("HTTP/1.1 400 Bad Request");
@@ -220,6 +199,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 } else {
     header("HTTP/1.1 400 Bad Request");
 }
-
-
-

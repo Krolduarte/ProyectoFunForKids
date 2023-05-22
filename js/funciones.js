@@ -182,7 +182,7 @@ function loadInfoBaby() {
   let routePhoto = "";
 
   fetch(
-    `http://localhost/proyectofinalciclo/api/matricula/matriculacompleta/?idUsuario=${idUser}`,
+    `../api/matricula/matriculacompleta/?idUsuario=${idUser}`,
     {
       method: "GET",
       headers: {
@@ -198,7 +198,7 @@ function loadInfoBaby() {
       data.forEach((element) => {
         idChild = element["idChild"];
         fetch(
-          `http://localhost/proyectofinalciclo/api/children/childrenlist/?idChild=${idChild}`,
+          `../api/children/childrenlist/?idChild=${idChild}`,
           {
             method: "GET",
             headers: {
