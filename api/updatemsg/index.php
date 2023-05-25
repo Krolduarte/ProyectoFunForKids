@@ -1,6 +1,6 @@
 
 <?php
-// require '../../vendor/autoload.php';
+
 require_once('../clases/conexion.php');
 
 //crear conexion
@@ -13,7 +13,7 @@ if (isset($_GET['idmsg'])) {
     $idmsg = $json['idmsg'];
 
 
-    $sql = "UPDATE chat SET leido = 1 where idmsg='$idmsg' ";
+    $sql = "UPDATE chat SET leido = '1' where idmsg='$idmsg' ";
 
 
     try {

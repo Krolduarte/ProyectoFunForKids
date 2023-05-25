@@ -8,16 +8,13 @@ let nombreBebe = sessionStorage.getItem("nombreBebe");
 
 window.setInterval(function () {
   updateOnComingMessages();
-  cargarMensajesEnviadosYRecibidos();
+  // cargarMensajesEnviadosYRecibidos();
   checkDiaperUpdates(today);
   if(today == document.querySelector('.chosenDate').attributes[0].value ){
-    checkLogUpdates(today);
-    
+    checkLogUpdates(today);  
+   
   }
 
-
-
-  console.log("Comprobando si hay mensajes nuevos");
 }, 5000);
 
 //***********************************************************************
@@ -99,7 +96,7 @@ let alergias = document.querySelector(".alergias");
 // Informacion de Discapacidad
 let disability = document.querySelector(".disability");
 
-// Informacion de Tutores
+// Informacion de Tutoresisalee
 let tutorNombreCompleto = document.querySelector(".tutorNombreCompleto");
 let relacionTutor = document.querySelector(".relacionTutor");
 let direccionTutor = document.querySelector(".direccionTutor");
@@ -127,6 +124,7 @@ let idChildfromSession = sessionStorage.getItem("idChild");
 //   updateOnComingMessages();
 //   console.log("reloading");
 // }, 2000);
+
 
 fetch(
   `../api/matricula/matriculacompleta/?idUsuario=${idUser}`,
@@ -159,6 +157,7 @@ fetch(
           return response.json();
         })
         .then((data) => {
+          sessionStorage.setItem('matriculado', 'true');
           data.forEach((element) => {
             tutorNombreCompleto.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
             relacionTutor.innerHTML += `<span>${element["relacion"]} `;
@@ -185,7 +184,7 @@ fetch(
             tutorNombreCompleto2.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
             relacionTutor2.innerHTML += `<span>${element["relacion"]} `;
             direccionTutor2.innerHTML += `<span>${element["direccion"]} `;
-            telefonoTutor2.innerHTML += `<span>${element["telefono"]}`;
+            telefonoTutor2.innerHTML += `<span>${element["telefono"] == 0 ? "" :element["telefono"] }`;
             sessionStorage.setItem("nombreTutor2", element["nombreTutor"]);
           });
         });
@@ -213,15 +212,35 @@ fetch(
           });
         });
 
+
+        fetch(
+          `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado2}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            data.forEach((element2) => {
+              document.querySelector('.autorizadoNombreCompleto2').innerHTML += `<span>${element2["nombreAutorizado"]} ${element2["apellidosAutorizado"]}</span>`;
+              document.querySelector('.autorizadoRelacion2').innerHTML += `<span>${element2["relacionAutorizado"]} `;
+            });
+          });
+
       // ****************************************************
       //           FETCH PARA INFO DE NIÑO
       // ****************************************************
 
-      idChild = element["idChild"];
-      console.log(idChild);
+    
+     
 
       fetch(
-        `../api/children/childrenlist/?idChild=${idChild}`,
+        `../api/children/childrenlist/?idChild=${sessionStorage.getItem('idChild')}`,
         {
           method: "GET",
           headers: {
@@ -234,7 +253,7 @@ fetch(
         })
         .then((data) => {
        let nombreBebe = element["nombreBebe"];
-          sessionStorage.setItem("idChild", idChild);
+          sessionStorage.setItem("idChild", sessionStorage.getItem('idChild'));
           sessionStorage.setItem("nombreBebe", nombreBebe);
           data.forEach((element) => {
             console.log(element);
@@ -282,7 +301,7 @@ fetch(
             genero.innerHTML += `<span>${element["genero"]}</span>`;
             lugar.innerHTML += `<span>${element["lugarNacimiento"]}</span>`;
             isTakingMed.innerHTML += `<span>${isTakingMedResponse}</span>`;
-            medicamentoAlergia.innerHTML += `<span>${element["medicamentoAlergia"]}</span>`;
+            medicamentoAlergia.innerHTML += `<span>${element["medicamentoAlergia"] == "" ? "" : "Alergico a:" + element["medicamentoAlergia"]  }</span>`;
             isAllergicToMed.innerHTML += `<span>${isAllergicToMedResponse}</span>`;
             hasFoodAllergy.innerHTML += `<span>${hasFoodAllergyResponse}</span>`;
             alergias.innerHTML += `<span>  ${element["alergias"]}`;
@@ -329,14 +348,15 @@ let today = year + "-" + month + "-" + day;
 
 //Funcion para cargar en la cabecera la foto y nombre de la Bebé
 
-loadInfoBaby();
-getIdChild();
-cargarFicha();
-checkLogUpdates(today);
-checkDiaperUpdates(today);
 
-if (idUser && token) {
+if (token) {
+  getIdChild();
   loadInfoBaby();
+  
+  cargarFicha();
+  checkLogUpdates(today);
+  checkDiaperUpdates(today);
+  
 }
 
 // ***************************************************************
@@ -743,7 +763,7 @@ function checkLogUpdates(fechaEscogida) {
 }
 
 function checkDiaperUpdates(fechaEscogida) {
-  let urldepo = `../api/reportes/deposiciones/?fechayhora=${fechaEscogida}&idChild=${idChild}`;
+  let urldepo = `../api/reportes/deposiciones/?fechayhora=${fechaEscogida}&idChild=${sessionStorage.getItem('idChild')}`;
 
   fetch(urldepo, {
     method: "GET",
@@ -826,6 +846,7 @@ let divMsgNew = document.createElement("div");
  divMsgNew.classList.add("visiblemsg");
 
 function updateOnComingMessages() {
+  scrollToTheEnd();
   fetch(
     `../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem("idChild")}&respondido=0`,
     {
@@ -840,14 +861,17 @@ function updateOnComingMessages() {
     })
     .then((data) => {
       data.forEach((dato) => {
+        if (data) {
         if (sessionStorage.getItem("idChild") === dato.idChild) {
           console.log("Hay un mensaje nuevo sin responder");
-          cargarMensajesEnviadosYRecibidos();
+       
 
           document.querySelector(".pestanaMensajes").append(divMsgNew);
           divMsgNew.innerHTML = `<img src='../img/mensajes/mail.png'></img>`;
 
           if (dato.leido == 0) {
+            cargarMensajesEnviadosYRecibidos();
+
             agregarToast({
               tipo: "newmessage",
               titulo: "Info",
@@ -871,11 +895,14 @@ function updateOnComingMessages() {
               })
               .then((data) => {
                 console.log(data);
+                scrollToTheEnd();
+                console.log("leido pasa a ser 1");
               });
           }
-        } else {
-          console.log("No hay mensajes nuevos");
-        }
+        } 
+      }else{
+        console.log("no hay msgs");
+      }
       });
     });
 }
@@ -928,7 +955,7 @@ msgerForm.addEventListener("submit", (event) => {
     },
 
     body: JSON.stringify({
-      idChild: idChild,
+      idChild: sessionStorage.getItem('idChild'),
       idRemitente: idUser,
       idDestinatario: "admin",
       msgText: msgText,
@@ -946,7 +973,7 @@ msgerForm.addEventListener("submit", (event) => {
       `;
 
       //Buscar último mensaje a ese Id y ponerle respondido:
-      fetch(`../api/updatechat/?idRemitente=admin&idChild=${idChild}`, {
+      fetch(`../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem('idChild')}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -959,12 +986,16 @@ msgerForm.addEventListener("submit", (event) => {
         })
         .then((data) => {
          
+          if(data.length > 0){
+           
+            let idmsg = parseInt(data[0]["idmsg"]);
+            let msg = {
+              idmsg: parseInt(data[0]["idmsg"]),
+            };
           
-          let idmsg = parseInt(data[0]["idmsg"]);
+       
 
-          let msg = {
-            idmsg: parseInt(data[0]["idmsg"]),
-          };
+          
           //Metodo put
 
           fetch(`../api/updatechat/?idmsg=${idmsg}&respondido=1`, {
@@ -982,6 +1013,10 @@ msgerForm.addEventListener("submit", (event) => {
             .then((data) => {
               console.log(data);
             });
+
+          }else{
+            console.log("Mensaje respondido a guarderia");
+          }
         });
     });
 });
@@ -1008,7 +1043,7 @@ function formatDate(date) {
 // *****************************************************
 
 function cargarMensajesEnviadosYRecibidos() {
-  fetch(`../api/chat/?idChild=${idChild}`, {
+  fetch(`../api/chat/?idChild=${sessionStorage.getItem('idChild')}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

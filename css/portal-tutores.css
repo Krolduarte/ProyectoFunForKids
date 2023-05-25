@@ -353,7 +353,7 @@ section {
   .colIcono {
     margin-top: 10px;
     height: 100px;
-    width: 22%;
+    width: 20%;
     background: #f3b90f;
     border: px solid #56beb7;
     border-top-right-radius: 50%;
@@ -367,8 +367,8 @@ section {
   }
 
   .icono img {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     background-position: center;
     background-repeat: no-repeat;
   }
@@ -398,7 +398,7 @@ section {
   .titulo1,
   .titulo2,
   .titulo3 {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
@@ -415,8 +415,10 @@ section {
   }
 
   .colTitulo > div {
-    font-size: 15px;
+    font-size: 12px;
   }
+
+ 
 }
 
 /* *************************************************
@@ -480,23 +482,24 @@ section {
   padding-top: 5%;
 }
 
-.primerTutor {
+.primerAdulto {
   width: 50%;
 }
 
-.segundoTutor {
+.segundoAdulto {
   width: 50%;
 }
 
-.colInfoTutores {
+.colInfoAdultos {
   width: 75%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+
+  justify-content: flex-start;
   padding-left: 15%;
   padding-bottom: 5%;
   padding-top: 5%;
-  gap: 5px;
+  gap: 10px;
 }
 
 .colTitulo {

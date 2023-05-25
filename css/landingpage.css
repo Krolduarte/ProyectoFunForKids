@@ -1,5 +1,6 @@
 body {
   margin: 0;
+ 
   font-family: "Alegreya Sans", sans-serif;
 }
 
@@ -8,17 +9,19 @@ body {
 ************************************************** */
 .infobar {
   background-color: #56beb7;
-  height: 80px;
+display: flex;
   height: 90px;
   display: flex;
   font-size: 15px;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px 0px 20px;
+  overflow: hidden;
+
 }
 
 .logo {
-  width: 249px;
+
   height: 50px;
   display: flex;
   justify-content: center;
@@ -28,27 +31,33 @@ body {
 
 img.imglogo{
   width: 200px;
+  padding-right: 10px;
   height: 30px;
 }
 
 .infobox {
-  width: 150px;
+
   display: flex;
   direction: row;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
+
 }
 
 .icon {
-  width: 32px;
+  min-width: 32px;
   height: 32px;
   cursor: pointer;
 }
 
 .icontext {
+
+
   display: flex;
-  gap: 40px;
-  padding-right: 35px;
+  justify-content: center;
+  gap: 20px;
+  /* padding-right: 35px; */
 }
 
 .avatarInfo{
@@ -61,17 +70,54 @@ img.imglogo{
  .avatarInfo a {
   padding: 5px;
   text-decoration: none;
+
+  }
+
+  .avatarInfo a:hover{
+    color: white;
+    font-size:larger;
+  }
+  
+  .avatarInfo a:active{
+    color: rgba(47, 255, 0, 0.548);
+  }
+
+ a {
+    padding: 5px;
+    text-decoration: none;
+  
+    }
+  
+  a:hover{
+      color: white;
+      font-size:larger;
+    }
+    
+   a:active{
+      color: rgba(47, 255, 0, 0.548);
+    }
+  
+  .infobox.horarios{
+    width: 91px;
   }
 
 @media (max-width: 800px) {
+
+  .infobox{
+    display: flex;
+
+  }
   .logo {
     display: flex;
     justify-content: center;
+    padding-bottom:10px;
   }
   .imglogo {
     align-items: center;
   }
   .infobar {
+    height: 160px;
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
    
@@ -80,19 +126,61 @@ img.imglogo{
   .icontext {
     width: 100%;
     display: flex;
-    font-size: 10px;
-   
-    gap:20px;
+    font-size: 14px;
+justify-content: space-around;
     padding-right: 0px;
-    margin-top: -30px;
+    margin-top: -25px;
+    flex-wrap: wrap;
 
   }
+  .infobox.horarios{
+    width: 125px;
+  }
+}
 
+  @media (max-width: 360px) {
 
-  .icon {
+    .infobox{
+      display: flex;
+    
+  
+    }
+    .logo {
+      display: flex;
+      justify-content: center;
+      padding-bottom:20px;
+      
+     
+    }
+    .imglogo {
+      align-items: center;
+    }
+    .infobar {
+      height: 160px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+     
+    }
+    /* la barra que contiene el icono y el texto */
+    .icontext {
+      width: 100%;
+      display: flex;
+      font-size: 14px;
+  justify-content: space-around;
+      padding-right: 0px;
+      margin-top: -25px;
+      flex-wrap: wrap;
+  
+    }
+    .infobox.horarios{
+      width: 125px;
+    }
+
+  /* .icon {
     width: 20px;
     height: 20px;
-  }
+  } */
 
  
 }
@@ -167,7 +255,7 @@ justify-content: center; */
   font-weight: 700;
   font-size: 45px;
   margin: 0 auto;
-  font-family: "Cabin Sketch", cursive;
+  font-family: "Cabin Sketch", 
 }
 .tituloHeader p {
   font-size: 45px;
@@ -316,18 +404,28 @@ justify-content: center; */
 }
 @media (max-width: 1088px) {
   .tarjetaInfo {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .valoresTarjetas {
     margin-top: 12px;
   }
+  .tarjeta {
+    width: 25%;
+    min-width: 200px;
+  }
 }
 
-/* @media (max-width: 798px) {
-  .valoresTarjetas {
-    margin-top: 150px;
-  } */
+@media (max-width: 360px) {
+}
+.tarjeta {
+  min-width: 355px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
+}
 
 
 /* *************************************************
@@ -368,7 +466,9 @@ justify-content: center; */
 .tituloMatriculaInfo {
   font-family: "Cabin Sketch", cursive;
   font-size: 45px;
+  font-weight: 700;
 }
+
 
 .matriculaInfo ul > li,
 .matriculaInfo ul {
@@ -425,6 +525,19 @@ justify-content: center; */
   .matriculaInfo ul {
     font-size: 15px;
   }
+}
+
+@media (max-width: 360px) {
+
+.matriculaInfo ul {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+.matriculaInfo {
+ 
+  width: 90%;
+}
 }
 /* *************************************************
                 Conoce nuestros monitores        
@@ -545,10 +658,17 @@ justify-content: center; */
   }
 } */
 
+@media (max-width: 360px) {
+.monitor{
+  width: 90%;
+}
+  
+  }
 /* *************************************************
                 Footer       
 ************************************************** */
 footer {
+ 
   margin-top: 100px;
   bottom: 0px;
   position: fixed;
@@ -562,13 +682,13 @@ footer {
 
 footer > p {
   width: 1104px;
-
+  padding:10px 15px;
   text-align: center;
 }
-
+/* 
 @media (max-width: 1100px) {
   footer > p {
-    width: 400px;
+    width: 400px;titulo
     text-align: center;
   }
 
@@ -580,4 +700,4 @@ footer > p {
   .imglogo {
     height: 20px;
   }
-}
+} */

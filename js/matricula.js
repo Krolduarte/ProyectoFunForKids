@@ -45,7 +45,6 @@ function checkifRegistered() {
           data[0].idMatricula > 0 &&
           sessionStorage.getItem("edicionMatricula") == "false"
         ) {
-          window.location.href = "../html/reporte-diario.html";
         }
 
         if (sessionStorage.getItem("edicionMatricula") == "true") {
@@ -53,21 +52,24 @@ function checkifRegistered() {
             " Edición de datos personales de Matrícula:";
           document.querySelector(".btnRegister").textContent = "Guardar datos";
           completarCamposMatrícula();
+          sessionStorage.setItem("matriculado", "true");
         }
       } else {
         if (data === undefined || data.length === 0)
           console.log("Aun no esta matriculado");
-          sessionStorage.getItem('noMatriculado', 'true');
+        sessionStorage.setItem("matriculado", "false");
       }
     })
     .catch((error) => console.error(error));
 }
 
 let tutor2Matriculado = false;
+let autorizado2Matriculado = false;
 // ******************************************************************************
 //                   GESTIÓN DE EDITAR MATRÍCULA
 // *****************************************************************************
 function completarCamposMatrícula() {
+  console.log("entra a completar campos");
   let url = `../api/info-matricula-completa/?idChild=${sessionStorage.getItem(
     "idChild"
   )}`;
@@ -114,6 +116,12 @@ function completarCamposMatrícula() {
       document.querySelector("#direccion1").value = data[0].direccion;
       dniValido1 = true;
 
+      sessionStorage.setItem("idChild", data[0].idChild);
+      sessionStorage.setItem("idTutor1", data[0].idTutor1);
+      sessionStorage.setItem("idTutor2", data[0].idTutor2);
+      sessionStorage.setItem("idAutorizado1", data[0].idAutorizado1);
+      sessionStorage.setItem("idAutorizado2", data[0].idAutorizado2);
+
       if (data[0].nombreTutor2) {
         tutor2Matriculado = true;
 
@@ -155,11 +163,6 @@ function completarCamposMatrícula() {
       dniValidoAutorizado = true;
 
       // **************************Guardando ids*****************************
-      sessionStorage.setItem("idChild", data[0].idChild);
-      sessionStorage.setItem("idTutor1", data[0].idTutor1);
-      sessionStorage.setItem("idTutor2", data[0].idTutor2);
-      sessionStorage.setItem("idAutorizado1", data[0].idAutorizado1);
-      sessionStorage.setItem("idAutorizado2", data[0].idAutorizado2);
     })
     .catch((error) => console.error(error));
 }
@@ -708,24 +711,22 @@ function checkIfComplete() {
   ) {
     console.log("PARTE 2 -CUESTIONARIO- válida");
     console.log("tutor2 matriculado:");
-    console.log(tutor2Matriculado);
-    console.log("SegundoTutor");
-    console.log(segundoTutor);
-    // console.log(isTakingMed);
-    // console.log(medicamentoTomado.value);
 
-    // console.log(isAllergicToMed);
-    // console.log(medicamentoAlergia.value);
+    console.log(isTakingMed);
+    console.log(medicamentoTomado.value);
 
-    // console.log(hasFoodAllergy);
-    // console.log(alergeno.value);
-    // console.log(alergias);
+    console.log(isAllergicToMed);
+    console.log(medicamentoAlergia.value);
 
-    // console.log(hasDisability);
-    // console.log(discapacidad.value);
+    console.log(hasFoodAllergy);
+    console.log(alergeno.value);
+    console.log(alergias);
 
-    // console.log(discapacidadInfoValido);
-    // console.log(disabilityButtons);
+    console.log(hasDisability);
+    console.log(discapacidad.value);
+
+    console.log(discapacidadInfoValido);
+    console.log(disabilityButtons);
 
     segundaParteValida = true;
 
@@ -941,17 +942,12 @@ document
   .addEventListener("click", cargarInfoDeRegistro);
 
 function cargarInfoDeRegistro() {
-  fetch(
-    `../api/users/?idUsuario=${sessionStorage.getItem(
-      "IdUsuario"
-    )}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-    }
-  )
+  fetch(`../api/users/?idUsuario=${sessionStorage.getItem("IdUsuario")}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  })
     .then((response) => {
       return response.json();
     })
@@ -1254,6 +1250,7 @@ document
 
 function anularAutorizados() {
   if (this.checked) {
+    document.querySelector("#soloPadresAutorizados").checked == true;
     primerAutorizado = false;
     dniValidoAutorizado = true;
 
@@ -1380,29 +1377,29 @@ function checkifAuthorizedPersonComplete(e) {
     // console.log(segundoAutorizado);
     cuartaParteValida = true;
     enviarMatricula();
-    console.log(dniValidoAutorizado);
-    console.log(dniAutorizado1.value);
-    console.log(nombreAutorizado1.value);
-    console.log(apellidosAutorizado1.value);
-    console.log(relacionAutorizado1.value);
-    console.log(dniValidoAutorizado2);
-    console.log(dniAutorizado2.value);
-    console.log(nombreAutorizado2.value);
-    console.log(apellidosAutorizado2.value);
-    console.log(relacionAutorizado2.value);
+    // console.log(dniValidoAutorizado);
+    // console.log(dniAutorizado1.value);
+    // console.log(nombreAutorizado1.value);
+    // console.log(apellidosAutorizado1.value);
+    // console.log(relacionAutorizado1.value);
+    // console.log(dniValidoAutorizado2);
+    // console.log(dniAutorizado2.value);
+    // console.log(nombreAutorizado2.value);
+    // console.log(apellidosAutorizado2.value);
+    // console.log(relacionAutorizado2.value);
   } else {
     cuartaParteValida = false;
     console.log("PARTE 4 -AUTORIZADOS con 1 solo es- NO válida");
-    console.log(dniValidoAutorizado);
-    console.log(dniAutorizado1.value);
-    console.log(nombreAutorizado1.value);
-    console.log(apellidosAutorizado1.value);
-    console.log(relacionAutorizado1.value);
-    console.log(dniValidoAutorizado2);
-    console.log(dniAutorizado2.value);
-    console.log(nombreAutorizado2.value);
-    console.log(apellidosAutorizado2.value);
-    console.log(relacionAutorizado2.value);
+    // console.log(dniValidoAutorizado);
+    // console.log(dniAutorizado1.value);
+    // console.log(nombreAutorizado1.value);
+    // console.log(apellidosAutorizado1.value);
+    // console.log(relacionAutorizado1.value);
+    // console.log(dniValidoAutorizado2);
+    // console.log(dniAutorizado2.value);
+    // console.log(nombreAutorizado2.value);
+    // console.log(apellidosAutorizado2.value);
+    // console.log(relacionAutorizado2.value);
   }
 }
 
@@ -1441,7 +1438,6 @@ function enviarMatricula() {
       idChild = sessionStorage.getItem("idChild");
       idTutor = sessionStorage.getItem("idTutor1");
       idTutor2 = sessionStorage.getItem("idTutor2");
-
       idAutorizado = sessionStorage.getItem("idAutorizado1");
       idAutorizado2 = sessionStorage.getItem("idAutorizado2");
     } else {
@@ -1497,15 +1493,6 @@ function enviarMatricula() {
       body: JSON.stringify(body),
     })
       .then((response) => {
-        switch (response.status) {
-          case 200:
-            // sessionStorage.setItem("id", data["id"]);
-            break;
-          case 400:
-            divInfoAutorizados.innerHTML +=
-              "<h2>Hubo un fallo en el registro</h2>";
-            break;
-        }
         return response.json();
       })
       .then((data) => {
@@ -1616,80 +1603,95 @@ function enviarMatricula() {
                 // clearForm();
               });
             // }
-
-            if (segundoAutorizado) {
-              fetch(
-                "../api/matricula/pickuplist/",
-                {
-                  method: method,
-                  headers: {
-                    "Content-Type": "application/json;charset=utf-8",
-                  },
-
-                  body: JSON.stringify({
-                    idAutorizado: idAutorizado2,
-                    nombreAutorizado: nombreAutorizado2.value,
-                    apellidosAutorizado: apellidosAutorizado2.value,
-                    relacionAutorizado: relacionAutorizado2.value,
-                    dniAutorizado: dniAutorizado2.value,
-                  }),
-                }
-              )
-                .then((response) => {
-                  switch (response.status) {
-                    case 200:
-                      // sessionStorage.setItem("id", data["id"]);
-                      break;
-                    case 400:
-                      divInfoAutorizados.innerHTML +=
-                        "<h2>Autorizado no ha sido registrado</h2>";
-                      break;
-                  }
-                  return response.json();
-                })
-                .then((data) => {
-                  console.log(data);
-                  // clearForm();
-                });
+            let bodyAutorizado2 = {};
+            if (
+              document.querySelector("#soloPadresAutorizados").checked == true
+            ) {
+              bodyAutorizado2 = {
+                idAutorizado: idAutorizado2,
+                nombreAutorizado: "",
+                apellidosAutorizado: "",
+                relacionAutorizado: "",
+                dniAutorizado: "",
+              };
+            } else {
+              if (segundoAutorizado) {
+                console.log("SE ENVIO PUT DE SEGUNDO AUTORIZADO");
+                bodyAutorizado2 = {
+                  idAutorizado: idAutorizado2,
+                  nombreAutorizado: nombreAutorizado2.value,
+                  apellidosAutorizado: apellidosAutorizado2.value,
+                  relacionAutorizado: relacionAutorizado2.value,
+                  dniAutorizado: dniAutorizado2.value,
+                };
+              }
             }
+
+            fetch("../api/matricula/pickuplist/", {
+              method: method,
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+
+              body: JSON.stringify(bodyAutorizado2),
+            })
+              .then((response) => {
+                
+                return response.json();
+              })
+              .then((data) => {
+                console.log(data);
+                // clearForm();
+              });
 
             // FETCH PARA AUTORIZADOS
 
-            if (primerAutorizado) {
-              fetch(
-                "../api/matricula/pickuplist/",
-                {
-                  method: method,
-                  headers: {
-                    "Content-Type": "application/json;charset=utf-8",
-                  },
-
-                  body: JSON.stringify({
-                    idAutorizado: idAutorizado,
-                    nombreAutorizado: nombreAutorizado1.value,
-                    apellidosAutorizado: apellidosAutorizado1.value,
-                    relacionAutorizado: relacionAutorizado1.value,
-                    dniAutorizado: dniAutorizado1.value,
-                  }),
-                }
-              )
-                .then((response) => {
-                  switch (response.status) {
-                    case 200:
-                      // sessionStorage.setItem("id", data["id"]);
-                      break;
-                    case 400:
-                      divInfoAutorizados.innerHTML +=
-                        "<h2>Autorizado no ha sido registrado</h2>";
-                      break;
-                  }
-                  return response.json();
-                })
-                .then((data) => {
-                  console.log(data);
-                  // clearForm();
-                });
+            let bodyAutorizado1 = {};
+            if (
+              document.querySelector("#soloPadresAutorizados").checked == true
+            ) {
+              bodyAutorizado1 = {
+                idAutorizado: idAutorizado,
+                nombreAutorizado: "",
+                apellidosAutorizado: "",
+                relacionAutorizado: "",
+                dniAutorizado: "",
+              };
+            } else {
+              if (primerAutorizado) {
+                bodyAutorizado1 = {
+                  idAutorizado: idAutorizado,
+                  nombreAutorizado: nombreAutorizado1.value,
+                  apellidosAutorizado: apellidosAutorizado1.value,
+                  relacionAutorizado: relacionAutorizado1.value,
+                  dniAutorizado: dniAutorizado1.value,
+                };
+              }
             }
+            fetch("../api/matricula/pickuplist/", {
+              method: method,
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+
+              body: JSON.stringify(bodyAutorizado1),
+            })
+              .then((response) => {
+                switch (response.status) {
+                  case 200:
+                    // sessionStorage.setItem("id", data["id"]);
+                    break;
+                  case 400:
+                    divInfoAutorizados.innerHTML +=
+                      "<h2>Autorizado no ha sido registrado</h2>";
+                    break;
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log(data);
+                // clearForm();
+              });
 
             // ****************************************************
             // FETCH PARA MATRICULA
@@ -1700,20 +1702,10 @@ function enviarMatricula() {
               idUsuario: idUserfromfetch,
               idChild: idChild,
               idTutor1: idTutor,
-              idTutor2: idTutor2
+              idTutor2: idTutor2,
+              idAutorizado1: idAutorizado,
+              idAutorizado2: idAutorizado2,
             };
-
-          
-             
-            
-
-            if (primerAutorizado) {
-              bodyMatricula.idAutorizado1 = idAutorizado;
-            }
-
-            if (segundoAutorizado) {
-              bodyMatricula.idAutorizado2 = idAutorizado2;
-            }
 
             if (sessionStorage.getItem("edicionMatricula") == "true") {
               agregarToast({
@@ -1724,60 +1716,52 @@ function enviarMatricula() {
               setTimeout(() => {
                 window.location.href = "../html/portal-tutores.html";
                 // clearForm();
-              }, 2000);
+              }, 30000);
             }
 
-         if (sessionStorage.getItem('noMatriculado')== true){
+            if (sessionStorage.getItem("matriculado") == "false") {
+              fetch("../api/matricula/matriculacompleta/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                },
 
-          fetch(
-            "../api/matricula/matriculacompleta/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
+                body: JSON.stringify(bodyMatricula),
+              })
+                .then((response) => {
+                  switch (response.status) {
+                    case 200:
+                      setTimeout(() => {
+                        window.location.href = "../html/index.html";
+                        // clearForm();
+                      }, 8000);
 
-              body: JSON.stringify(bodyMatricula),
-            }
-          )
-            .then((response) => {
-              switch (response.status) {
-                case 200:
-                  setTimeout(() => {
-                    window.location.href = "../html/index.html";
-                    // clearForm();
-                  }, 2000);
+                      break;
+                    case 400:
+                      agregarToast({
+                        tipo: "warning",
+                        titulo: "Info",
+                        descripcion: "Hubo un fallo en la matrícula!",
+                      });
+                      break;
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log(data);
+                  // clearForm();
 
-                  break;
-                case 400:
                   agregarToast({
-                    tipo: "warning",
+                    tipo: "exito",
                     titulo: "Info",
-                    descripcion: "Hubo un fallo en la matrícula!",
+                    descripcion: "Matrícula realizada  correctamente!",
                   });
-                  break;
-              }
-              return response.json();
-            })
-            .then((data) => {
-              console.log(data);
-              // clearForm();
-
-              agregarToast({
-                tipo: "exito",
-                titulo: "Info",
-                descripcion: "Matrícula realizada  correctamente!",
-              });
-              setTimeout(() => {
-                window.location.href = "../html/portal-tutores.html";
-                // clearForm();
-              }, 2000);
-            });
-
-
-         }
-              
-            
+                  setTimeout(() => {
+                    window.location.href = "../html/portal-tutores.html";
+                    // clearForm();
+                  }, 8000);
+                });
+            }
           });
       });
   }

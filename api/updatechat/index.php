@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $result = $con->query($sql);
             $result2 = $con->query($sql2);
             $users = $result2->fetch_all(MYSQLI_ASSOC);
-            header("HTTP/1.1 200 OK");
+            // header("HTTP/1.1 200 OK");
             echo json_encode($users);
             // echo json_encode($sql);
         } catch (mysqli_sql_exception $e) {

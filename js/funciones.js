@@ -274,23 +274,7 @@ function cargarPlantillaRporteDiario(){
 
 
 
-  <div class="titulo1">Deposiciones</div>
-
-  <div class="btnConsistencia">
-    <input type="radio"  id="liquida" name="consistencia"  value="liquida" />
-    <label for="liquida">Liquida</label>
-
-    <input   type="radio" id="blanda" name="consistencia"  value="blanda" />
-    <label for="blanda">Blanda</label>
-
-    <input type="radio"  id="dura"   name="consistencia"    value="dura" />
-    <label for="dura">Dura</label>
-  </div>
-
-  <div class="iconoMas">
-    <img src="../img/reporte-diario/add.png" alt="" />
-    <div class="agregar">Agregar</div>
-  </div>
+ 
 
   <div class="titulo3">Cambio de Pañal</div>
   <div class="rango">
@@ -309,6 +293,26 @@ function cargarPlantillaRporteDiario(){
 
 
   </div>
+  <div class="titulo1">Consistencia</div>
+  <div class="btnConsistencia">
+    <input type="radio"  id="liquida" name="consistencia"  value="liquida" />
+    <label for="liquida">Liquida</label>
+
+    <input   type="radio" id="blanda" name="consistencia"  value="blanda" />
+    <label for="blanda">Blanda</label>
+
+    <input type="radio"  id="dura"   name="consistencia"    value="dura" />
+    <label for="dura">Dura</label>
+
+    <div class="iconoMas">
+ 
+    <div class="agregar">Agregar</div>
+  </div>
+  </div>
+
+ 
+
+ 
 
 
 
@@ -317,8 +321,8 @@ function cargarPlantillaRporteDiario(){
 document.querySelector(
 ".foodGrid"
 ).innerHTML = ` <div class="titulo1">Desayuno</div>
-  <div class="titulo2">Merienda</div>
-  <div class="titulo3">Comida</div>
+
+  
 
   <div class="rango3">
     <input type="radio"  id="pocodesayuno"  name="desayuno"  value="poco"/>
@@ -334,6 +338,7 @@ document.querySelector(
 <label for="tododesayuno">Todo</label>
   </div>
 
+  <div class="titulo2">Merienda</div>
   <div class="rango2">
     <input type="radio"  id="pocomerienda"  name="merienda" value="poco"/>
   <label for="pocomerienda">Poco</label>
@@ -347,7 +352,7 @@ document.querySelector(
 <input  type="radio" id="todomerienda" name="merienda"   value="todo"/>
 <label for="todomerienda">Todo</label>
   </div>
-
+  <div class="titulo3">Comida</div>
   <div class="rango">
 
     <input type="radio"   id="pococomida" name="comida" value="poco"/>
@@ -383,13 +388,12 @@ document.querySelector(
 <input type="radio" id="noventa" name="siesta" value="90"/>
 <label for="noventa">90 m.</label>
 
-<input type="radio" id="cientoveinte" name="siesta" value="120"/>
-<label for="cientoveinte">120 m.</label>
+<div class="divBtnSaveChanges">
+<button class="saveChanges">Guardar Cambios</button>
+</div>
   </div>
 
-  <div class="divBtnSaveChanges">
-  <button class="saveChanges">Guardar Cambios</button>
-  </div>
+ 
 
 
    `;

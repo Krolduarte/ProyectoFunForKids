@@ -53,6 +53,7 @@ body {
 
 
 #btnEntrar {
+  cursor: pointer;
   background: #57bdb9;
   width: 226px;
   height: 41px;
@@ -61,12 +62,17 @@ body {
 }
 
 #btnRegister {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
   background: #f2e7ea;
-  width: 226px;
-  height: 41px;
-  margin-top: 11px;
-  border-radius: 7px;
-  margin-bottom: 10px;
+  font-size: 17px;
+}
+#btnRegister:hover {
+  
+ 
+  font-size: 20px;
 }
 
 #btnMatricular {
@@ -100,3 +106,18 @@ a{
   top:5px;
 
  }
+
+ a {
+  padding: 5px;
+  text-decoration: none;
+
+  }
+
+ a:hover{
+    color:  #57bdb9;;
+    font-size:larger;
+  }
+  
+ a:active{
+    color: rgba(47, 255, 0, 0.548);
+  }

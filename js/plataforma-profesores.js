@@ -15,9 +15,13 @@ document
 // ******************************************************************
 //                      Gestión de fechas
 // ******************************************************************
+if(document.querySelector(".msger")){
+  let scroll = document.querySelector(".msger");
+  
+}
 
 function scrollChatWindow() {
-  let scroll = document.querySelector(".msger");
+
   scroll.scrollTop = scroll.scrollHeight;
 }
 
@@ -656,17 +660,16 @@ function cargarPerfil(idChildChosen) {
                     <div>Tutores</div>
                 </div>
             </div>
-            <div class="colInfoTutores">
-                <div class="primerTutor">
+            <div class="colInfoAdultos">
+                <div class="primerAdulto">
                     <div class="tutorNombreCompleto tituloLabel">Nombre:<span>${
                       element["nombreCompletoTutor1"]
                     }</span></div>           
                 </div>           
-                <div class="segundoTutor">
-                    <div class="tutorNombreCompleto2 tituloLabel">Nombre:<span>${
-                      element["nombreCompletoTutor2"]
-                    }</span></div>            
-                </div>
+                <div class="segundoAdulto">
+                    <div class="tutorNombreCompleto2 tituloLabel">${ element["nombreCompletoTutor2"] == "" ? "" : "Nombre:"}<span>
+                    ${ element["nombreCompletoTutor2"] == "" ? "" : element["nombreCompletoTutor2"]}</div>            
+                      </div>
             </div>
         </section>
         <hr>
@@ -677,14 +680,21 @@ function cargarPerfil(idChildChosen) {
                     <div>Autorizados</div>
                 </div>
             </div>
-            <div class="colInfoPerfil">
-                <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
-                  element["Autorizado1"]
-                }</div>
-                <div class="autorizadoNombreCompleto tituloLabel">Nombre:<span>${
-                  element["Autorizado2"]
-                }</div>
+
+             <div class="colInfoAdultos">
+            <div class="primerAdulto">
+              <div class="autorizadoNombreCompleto tituloLabel">${ element["Autorizado1"] == null ? "" : "Nombre:"}<span>${
+                  element["Autorizado1"] == null ? "" :   element["Autorizado1"]}</span></div>
+
+              <div class="autorizadoRelacion tituloLabel"></div>
             </div>
+            <div class="segundoAdulto">
+              <div class="autorizadoNombreCompleto2 tituloLabel">${ element["Autorizado2"] == null ? "" : "Nombre:"}<span>${
+                  element["Autorizado2" ] == null  ? "" :   element["Autorizado2"]}</div>
+
+              <div class="autorizadoRelacion2 tituloLabel"></div>
+            </div>
+          </div>
         </section>`;
       });
     });
@@ -885,11 +895,15 @@ function fetchKids(url) {
           }
         }
 
+        
         // ##########################################################################
         //     RECARGA DE REPORTE DIARIO DEPENDIENDO DEL ID DE CADA NIÑO/NIÑA
         // ##########################################################################
 
         function mostrarFicha() {
+
+        
+
           document
             .querySelector(".filtrosProfesores")
             .classList.add("reporteAbierto");

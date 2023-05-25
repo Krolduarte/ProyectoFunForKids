@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
     if (isset($json['idChild']) || isset($json['nombreBebe']) || isset($json['apellido1Bebe'])  || isset($json['apellido2Bebe']) || isset($json['genero'])  || isset($json['fechaNacimiento']) && isset($json['lugarNacimiento']) && isset($json['isTakingMed']) && isset($json['isAllergicToMed'])  && isset($json['hasFoodAllergy']) && isset($json['hasDisability']) || isset($json['medicamentoTomado']) || isset($json['medicamentoAlergia']) || isset($json['alergeno']) || isset($json['alergias']) || isset($json['discapacidad']) || isset($json['foto'])) {
 
-        $sql = "UPDATE children set dailyReportReady = '0' ";
+        $sql = "UPDATE children set dailyReportReady = '0'";
 
         $idChild = $json['idChild'];
 
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         if (isset($json['alergias'])) {
 
             $json['alergias'] = implode(", ", $json['alergias']);
-            $sql .= ", alergeno='{$json['alergias']}'";
+            $sql .= ", alergias='{$json['alergias']}'";
         }
 
 
