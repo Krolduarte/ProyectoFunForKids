@@ -10,11 +10,9 @@ window.setInterval(function () {
   updateOnComingMessages();
   // cargarMensajesEnviadosYRecibidos();
   checkDiaperUpdates(today);
-  if(today == document.querySelector('.chosenDate').attributes[0].value ){
-    checkLogUpdates(today);  
-   
+  if (today == document.querySelector(".chosenDate").attributes[0].value) {
+    checkLogUpdates(today);
   }
-
 }, 7000);
 
 //***********************************************************************
@@ -45,7 +43,6 @@ function abrirReporte() {
   document.querySelector(".seccionesReporteDiario").classList.remove("hidden");
   checkLogUpdates(today);
   checkDiaperUpdates(today);
-
 }
 
 document
@@ -73,7 +70,6 @@ document
 
 if (idUser && token) {
   loadInfoBaby();
-
 }
 
 // Informacion del bebe
@@ -121,11 +117,12 @@ let hasFoodAllergyResponse = "";
 let disabilityResponse = "";
 let idChildfromSession = sessionStorage.getItem("idChild");
 
-uploadBabyInfo();
-function uploadBabyInfo(){
-
+function uploadBabyInfo() {
+  console.log("cargando info de bebé");
   fetch(
-    `../api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem("IdUsuario")}`,
+    `../api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem(
+      "IdUsuario"
+    )}`,
     {
       method: "GET",
       headers: {
@@ -137,26 +134,23 @@ function uploadBabyInfo(){
       return response.json();
     })
     .then((data) => {
-
       data.forEach((element) => {
+        console.log("cargando info de padres");
         // ****************************************************
         //           FETCH PARA INFO DE PADRES
         // ****************************************************
-  
-        fetch(
-          `../api/matricula/tutors/?idTutor=${element.idTutor1}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-          }
-        )
+
+        fetch(`../api/matricula/tutors/?idTutor=${element.idTutor1}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        })
           .then((response) => {
             return response.json();
           })
           .then((data) => {
-            sessionStorage.setItem('matriculado', 'true');
+            sessionStorage.setItem("matriculado", "true");
             data.forEach((element) => {
               tutorNombreCompleto.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
               relacionTutor.innerHTML += `<span>${element["relacion"]} `;
@@ -165,16 +159,13 @@ function uploadBabyInfo(){
               sessionStorage.setItem("nombreTutor1", element["nombreTutor"]);
             });
           });
-  
-        fetch(
-          `../api/matricula/tutors/?idTutor=${element.idTutor2}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-          }
-        )
+
+        fetch(`../api/matricula/tutors/?idTutor=${element.idTutor2}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        })
           .then((response) => {
             return response.json();
           })
@@ -183,15 +174,17 @@ function uploadBabyInfo(){
               tutorNombreCompleto2.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
               relacionTutor2.innerHTML += `<span>${element["relacion"]} `;
               direccionTutor2.innerHTML += `<span>${element["direccion"]} `;
-              telefonoTutor2.innerHTML += `<span>${element["telefono"] == 0 ? "" :element["telefono"] }`;
+              telefonoTutor2.innerHTML += `<span>${
+                element["telefono"] == 0 ? "" : element["telefono"]
+              }`;
               sessionStorage.setItem("nombreTutor2", element["nombreTutor"]);
             });
           });
-  
+
         // ****************************************************
         //           FETCH PARA AUTORIZADOS
         // ****************************************************
-  
+
         fetch(
           `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
           {
@@ -210,36 +203,9 @@ function uploadBabyInfo(){
               autorizadoRelacion.innerHTML += `<span>${element["relacionAutorizado"]} `;
             });
           });
-  
-  
-          fetch(
-            `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado2}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
-            }
-          )
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              data.forEach((element2) => {
-                document.querySelector('.autorizadoNombreCompleto2').innerHTML += `<span>${element2["nombreAutorizado"]} ${element2["apellidosAutorizado"]}</span>`;
-                document.querySelector('.autorizadoRelacion2').innerHTML += `<span>${element2["relacionAutorizado"]} `;
-              });
-            });
-  
-        // ****************************************************
-        //           FETCH PARA INFO DE NIÑO
-        // ****************************************************
-  
-      
-       
-  
+
         fetch(
-          `../api/children/childrenlist/?idChild=${sessionStorage.getItem('idChild')}`,
+          `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado2}`,
           {
             method: "GET",
             headers: {
@@ -251,9 +217,40 @@ function uploadBabyInfo(){
             return response.json();
           })
           .then((data) => {
-         let nombreBebe = element["nombreBebe"];
-            sessionStorage.setItem("idChild", sessionStorage.getItem('idChild'));
-            sessionStorage.setItem("nombreBebe", nombreBebe);
+            data.forEach((element2) => {
+              document.querySelector(
+                ".autorizadoNombreCompleto2"
+              ).innerHTML += `<span>${element2["nombreAutorizado"]} ${element2["apellidosAutorizado"]}</span>`;
+              document.querySelector(
+                ".autorizadoRelacion2"
+              ).innerHTML += `<span>${element2["relacionAutorizado"]} `;
+            });
+          });
+
+        // ****************************************************
+        //           FETCH PARA INFO DE NIÑO
+        // ****************************************************
+
+        fetch(
+          `../api/children/childrenlist/?idChild=${sessionStorage.getItem(
+            "idChild"
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            let nombreBebe = element["nombreBebe"];
+            sessionStorage.setItem(
+              "idChild",
+              sessionStorage.getItem("idChild")
+            );
             data.forEach((element) => {
               console.log(element);
               if (element.isTakingMed == 0) {
@@ -261,25 +258,25 @@ function uploadBabyInfo(){
               } else {
                 isTakingMedResponse = "SI";
               }
-  
+
               if (element.isAllergicToMed == 0) {
                 isAllergicToMedResponse = "NO";
               } else {
                 isAllergicToMedResponse = "SI";
               }
-  
+
               if (element.isAllergicToFood == 0) {
                 isAllergicToFoodResponse = "NO";
               } else {
                 isAllergicToFoodResponse = "SI";
               }
-  
+
               if (element.hasDisability == 0) {
                 disabilityResponse = "Ninguna";
               } else {
                 disability.innerHTML = `<span>${element["discapacidad"]}  </span>`;
               }
-  
+
               if (element.hasFoodAllergy == 0) {
                 hasFoodAllergyResponse = "NO";
                 alergias.innerHTML = "";
@@ -287,20 +284,24 @@ function uploadBabyInfo(){
               } else {
                 hasFoodAllergyResponse = "SI";
               }
-  
+
               if (element.medicamentoTomado == "") {
                 medicamentoTomado.innerHTML = "";
               } else {
                 medicamentoTomado.innerHTML += `<span>${element["medicamentoTomado"]}</span>`;
               }
-  
+
               nombreBebePerfil.innerHTML += `<span>  ${element["nombreBebe"]}</span>`;
               apellidosBebePerfil.innerHTML += `<span>  ${element["apellido1Bebe"]} ${element["apellido2Bebe"]}</span>`;
               fechaNac.innerHTML += `<span>${element["fechaNacimiento"]}</span>`;
               genero.innerHTML += `<span>${element["genero"]}</span>`;
               lugar.innerHTML += `<span>${element["lugarNacimiento"]}</span>`;
               isTakingMed.innerHTML += `<span>${isTakingMedResponse}</span>`;
-              medicamentoAlergia.innerHTML += `<span>${element["medicamentoAlergia"] == "" ? "" : "Alergico a:" + element["medicamentoAlergia"]  }</span>`;
+              medicamentoAlergia.innerHTML += `<span>${
+                element["medicamentoAlergia"] == ""
+                  ? ""
+                  : "Alergico a:" + element["medicamentoAlergia"]
+              }</span>`;
               isAllergicToMed.innerHTML += `<span>${isAllergicToMedResponse}</span>`;
               hasFoodAllergy.innerHTML += `<span>${hasFoodAllergyResponse}</span>`;
               alergias.innerHTML += `<span>  ${element["alergias"]}`;
@@ -312,7 +313,6 @@ function uploadBabyInfo(){
       // clearForm();
     });
 }
-
 
 // ***********************************************************************
 //                            GESTIÓN DE REPORTE DIARIO
@@ -349,15 +349,13 @@ let today = year + "-" + month + "-" + day;
 
 //Funcion para cargar en la cabecera la foto y nombre de la Bebé
 
-
 if (token) {
   getIdChild();
   loadInfoBaby();
-  
+  uploadBabyInfo();
   cargarFicha();
   checkLogUpdates(today);
   checkDiaperUpdates(today);
-  
 }
 
 // ***************************************************************
@@ -545,12 +543,9 @@ function getIdChild() {
     });
 }
 
-
-
-
-let notificacionMerienda = sessionStorage.getItem('notificacionMerienda');
-let notificacionComida = sessionStorage.getItem('notificacionComida');
-let notificacionSiesta = sessionStorage.getItem('notificacionSiesta');
+let notificacionMerienda = sessionStorage.getItem("notificacionMerienda");
+let notificacionComida = sessionStorage.getItem("notificacionComida");
+let notificacionSiesta = sessionStorage.getItem("notificacionSiesta");
 
 // function alertarDependeDeActualizacion(tipoNotificacion,tipodato,msg){
 //   if(!tipoNotificacion){
@@ -562,13 +557,10 @@ let notificacionSiesta = sessionStorage.getItem('notificacionSiesta');
 //         autoCierre: true,
 //       });
 //       tipoNotificacion = true;
-     
+
 //      }
 //    }
 // }
-
-
-
 
 function checkLogUpdates(fechaEscogida) {
   let idChild = sessionStorage.getItem("idChild");
@@ -584,65 +576,55 @@ function checkLogUpdates(fechaEscogida) {
     })
     .then((data) => {
       data.forEach((dato) => {
-        
-  
-   if(sessionStorage.getItem('notificacionDesayuno') == 'false'){
-    if(dato.desayuno != ""){
-      agregarToast({
-        tipo: "info",
-        titulo: "Actualización",
-        descripcion:  "Su bebé ha desayunado!",
-        autoCierre: true,
-      });
-     
-      sessionStorage.setItem("notificacionDesayuno", 'true');
-     }
-   }
+        if (sessionStorage.getItem("notificacionDesayuno") == "false") {
+          if (dato.desayuno != "") {
+            agregarToast({
+              tipo: "info",
+              titulo: "Actualización",
+              descripcion: "Su bebé ha desayunado!",
+              autoCierre: true,
+            });
 
- 
-   if(sessionStorage.getItem('notificacionMerienda')== 'false'){
-    if(dato.merienda != ""){
-      agregarToast({
-        tipo: "info",
-        titulo: "Actualización",
-        descripcion:  "Su bebé ha merendado!",
-        autoCierre: true,
-      });
-      sessionStorage.setItem("notificacionMerienda", 'true');
-    
-     }
-   }
+            sessionStorage.setItem("notificacionDesayuno", "true");
+          }
+        }
 
-   if(sessionStorage.getItem('notificacionComida')== 'false'){
-    if(dato.comida != ""){
-      agregarToast({
-        tipo: "info",
-        titulo: "Actualización",
-        descripcion:  "Su bebé ha comido!",
-        autoCierre: true,
-      });
-      sessionStorage.setItem("notificacionComida", 'true');
-    
-     }
-   }
+        if (sessionStorage.getItem("notificacionMerienda") == "false") {
+          if (dato.merienda != "") {
+            agregarToast({
+              tipo: "info",
+              titulo: "Actualización",
+              descripcion: "Su bebé ha merendado!",
+              autoCierre: true,
+            });
+            sessionStorage.setItem("notificacionMerienda", "true");
+          }
+        }
 
-   
-   if(sessionStorage.getItem('notificacionSiesta')== 'false'){
-    if(dato.siesta != ""){
-      agregarToast({
-        tipo: "info",
-        titulo: "Actualización",
-        descripcion:  "Su bebé ha tomado una siesta!",
-        autoCierre: true,
-      });
-      sessionStorage.setItem("notificacionSiesta", 'true');
-    
-     }
-   }
+        if (sessionStorage.getItem("notificacionComida") == "false") {
+          if (dato.comida != "") {
+            agregarToast({
+              tipo: "info",
+              titulo: "Actualización",
+              descripcion: "Su bebé ha comido!",
+              autoCierre: true,
+            });
+            sessionStorage.setItem("notificacionComida", "true");
+          }
+        }
 
+        if (sessionStorage.getItem("notificacionSiesta") == "false") {
+          if (dato.siesta != "") {
+            agregarToast({
+              tipo: "info",
+              titulo: "Actualización",
+              descripcion: "Su bebé ha tomado una siesta!",
+              autoCierre: true,
+            });
+            sessionStorage.setItem("notificacionSiesta", "true");
+          }
+        }
 
-
-      
         switch (dato["desayuno"]) {
           case "poco":
             document.querySelector("#pocodesayuno").checked = true;
@@ -764,7 +746,9 @@ function checkLogUpdates(fechaEscogida) {
 }
 
 function checkDiaperUpdates(fechaEscogida) {
-  let urldepo = `../api/reportes/deposiciones/?fechayhora=${fechaEscogida}&idChild=${sessionStorage.getItem('idChild')}`;
+  let urldepo = `../api/reportes/deposiciones/?fechayhora=${fechaEscogida}&idChild=${sessionStorage.getItem(
+    "idChild"
+  )}`;
 
   fetch(urldepo, {
     method: "GET",
@@ -832,7 +816,6 @@ document
   .addEventListener("change", filtrarPorFechaExacta);
 
 function filtrarPorFechaExacta() {
-  
   cargarFicha();
   let fechaEscogida = document.querySelector("#fechaExacta").value;
 
@@ -844,12 +827,14 @@ function filtrarPorFechaExacta() {
 //                            GESTIÓN DE CHAT
 // ***********************************************************************
 let divMsgNew = document.createElement("div");
- divMsgNew.classList.add("visiblemsg");
+divMsgNew.classList.add("visiblemsg");
 
 function updateOnComingMessages() {
   scrollToTheEnd();
   fetch(
-    `../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem("idChild")}&respondido=0`,
+    `../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem(
+      "idChild"
+    )}&respondido=0`,
     {
       method: "GET",
       headers: {
@@ -863,51 +848,49 @@ function updateOnComingMessages() {
     .then((data) => {
       data.forEach((dato) => {
         if (data) {
-        if (sessionStorage.getItem("idChild") === dato.idChild) {
-          console.log("Hay un mensaje nuevo sin responder");
-       
+          if (sessionStorage.getItem("idChild") === dato.idChild) {
+            console.log("Hay un mensaje nuevo sin responder");
 
-          document.querySelector(".pestanaMensajes").append(divMsgNew);
-          divMsgNew.innerHTML = `<img src='../img/mensajes/mail.png'></img>`;
+            document.querySelector(".pestanaMensajes").append(divMsgNew);
+            divMsgNew.innerHTML = `<img src='../img/mensajes/mail.png'></img>`;
 
-          if (dato.leido == 0) {
-            cargarMensajesEnviadosYRecibidos();
+            if (dato.leido == 0) {
+              cargarMensajesEnviadosYRecibidos();
 
-            agregarToast({
-              tipo: "newmessage",
-              titulo: "Info",
-              descripcion: "Tienes un mensaje nuevo!",
-            });
-
-            let msg = {
-              idmsg: dato.idmsg,
-            };
-            fetch(`../api/updatemsg/?idmsg=${dato.idmsg}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
-              body: JSON.stringify(msg),
-            })
-              .then((response) => {
-                if (response.ok) {
-                  return response.json();
-                }
-              })
-              .then((data) => {
-                console.log(data);
-                scrollToTheEnd();
-                console.log("leido pasa a ser 1");
+              agregarToast({
+                tipo: "newmessage",
+                titulo: "Info",
+                descripcion: "Tienes un mensaje nuevo!",
               });
+
+              let msg = {
+                idmsg: dato.idmsg,
+              };
+              fetch(`../api/updatemsg/?idmsg=${dato.idmsg}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                },
+                body: JSON.stringify(msg),
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    return response.json();
+                  }
+                })
+                .then((data) => {
+                  console.log(data);
+                  scrollToTheEnd();
+                  console.log("leido pasa a ser 1");
+                });
+            }
           }
-        } 
-      }else{
-        console.log("no hay msgs");
-      }
+        } else {
+          console.log("no hay msgs");
+        }
       });
     });
 }
-
 
 function scrollToTheEnd() {
   let scroll = document.querySelector(".msger");
@@ -926,7 +909,6 @@ const PERSON_IMG = "../img/mensajes/parent.png";
 const ADMIN = "FUN FOR KIDS";
 const TUTORES = "Tutores";
 
-
 // ******************************************************
 //         CAPTURAR EVENTO AL ENVIAR EL MENSAJE
 // *****************************************************
@@ -939,13 +921,7 @@ msgerForm.addEventListener("submit", (event) => {
 
   let fechaActual = Date.now();
 
-  appendMessage(
-    TUTORES,
-    PERSON_IMG,
-    "right",
-    msgText,
-    formatDate(fechaActual)
-  );
+  appendMessage(TUTORES, PERSON_IMG, "right", msgText, formatDate(fechaActual));
   msgerInput.value = "";
 
   // Haciendo fetch con el mensaje a la tabla chat
@@ -957,7 +933,7 @@ msgerForm.addEventListener("submit", (event) => {
     },
 
     body: JSON.stringify({
-      idChild: sessionStorage.getItem('idChild'),
+      idChild: sessionStorage.getItem("idChild"),
       idRemitente: idUser,
       idDestinatario: "admin",
       msgText: msgText,
@@ -970,53 +946,50 @@ msgerForm.addEventListener("submit", (event) => {
     })
     .then((data) => {
       console.log(data);
-      document.querySelector(".pestanaMensajes").innerHTML = `Mensajes
-      
-      `;
+      document.querySelector(".pestanaMensajes").innerHTML = `Mensajes`;
 
       //Buscar último mensaje a ese Id y ponerle respondido:
-      fetch(`../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem('idChild')}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        `../api/updatechat/?idRemitente=admin&idChild=${sessionStorage.getItem(
+          "idChild"
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
           }
         })
         .then((data) => {
-         
-          if(data.length > 0){
-           
+          if (data.length > 0) {
             let idmsg = parseInt(data[0]["idmsg"]);
             let msg = {
               idmsg: parseInt(data[0]["idmsg"]),
             };
-          
-       
 
-          
-          //Metodo put
+            //Metodo put
 
-          fetch(`../api/updatechat/?idmsg=${idmsg}&respondido=1`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-            body: JSON.stringify(msg),
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.json();
-              }
+            fetch(`../api/updatechat/?idmsg=${idmsg}&respondido=1`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+              body: JSON.stringify(msg),
             })
-            .then((data) => {
-              console.log(data);
-            });
-
-          }else{
+              .then((response) => {
+                if (response.ok) {
+                  return response.json();
+                }
+              })
+              .then((data) => {
+                console.log(data);
+              });
+          } else {
             console.log("Mensaje respondido a guarderia");
           }
         });
@@ -1045,7 +1018,7 @@ function formatDate(date) {
 // *****************************************************
 
 function cargarMensajesEnviadosYRecibidos() {
-  fetch(`../api/chat/?idChild=${sessionStorage.getItem('idChild')}`, {
+  fetch(`../api/chat/?idChild=${sessionStorage.getItem("idChild")}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -1231,7 +1204,6 @@ const agregarToast = ({ tipo, titulo, descripcion, autoCierre }) => {
 //           GESTIÓN DE EDICIÓN DE INFO DE MATRÍCULA
 // ****************************************************************
 
-document.querySelector('#btnEditProfile').addEventListener('click', () => {
-  sessionStorage.setItem('edicionMatricula', 'true')
-})
-
+document.querySelector("#btnEditProfile").addEventListener("click", () => {
+  sessionStorage.setItem("edicionMatricula", "true");
+});
