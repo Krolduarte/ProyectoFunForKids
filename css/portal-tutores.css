@@ -8,7 +8,7 @@ body {
 
 .container {
   width: 100vw;
-  min-width: 400px;
+  min-width: 360px;
 }
 header {
   background: #57bdb9;
@@ -158,32 +158,10 @@ header {
   }
   .rango,
   .rango2,
-  .rango3 {
+  .rango3, .rango5,.rango4 {
+ 
     font-size: 11px;
-  }
-}
-
-@media (max-width: 900px) {
-  .opciones {
-    gap: 2px;
-  }
-  .imagenydatos {
-    margin-top: -2px;
-    padding-left: 1px;
-    padding-bottom: 26px;
-  }
-
-  .fotoBebe {
-    width: 80px;
-    height: 80px;
-    margin-top: -2px;
-    margin-left: 18px;
-    /* background-color: #4b413a; */
-  }
-
-  .btnPestanas {
-    width: 106px;
-    height: 38px;
+   
   }
 }
 
@@ -195,14 +173,17 @@ section {
 }
 
 .gris {
-  height: 120px;
+  width: 100%;
+  /* min-width: 374px; */
+  height: 150px;
   background: #eee0e0;
   display: flex;
+
 }
 
 .colIcono {
   box-sizing: border-box;
-  width: 30%;
+  width: 20%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -210,15 +191,18 @@ section {
 }
 
 .colInfoGrid {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
   box-sizing: border-box;
-  margin-right: 10px;
-  width: 59%;
-  display: grid;
-  grid-template-columns: repeat(3, 30% 30% 30%);
-  grid-template-rows: repeat(5, 1fr);
+  justify-content: center;
+  /* margin-right: 10px; */
+
+
+
   /* justify-items: center; */
   align-items: center;
-  gap: 10px;
+  gap: 0px;
 }
 
 .diaper {
@@ -247,9 +231,8 @@ section {
 }
 
 .titulo1 {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  padding: 5px 10px;
+
+  padding: 5px 5px;
   font-weight: 700;
 }
 
@@ -289,71 +272,70 @@ section {
 }
 
 .titulo3 {
-  grid-column: 1/2;
-  grid-row: 4/5;
+
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 5px 5px;
 }
 
 .rango {
-  grid-column: 2/4;
-  grid-row: 4/5;
+ 
   display: flex;
   justify-content: space-between;
 }
 
 .titulo5 {
-  grid-column: 1/2;
-  grid-row: 3/4;
+
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 5px 5px;
 }
 
 .rango5 {
-  grid-column: 2/4;
-  grid-row: 3/4;
+
   display: flex;
   justify-content: space-between;
 }
 
-.rango button,
-.rango2 button,
-.rango3 button {
-  height: 29px;
-  width: 91px;
-  background: #ffffff;
 
-  border-radius: 2.79458px;
+@media (max-width: 750px) {
+
+/* .rango4{
+  display: flex;
+  flex-wrap: wrap;justify-content: center;
+} */
+
+.rango label, .rango2 label, .rango3 label, .rango4 label{
+  width:100% !important;
+}
+.rango5 {
+  width:220px !important;
 }
 
-@media (max-width: 800px) {
-  /* .areaFecha{
- background-color: red;
- height:100px;
- }
- #divCalendario{
-  position: relative;
- } */
+}
+
+
+
+@media (max-width: 500px) {
+
 
   section {
     height: 200px;
   }
   .colInfoGrid {
+ 
     box-sizing: border-box;
     margin-right: 10px;
     width: 75%;
-    display: grid;
-    grid-template-columns: repeat(3, 25% 24% 46%);
-    grid-template-rows: repeat(5, 1fr);
-    /* justify-items: center; */
+justify-content: center;
+
     align-items: center;
     gap: 10px;
   }
 
   .colIcono {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     height: 100px;
-    width: 20%;
+ 
+    /* width: 20%; */
     background: #f3b90f;
     border: px solid #56beb7;
     border-top-right-radius: 50%;
@@ -361,8 +343,8 @@ section {
   }
 
   .icono {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
 
@@ -397,9 +379,64 @@ section {
 
   .titulo1,
   .titulo2,
-  .titulo3 {
+  .titulo3, .titulo5 {
     font-size: 12px;
   }
+}
+
+@media (max-width: 900px) {
+
+  .rango,
+  .rango2,
+  .rango3, .rango4,.rango5 {
+/* display: flex;
+flex-wrap: wrap;
+justify-content: flex-start; */
+    font-size: 11px;
+   
+  }
+
+  .colInfoGrid{
+ 
+    width: 75% ;
+  }
+  
+  .opciones {
+    gap: 2px;
+  }
+  .imagenydatos {
+    margin-top: -2px;
+    padding-left: 1px;
+    padding-bottom: 26px;
+  }
+
+  .fotoBebe {
+    width: 80px;
+    height: 80px;
+    margin-top: -2px;
+    margin-left: 18px;
+    /* background-color: #4b413a; */
+  }
+
+  .btnPestanas {
+    width: 106px;
+    height: 38px;
+  }
+}
+@media (max-width: 450px) {
+  .nombreBebe span {
+    font-size: 20px;
+  }
+  .colInfoPerfil > div,
+  .colInfoAdultos > div {
+    font-size: 11px;
+  }
+  label {
+   
+    padding: 2px 5px;
+    
+  }
+
 }
 
 @media (max-width: 500px) {
@@ -418,14 +455,39 @@ section {
     font-size: 12px;
   }
 
+  .colInfoPerfil,
+  .colInfoAdultos {
+    width: 82%;
+    display: flex;
+    justify-content: center;
+  
+    height:110px;
+    padding : 0px 2px 0px 5px !important;
+    
+  }
+  .perfilSection:first-of-type{
+  
+    margin-top: 50px;
+  }
+  #btnEditProfile{
+    margin-top: -45px;
+  }
+
+
  
+  /* .tituloLabel:first-child{
+    font-size: 11px !important;
+    font-weight: 400;
+  } */
+
+
 }
 
 /* *************************************************
            SECCION ALIMENTACION
 ************************************************** */
 .white {
-  height: 250px;
+  height: 290px;
 
   display: flex;
 }
@@ -435,22 +497,25 @@ section {
 }
 
 .titulo2 {
-  grid-column: 1/2;
-  grid-row: 3/4;
+
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 5px 5px;
 }
 
 .rango2 {
-  grid-column: 2/4;
-  grid-row: 3/4;
+
   display: flex;
   justify-content: space-between;
 }
 
 .rango3 {
-  grid-column: 2/4;
-  grid-row: 2/3;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.rango4 {
+
   display: flex;
   justify-content: space-between;
 }
@@ -520,14 +585,14 @@ section {
   align-items: center;
 }
 
-.tituloLabel :first-child {
+/* .tituloLabel :first-child {
   font-size: 20px;
   color: #254441;
   font-weight: 700;
-}
+} */
 
 .tituloLabel span {
-  font-size: 25px;
+  font-size: 17px;
   font-weight: 200;
   padding-left: 10px;
 }
@@ -549,7 +614,7 @@ label {
   height: 20px;
   width: 91px;
   cursor: context-menu;
-  padding: 7px 10px;
+  padding: 10px 10px;
   background-color: white;
   border: 1px solid gray;
   border-radius: 5px;
@@ -558,6 +623,7 @@ label {
 
 input {
   visibility: hidden;
+  width: 0px;
 }
 
 .selectedOption {
@@ -691,11 +757,11 @@ input#fechaExacta {
   /* flex-flow: column wrap; */
   flex-direction: column;
   justify-content: space-between;
-  width: 98%;
+  width: 93%;
   /* min-width: 867px; */
   margin: 25px 20px;
   /* height: calc(100% - 50px); */
-  height: 65vh;
+  height: 77vh;
   border: var(--border);
   border-radius: 5px;
   background: var(--msger-bg);
@@ -705,12 +771,13 @@ input#fechaExacta {
 
 .msger-header {
   display: flex;
+
   justify-content: space-between;
   padding: 10px;
   border-bottom: var(--border);
   background: #eee;
   color: #666;
-  position: fixed;
+  /* position: fixed; */
 }
 
 .msger-chat {
@@ -961,9 +1028,6 @@ div.texto {
 #btnEditProfile {
   position: absolute;
   right: 20px;
-
-  /* grid-column: 1/5;
-  grid-row: 4/5; */
   font-size: 12px;
   color: #fff;
   background-color: #56beb7;

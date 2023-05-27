@@ -318,7 +318,7 @@ document.querySelector(".btnRegister").addEventListener("click", () => {
      
         divInfo.classList.add('green');
     
-            agregarToast({ tipo: 'exito', titulo: 'Info', descripcion: 'Registro realizado correctamente, ingresa al Portal de Padres para iniciar proceso de matrícula!' });
+            agregarToast({ tipo: 'exito', titulo: 'Info', descripcion: 'Registro realizado correctamente. Ingresa al Portal de Padres para iniciar proceso de matrícula!' });
          
 
         // window.location.href = "../html/login.html";

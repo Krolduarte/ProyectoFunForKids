@@ -15,7 +15,7 @@ window.setInterval(function () {
    
   }
 
-}, 5000);
+}, 7000);
 
 //***********************************************************************
 //         GESTIÓN DE PESTAÑAS PARA IR A REPORTE DIARIO Y MENSAJES
@@ -73,6 +73,7 @@ document
 
 if (idUser && token) {
   loadInfoBaby();
+
 }
 
 // Informacion del bebe
@@ -120,101 +121,30 @@ let hasFoodAllergyResponse = "";
 let disabilityResponse = "";
 let idChildfromSession = sessionStorage.getItem("idChild");
 
-// window.setTimeout(function () {
-//   updateOnComingMessages();
-//   console.log("reloading");
-// }, 2000);
+uploadBabyInfo();
+function uploadBabyInfo(){
 
+  fetch(
+    `../api/matricula/matriculacompleta/?idUsuario=${sessionStorage.getItem("IdUsuario")}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
 
-fetch(
-  `../api/matricula/matriculacompleta/?idUsuario=${idUser}`,
-  {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  }
-)
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    data.forEach((element) => {
-      // ****************************************************
-      //           FETCH PARA INFO DE PADRES
-      // ****************************************************
-
-      fetch(
-        `../api/matricula/tutors/?idTutor=${element.idTutor1}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          sessionStorage.setItem('matriculado', 'true');
-          data.forEach((element) => {
-            tutorNombreCompleto.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
-            relacionTutor.innerHTML += `<span>${element["relacion"]} `;
-            direccionTutor.innerHTML += `<span>${element["direccion"]} `;
-            telefonoTutor.innerHTML += `<span>${element["telefono"]}`;
-            sessionStorage.setItem("nombreTutor1", element["nombreTutor"]);
-          });
-        });
-
-      fetch(
-        `../api/matricula/tutors/?idTutor=${element.idTutor2}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          data.forEach((element) => {
-            tutorNombreCompleto2.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
-            relacionTutor2.innerHTML += `<span>${element["relacion"]} `;
-            direccionTutor2.innerHTML += `<span>${element["direccion"]} `;
-            telefonoTutor2.innerHTML += `<span>${element["telefono"] == 0 ? "" :element["telefono"] }`;
-            sessionStorage.setItem("nombreTutor2", element["nombreTutor"]);
-          });
-        });
-
-      // ****************************************************
-      //           FETCH PARA AUTORIZADOS
-      // ****************************************************
-
-      fetch(
-        `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          data.forEach((element) => {
-            autorizadoNombreCompleto.innerHTML += `<span>${element["nombreAutorizado"]} ${element["apellidosAutorizado"]}</span>`;
-            autorizadoRelacion.innerHTML += `<span>${element["relacionAutorizado"]} `;
-          });
-        });
-
-
+      data.forEach((element) => {
+        // ****************************************************
+        //           FETCH PARA INFO DE PADRES
+        // ****************************************************
+  
         fetch(
-          `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado2}`,
+          `../api/matricula/tutors/?idTutor=${element.idTutor1}`,
           {
             method: "GET",
             headers: {
@@ -226,92 +156,163 @@ fetch(
             return response.json();
           })
           .then((data) => {
-            data.forEach((element2) => {
-              document.querySelector('.autorizadoNombreCompleto2').innerHTML += `<span>${element2["nombreAutorizado"]} ${element2["apellidosAutorizado"]}</span>`;
-              document.querySelector('.autorizadoRelacion2').innerHTML += `<span>${element2["relacionAutorizado"]} `;
+            sessionStorage.setItem('matriculado', 'true');
+            data.forEach((element) => {
+              tutorNombreCompleto.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
+              relacionTutor.innerHTML += `<span>${element["relacion"]} `;
+              direccionTutor.innerHTML += `<span>${element["direccion"]} `;
+              telefonoTutor.innerHTML += `<span>${element["telefono"]}`;
+              sessionStorage.setItem("nombreTutor1", element["nombreTutor"]);
             });
           });
-
-      // ****************************************************
-      //           FETCH PARA INFO DE NIÑO
-      // ****************************************************
-
-    
-     
-
-      fetch(
-        `../api/children/childrenlist/?idChild=${sessionStorage.getItem('idChild')}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-       let nombreBebe = element["nombreBebe"];
-          sessionStorage.setItem("idChild", sessionStorage.getItem('idChild'));
-          sessionStorage.setItem("nombreBebe", nombreBebe);
-          data.forEach((element) => {
-            console.log(element);
-            if (element.isTakingMed == 0) {
-              isTakingMedResponse = "NO";
-            } else {
-              isTakingMedResponse = "SI";
-            }
-
-            if (element.isAllergicToMed == 0) {
-              isAllergicToMedResponse = "NO";
-            } else {
-              isAllergicToMedResponse = "SI";
-            }
-
-            if (element.isAllergicToFood == 0) {
-              isAllergicToFoodResponse = "NO";
-            } else {
-              isAllergicToFoodResponse = "SI";
-            }
-
-            if (element.hasDisability == 0) {
-              disabilityResponse = "Ninguna";
-            } else {
-              disability.innerHTML = `<span>${element["discapacidad"]}  </span>`;
-            }
-
-            if (element.hasFoodAllergy == 0) {
-              hasFoodAllergyResponse = "NO";
-              alergias.innerHTML = "";
-              alergenos.innerHTML = "";
-            } else {
-              hasFoodAllergyResponse = "SI";
-            }
-
-            if (element.medicamentoTomado == "") {
-              medicamentoTomado.innerHTML = "";
-            } else {
-              medicamentoTomado.innerHTML += `<span>${element["medicamentoTomado"]}</span>`;
-            }
-
-            nombreBebePerfil.innerHTML += `<span>  ${element["nombreBebe"]}</span>`;
-            apellidosBebePerfil.innerHTML += `<span>  ${element["apellido1Bebe"]} ${element["apellido2Bebe"]}</span>`;
-            fechaNac.innerHTML += `<span>${element["fechaNacimiento"]}</span>`;
-            genero.innerHTML += `<span>${element["genero"]}</span>`;
-            lugar.innerHTML += `<span>${element["lugarNacimiento"]}</span>`;
-            isTakingMed.innerHTML += `<span>${isTakingMedResponse}</span>`;
-            medicamentoAlergia.innerHTML += `<span>${element["medicamentoAlergia"] == "" ? "" : "Alergico a:" + element["medicamentoAlergia"]  }</span>`;
-            isAllergicToMed.innerHTML += `<span>${isAllergicToMedResponse}</span>`;
-            hasFoodAllergy.innerHTML += `<span>${hasFoodAllergyResponse}</span>`;
-            alergias.innerHTML += `<span>  ${element["alergias"]}`;
-            alergenos.innerHTML += `<span>${element["alergeno"]}</span>`;
+  
+        fetch(
+          `../api/matricula/tutors/?idTutor=${element.idTutor2}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            data.forEach((element) => {
+              tutorNombreCompleto2.innerHTML += `<span>${element["nombreTutor"]} ${element["apellidosTutor"]}</span>`;
+              relacionTutor2.innerHTML += `<span>${element["relacion"]} `;
+              direccionTutor2.innerHTML += `<span>${element["direccion"]} `;
+              telefonoTutor2.innerHTML += `<span>${element["telefono"] == 0 ? "" :element["telefono"] }`;
+              sessionStorage.setItem("nombreTutor2", element["nombreTutor"]);
+            });
           });
-          // clearForm();
-        });
+  
+        // ****************************************************
+        //           FETCH PARA AUTORIZADOS
+        // ****************************************************
+  
+        fetch(
+          `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado1}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            data.forEach((element) => {
+              autorizadoNombreCompleto.innerHTML += `<span>${element["nombreAutorizado"]} ${element["apellidosAutorizado"]}</span>`;
+              autorizadoRelacion.innerHTML += `<span>${element["relacionAutorizado"]} `;
+            });
+          });
+  
+  
+          fetch(
+            `../api/matricula/pickuplist/?idAutorizado=${element.idAutorizado2}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+            }
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              data.forEach((element2) => {
+                document.querySelector('.autorizadoNombreCompleto2').innerHTML += `<span>${element2["nombreAutorizado"]} ${element2["apellidosAutorizado"]}</span>`;
+                document.querySelector('.autorizadoRelacion2').innerHTML += `<span>${element2["relacionAutorizado"]} `;
+              });
+            });
+  
+        // ****************************************************
+        //           FETCH PARA INFO DE NIÑO
+        // ****************************************************
+  
+      
+       
+  
+        fetch(
+          `../api/children/childrenlist/?idChild=${sessionStorage.getItem('idChild')}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+         let nombreBebe = element["nombreBebe"];
+            sessionStorage.setItem("idChild", sessionStorage.getItem('idChild'));
+            sessionStorage.setItem("nombreBebe", nombreBebe);
+            data.forEach((element) => {
+              console.log(element);
+              if (element.isTakingMed == 0) {
+                isTakingMedResponse = "NO";
+              } else {
+                isTakingMedResponse = "SI";
+              }
+  
+              if (element.isAllergicToMed == 0) {
+                isAllergicToMedResponse = "NO";
+              } else {
+                isAllergicToMedResponse = "SI";
+              }
+  
+              if (element.isAllergicToFood == 0) {
+                isAllergicToFoodResponse = "NO";
+              } else {
+                isAllergicToFoodResponse = "SI";
+              }
+  
+              if (element.hasDisability == 0) {
+                disabilityResponse = "Ninguna";
+              } else {
+                disability.innerHTML = `<span>${element["discapacidad"]}  </span>`;
+              }
+  
+              if (element.hasFoodAllergy == 0) {
+                hasFoodAllergyResponse = "NO";
+                alergias.innerHTML = "";
+                alergenos.innerHTML = "";
+              } else {
+                hasFoodAllergyResponse = "SI";
+              }
+  
+              if (element.medicamentoTomado == "") {
+                medicamentoTomado.innerHTML = "";
+              } else {
+                medicamentoTomado.innerHTML += `<span>${element["medicamentoTomado"]}</span>`;
+              }
+  
+              nombreBebePerfil.innerHTML += `<span>  ${element["nombreBebe"]}</span>`;
+              apellidosBebePerfil.innerHTML += `<span>  ${element["apellido1Bebe"]} ${element["apellido2Bebe"]}</span>`;
+              fechaNac.innerHTML += `<span>${element["fechaNacimiento"]}</span>`;
+              genero.innerHTML += `<span>${element["genero"]}</span>`;
+              lugar.innerHTML += `<span>${element["lugarNacimiento"]}</span>`;
+              isTakingMed.innerHTML += `<span>${isTakingMedResponse}</span>`;
+              medicamentoAlergia.innerHTML += `<span>${element["medicamentoAlergia"] == "" ? "" : "Alergico a:" + element["medicamentoAlergia"]  }</span>`;
+              isAllergicToMed.innerHTML += `<span>${isAllergicToMedResponse}</span>`;
+              hasFoodAllergy.innerHTML += `<span>${hasFoodAllergyResponse}</span>`;
+              alergias.innerHTML += `<span>  ${element["alergias"]}`;
+              alergenos.innerHTML += `<span>${element["alergeno"]}</span>`;
+            });
+            // clearForm();
+          });
+      });
+      // clearForm();
     });
-    // clearForm();
-  });
+}
+
 
 // ***********************************************************************
 //                            GESTIÓN DE REPORTE DIARIO
@@ -454,8 +455,8 @@ function cargarFicha() {
   document.querySelector(
     ".foodGrid"
   ).innerHTML = ` <div class="titulo1">Desayuno</div>
-      <div class="titulo2">Merienda</div>
-      <div class="titulo3">Comida</div>
+     
+   
 
       <div class="rango3">
         <input type="radio"  id="pocodesayuno"  name="desayuno"  value="poco"/>
@@ -470,7 +471,7 @@ function cargarFicha() {
     <input type="radio"   id="tododesayuno"  name="desayuno" value="todo"/>
     <label for="tododesayuno">Todo</label>
       </div>
-
+      <div class="titulo2">Merienda</div>
       <div class="rango2">
         <input type="radio"  id="pocomerienda"  name="merienda" value="poco"/>
       <label for="pocomerienda">Poco</label>
@@ -484,7 +485,7 @@ function cargarFicha() {
     <input  type="radio" id="todomerienda" name="merienda"   value="todo"/>
     <label for="todomerienda">Todo</label>
       </div>
-
+      <div class="titulo3">Comida</div>
       <div class="rango">
         
         <input type="radio"   id="pococomida" name="comida" value="poco"/>
@@ -503,7 +504,7 @@ function cargarFicha() {
   document.querySelector(
     ".siestaGrid"
   ).innerHTML = ` <div class="titulo1">Siesta</div>
-      <div class="rango3">
+      <div class="rango4">
         <input type="radio" id="quince" name="siesta"  value="15"/>
       <label for="quince">15 min</label>
 
@@ -906,6 +907,7 @@ function updateOnComingMessages() {
       });
     });
 }
+
 
 function scrollToTheEnd() {
   let scroll = document.querySelector(".msger");
